@@ -1,12 +1,12 @@
 package goyeti
 
 import (
+	"bytes"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/mitchellh/mapstructure"
@@ -48,11 +48,11 @@ func parseResponse(res *http.Response, receiver *map[string]interface{}) error {
 	return nil
 }
 
-func (c *YetiClient) doRequest(method string, endpoint string, header http.Header, data string) (*http.Response, error) {
+func (c *YetiClient) doRequest(method string, endpoint string, header http.Header, data []byte) (*http.Response, error) {
 	var body io.Reader
 
-	if data != "" {
-		body = strings.NewReader(data)
+	if data != nil {
+		body = bytes.NewBuffer(data)
 	}
 
 	req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", c.url, endpoint), body)
@@ -76,7 +76,7 @@ func (c *YetiClient) doRequest(method string, endpoint string, header http.Heade
 func (c *YetiClient) getToken() (string, error) {
 	var authResponse models.ServerResponseAuth
 
-	res, err := c.Query("api/v2/auth/api-token", http.MethodPost, "")
+	res, err := c.Query("api/v2/auth/api-token", http.MethodPost, nil)
 	if err != nil {
 		return "", err
 	}
@@ -90,7 +90,7 @@ func (c *YetiClient) getToken() (string, error) {
 }
 
 func (c *YetiClient) checkAuth(token string) (bool, error) {
-	res, err := c.Query("api/v2/auth/me", http.MethodGet, "")
+	res, err := c.Query("api/v2/auth/me", http.MethodGet, nil)
 	if err != nil {
 		return false, err
 	}
@@ -127,13 +127,13 @@ func (c *YetiClient) Init() error {
 	return nil
 }
 
-func (c *YetiClient) ObservablesSearch(search string, searchType string) (models.ServerResponseObservables, error) {
+func (c *YetiClient) ObservablesSearch(query models.QuerySearch) (models.ServerResponseObservables, error) {
 	var result models.ServerResponseObservables
-	page := -1
-	countPerPage := 50
+	if query.Sorting == nil {
+		query.Sorting = []struct{}{}
+	}
 	for {
-		page++
-		res, err := c.observablesSearch(search, searchType, page, countPerPage)
+		res, err := c.observablesSearch(query)
 		if err != nil {
 			return result, err
 		}
@@ -142,13 +142,17 @@ func (c *YetiClient) ObservablesSearch(search string, searchType string) (models
 		if len(result.Observables) >= res.Total {
 			break
 		}
+		query.Page++
 	}
 	return result, nil
 }
 
-func (c *YetiClient) observablesSearch(search string, searchType string, page int, countPerPage int) (models.ServerResponseObservables, error) {
+func (c *YetiClient) observablesSearch(query models.QuerySearch) (models.ServerResponseObservables, error) {
 	var result models.ServerResponseObservables
-	body := fmt.Sprintf(`{"query": {"value": "%s"},  "type": "%s",  "sorting": [],   "count": %d,  "page": %d}`, search, searchType, countPerPage, page)
+	body, err := json.Marshal(query)
+	if err != nil {
+		return result, err
+	}
 	res, err := c.Query("api/v2/observables/search", http.MethodPost, body)
 	if err != nil {
 		return result, err
@@ -160,7 +164,7 @@ func (c *YetiClient) observablesSearch(search string, searchType string, page in
 	return result, nil
 }
 
-func (c *YetiClient) Query(endpoint string, method string, data string) (map[string]interface{}, error) {
+func (c *YetiClient) Query(endpoint string, method string, data []byte) (map[string]interface{}, error) {
 	var result map[string]interface{}
 
 	res, err := c.doRequest(method, endpoint, c.headers, data)
@@ -177,7 +181,7 @@ func (c *YetiClient) Query(endpoint string, method string, data string) (map[str
 
 func (c *YetiClient) Close() error {
 	defer c.client.CloseIdleConnections()
-	res, err := c.doRequest(http.MethodPost, "api/v2/auth/logout", c.headers, "")
+	res, err := c.doRequest(http.MethodPost, "api/v2/auth/logout", c.headers, nil)
 	if err != nil || res.StatusCode != http.StatusOK {
 		return fmt.Errorf("could not logout: %s %s", res.Status, err)
 	}

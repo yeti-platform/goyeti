@@ -68,22 +68,22 @@ func (mr *MockClientIMockRecorder) Init() *gomock.Call {
 }
 
 // ObservablesSearch mocks base method.
-func (m *MockClientI) ObservablesSearch(search, searchType string) (models.ServerResponseObservables, error) {
+func (m *MockClientI) ObservablesSearch(query models.QuerySearch) (models.ServerResponseObservables, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ObservablesSearch", search, searchType)
+	ret := m.ctrl.Call(m, "ObservablesSearch", query)
 	ret0, _ := ret[0].(models.ServerResponseObservables)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ObservablesSearch indicates an expected call of ObservablesSearch.
-func (mr *MockClientIMockRecorder) ObservablesSearch(search, searchType any) *gomock.Call {
+func (mr *MockClientIMockRecorder) ObservablesSearch(query any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ObservablesSearch", reflect.TypeOf((*MockClientI)(nil).ObservablesSearch), search, searchType)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ObservablesSearch", reflect.TypeOf((*MockClientI)(nil).ObservablesSearch), query)
 }
 
 // Query mocks base method.
-func (m *MockClientI) Query(endpoint, method, data string) (map[string]any, error) {
+func (m *MockClientI) Query(endpoint, method string, data []byte) (map[string]any, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Query", endpoint, method, data)
 	ret0, _ := ret[0].(map[string]any)

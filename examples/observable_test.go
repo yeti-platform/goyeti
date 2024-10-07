@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/yeti-platform/goyeti"
+	"github.com/yeti-platform/goyeti/models"
 )
 
 func ExampleObservable() {
@@ -24,12 +25,18 @@ func ExampleObservable() {
 	if err != nil {
 		panic(err)
 	}
-	whoami, err := client.Query("api/v2/auth/me", http.MethodGet, "")
+	whoami, err := client.Query("api/v2/auth/me", http.MethodGet, nil)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Connected: %t\n", whoami["enabled"].(bool))
-	observables, err := client.ObservablesSearch(domain, "hostname")
+	query := models.QuerySearch{
+		Query: map[string]interface{}{"value": domain},
+		Type:  "hostname",
+		Count: 50,
+		Page:  0,
+	}
+	observables, err := client.ObservablesSearch(query)
 	if err != nil {
 		panic(err)
 	}

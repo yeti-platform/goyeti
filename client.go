@@ -129,8 +129,26 @@ func (c *YetiClient) Init() error {
 
 func (c *YetiClient) ObservablesSearch(search string, searchType string) (models.ServerResponseObservables, error) {
 	var result models.ServerResponseObservables
+	page := -1
+	countPerPage := 50
+	for {
+		page++
+		res, err := c.observablesSearch(search, searchType, page, countPerPage)
+		if err != nil {
+			return result, err
+		}
+		result.Observables = append(result.Observables, res.Observables...)
+		result.Total = res.Total
+		if len(result.Observables) >= res.Total {
+			break
+		}
+	}
+	return result, nil
+}
 
-	body := fmt.Sprintf(`{"query": {"value": "%s"},  "type": "%s",  "sorting": [],   "count": 50,  "page": 0}`, search, searchType)
+func (c *YetiClient) observablesSearch(search string, searchType string, page int, countPerPage int) (models.ServerResponseObservables, error) {
+	var result models.ServerResponseObservables
+	body := fmt.Sprintf(`{"query": {"value": "%s"},  "type": "%s",  "sorting": [],   "count": %d,  "page": %d}`, search, searchType, countPerPage, page)
 	res, err := c.Query("api/v2/observables/search", http.MethodPost, body)
 	if err != nil {
 		return result, err

@@ -108,20 +108,24 @@ func (c *YetiClient) Init() error {
 		},
 		Timeout: c.Timeout,
 	}
+	return c.init()
+}
+
+func (c *YetiClient) init() error {
 	c.headers = http.Header{
 		"Content-Type":  []string{"application/json"},
 		"x-yeti-apikey": []string{c.apikey},
 	}
 	token, err := c.getToken()
 	if err != nil {
-		return fmt.Errorf("could not authenticate: %s", err)
+		return fmt.Errorf("could not authenticate: %w", err)
 	}
 	c.token = token
 	c.headers.Add("authorization", fmt.Sprintf("Bearer %s", c.token))
 
 	authed, err := c.checkAuth(c.token)
 	if err != nil || !authed {
-		return fmt.Errorf("could not authenticate: %s", err)
+		return fmt.Errorf("could not authenticate: %w", err)
 	}
 
 	return nil

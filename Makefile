@@ -24,11 +24,11 @@ fmt: ## run go fmt against code
 	go fmt ./...
 
 test: tidy fmt generate ## run go test against code
-	go test -race -coverprofile=coverage.out ./...
+	go test -race -coverprofile=coverage.out $(go list ./... | grep -v /mocks/)
 	go tool cover -func=coverage.out
 	rm -f coverage.out
 
 cov: tidy fmt generate ## run go test against code and generate coverage report
-	go test -coverprofile=coverage.out ./...
+	go test -coverprofile=coverage.out $(go list ./... | grep -v /mocks/)
 	go tool cover -html=coverage.out
 	rm -f coverage.out

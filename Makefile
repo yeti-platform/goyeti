@@ -1,4 +1,4 @@
-all: init generate tidy fmt test
+all: generate tidy fmt test
 
 help: ## Display this help section
 ifeq ($(OSTYPE), linux-gnu)

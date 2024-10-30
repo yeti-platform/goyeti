@@ -1,0 +1,17 @@
+---
+packageName: goyeti
+packageVersion: 1.0.0
+hideGenerationTimestamp: true
+isGoSubmodule: false
+withGoMod: true
+appDescriptionWithNewLines: |
+  Go client for the Yeti API generated using OpenAPI Generator.
+  ```
+  docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
+    -i /local/openapi.json \
+    -g go \
+    --config /local/config.yaml \
+    -o /local/
+  ```
+gitUserId: yeti-platform
+gitRepoId: goyeti

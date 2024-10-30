@@ -3,67 +3,67 @@
 ## Enum
 
 
-* `IMPHASH` (value: `"imphash"`)
-
-* `PACKAGE` (value: `"package"`)
-
-* `GENERIC` (value: `"generic"`)
-
-* `JA3` (value: `"ja3"`)
-
-* `USER_ACCOUNT` (value: `"user_account"`)
-
-* `HOSTNAME` (value: `"hostname"`)
-
-* `JARM` (value: `"jarm"`)
-
-* `IPV4` (value: `"ipv4"`)
-
-* `COMMAND_LINE` (value: `"command_line"`)
-
-* `TLSH` (value: `"tlsh"`)
+* `MUTEX` (value: `"mutex"`)
 
 * `MD5` (value: `"md5"`)
 
-* `SHA256` (value: `"sha256"`)
-
-* `IBAN` (value: `"iban"`)
-
-* `PATH` (value: `"path"`)
-
-* `EMAIL` (value: `"email"`)
-
-* `CIDR` (value: `"cidr"`)
-
-* `ASN` (value: `"asn"`)
-
-* `CERTIFICATE` (value: `"certificate"`)
-
-* `USER_AGENT` (value: `"user_agent"`)
-
-* `REGISTRY_KEY` (value: `"registry_key"`)
-
-* `DOCKER_IMAGE` (value: `"docker_image"`)
-
-* `URL` (value: `"url"`)
-
-* `FILE` (value: `"file"`)
-
-* `NAMED_PIPE` (value: `"named_pipe"`)
-
-* `BIC` (value: `"bic"`)
-
-* `SSDEEP` (value: `"ssdeep"`)
-
-* `MUTEX` (value: `"mutex"`)
-
-* `SHA1` (value: `"sha1"`)
+* `JARM` (value: `"jarm"`)
 
 * `MAC_ADDRESS` (value: `"mac_address"`)
 
+* `NAMED_PIPE` (value: `"named_pipe"`)
+
+* `SHA1` (value: `"sha1"`)
+
+* `TLSH` (value: `"tlsh"`)
+
+* `PACKAGE` (value: `"package"`)
+
+* `HOSTNAME` (value: `"hostname"`)
+
+* `GENERIC` (value: `"generic"`)
+
+* `URL` (value: `"url"`)
+
+* `SSDEEP` (value: `"ssdeep"`)
+
+* `REGISTRY_KEY` (value: `"registry_key"`)
+
+* `ASN` (value: `"asn"`)
+
+* `IPV4` (value: `"ipv4"`)
+
+* `FILE` (value: `"file"`)
+
+* `USER_ACCOUNT` (value: `"user_account"`)
+
+* `CIDR` (value: `"cidr"`)
+
+* `EMAIL` (value: `"email"`)
+
 * `WALLET` (value: `"wallet"`)
 
+* `IBAN` (value: `"iban"`)
+
+* `IMPHASH` (value: `"imphash"`)
+
+* `PATH` (value: `"path"`)
+
+* `USER_AGENT` (value: `"user_agent"`)
+
+* `COMMAND_LINE` (value: `"command_line"`)
+
+* `SHA256` (value: `"sha256"`)
+
+* `DOCKER_IMAGE` (value: `"docker_image"`)
+
+* `CERTIFICATE` (value: `"certificate"`)
+
 * `IPV6` (value: `"ipv6"`)
+
+* `BIC` (value: `"bic"`)
+
+* `JA3` (value: `"ja3"`)
 
 * `GUESS` (value: `"guess"`)
 

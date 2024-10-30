@@ -178,7 +178,7 @@ import (
 )
 
 func main() {
-	newBulkObservableAddRequest := *openapiclient.NewNewBulkObservableAddRequest([]openapiclient.NewObservableRequest{*openapiclient.NewNewObservableRequest("Value_example", openapiclient.ObservableType-Input("imphash"))}) // NewBulkObservableAddRequest | 
+	newBulkObservableAddRequest := *openapiclient.NewNewBulkObservableAddRequest([]openapiclient.NewObservableRequest{*openapiclient.NewNewObservableRequest("Value_example", openapiclient.ObservableType-Input("mutex"))}) // NewBulkObservableAddRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -456,7 +456,7 @@ import (
 )
 
 func main() {
-	newObservableRequest := *openapiclient.NewNewObservableRequest("Value_example", openapiclient.ObservableType-Input("imphash")) // NewObservableRequest | 
+	newObservableRequest := *openapiclient.NewNewObservableRequest("Value_example", openapiclient.ObservableType-Input("mutex")) // NewObservableRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

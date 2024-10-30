@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "sigma"]
+**Type** | Pointer to **string** |  | [optional] [default to "query"]
 **Description** | Pointer to **string** |  | [optional] [default to ""]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Modified** | Pointer to **time.Time** |  | [optional] 
@@ -16,23 +16,23 @@ Name | Type | Description | Notes
 **Diamond** | [**DiamondModel**](DiamondModel.md) |  | 
 **KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
 **RelevantTags** | Pointer to **[]string** |  | [optional] [default to []]
+**QueryType** | **string** |  | 
+**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
-**Sid** | Pointer to **int32** |  | [optional] [default to 0]
-**Metadata** | Pointer to **[]string** |  | [optional] [default to []]
-**References** | Pointer to **[]string** |  | [optional] [default to []]
-**QueryType** | **string** |  | 
-**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
 **Sources** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **Aliases** | Pointer to **[]string** |  | [optional] [default to []]
 **SupportedOs** | Pointer to **[]string** |  | [optional] [default to []]
+**Sid** | Pointer to **int32** |  | [optional] [default to 0]
+**Metadata** | Pointer to **[]string** |  | [optional] [default to []]
+**References** | Pointer to **[]string** |  | [optional] [default to []]
 
 ## Methods
 
 ### NewResponsePatchApiV2IndicatorsIndicatorIdPatch
 
-`func NewResponsePatchApiV2IndicatorsIndicatorIdPatch(name string, pattern string, diamond DiamondModel, id string, tags map[string]TagRelationshipOutput, rootType string, queryType string, ) *ResponsePatchApiV2IndicatorsIndicatorIdPatch`
+`func NewResponsePatchApiV2IndicatorsIndicatorIdPatch(name string, pattern string, diamond DiamondModel, queryType string, id string, tags map[string]TagRelationshipOutput, rootType string, ) *ResponsePatchApiV2IndicatorsIndicatorIdPatch`
 
 NewResponsePatchApiV2IndicatorsIndicatorIdPatch instantiates a new ResponsePatchApiV2IndicatorsIndicatorIdPatch object
 This constructor will assign default values to properties that have it defined,
@@ -332,6 +332,51 @@ SetRelevantTags sets RelevantTags field to given value.
 
 HasRelevantTags returns a boolean if a field has been set.
 
+### GetQueryType
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetQueryType() string`
+
+GetQueryType returns the QueryType field if non-nil, zero value otherwise.
+
+### GetQueryTypeOk
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetQueryTypeOk() (*string, bool)`
+
+GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetQueryType
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetQueryType(v string)`
+
+SetQueryType sets QueryType field to given value.
+
+
+### GetTargetSystems
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetTargetSystems() []string`
+
+GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
+
+### GetTargetSystemsOk
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetTargetSystemsOk() (*[]string, bool)`
+
+GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetSystems
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetTargetSystems(v []string)`
+
+SetTargetSystems sets TargetSystems field to given value.
+
+### HasTargetSystems
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasTargetSystems() bool`
+
+HasTargetSystems returns a boolean if a field has been set.
+
 ### GetId
 
 `func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetId() string`
@@ -391,126 +436,6 @@ and a boolean to check if the value has been set.
 
 SetRootType sets RootType field to given value.
 
-
-### GetSid
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetSid() int32`
-
-GetSid returns the Sid field if non-nil, zero value otherwise.
-
-### GetSidOk
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetSidOk() (*int32, bool)`
-
-GetSidOk returns a tuple with the Sid field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSid
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetSid(v int32)`
-
-SetSid sets Sid field to given value.
-
-### HasSid
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasSid() bool`
-
-HasSid returns a boolean if a field has been set.
-
-### GetMetadata
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetMetadata() []string`
-
-GetMetadata returns the Metadata field if non-nil, zero value otherwise.
-
-### GetMetadataOk
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetMetadataOk() (*[]string, bool)`
-
-GetMetadataOk returns a tuple with the Metadata field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMetadata
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetMetadata(v []string)`
-
-SetMetadata sets Metadata field to given value.
-
-### HasMetadata
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasMetadata() bool`
-
-HasMetadata returns a boolean if a field has been set.
-
-### GetReferences
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetReferences() []string`
-
-GetReferences returns the References field if non-nil, zero value otherwise.
-
-### GetReferencesOk
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetReferencesOk() (*[]string, bool)`
-
-GetReferencesOk returns a tuple with the References field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetReferences
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetReferences(v []string)`
-
-SetReferences sets References field to given value.
-
-### HasReferences
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasReferences() bool`
-
-HasReferences returns a boolean if a field has been set.
-
-### GetQueryType
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetQueryType() string`
-
-GetQueryType returns the QueryType field if non-nil, zero value otherwise.
-
-### GetQueryTypeOk
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetQueryTypeOk() (*string, bool)`
-
-GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetQueryType
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetQueryType(v string)`
-
-SetQueryType sets QueryType field to given value.
-
-
-### GetTargetSystems
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetTargetSystems() []string`
-
-GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
-
-### GetTargetSystemsOk
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetTargetSystemsOk() (*[]string, bool)`
-
-GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetSystems
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetTargetSystems(v []string)`
-
-SetTargetSystems sets TargetSystems field to given value.
-
-### HasTargetSystems
-
-`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasTargetSystems() bool`
-
-HasTargetSystems returns a boolean if a field has been set.
 
 ### GetSources
 
@@ -586,6 +511,81 @@ SetSupportedOs sets SupportedOs field to given value.
 `func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasSupportedOs() bool`
 
 HasSupportedOs returns a boolean if a field has been set.
+
+### GetSid
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetSid() int32`
+
+GetSid returns the Sid field if non-nil, zero value otherwise.
+
+### GetSidOk
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetSidOk() (*int32, bool)`
+
+GetSidOk returns a tuple with the Sid field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSid
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetSid(v int32)`
+
+SetSid sets Sid field to given value.
+
+### HasSid
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasSid() bool`
+
+HasSid returns a boolean if a field has been set.
+
+### GetMetadata
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetMetadata() []string`
+
+GetMetadata returns the Metadata field if non-nil, zero value otherwise.
+
+### GetMetadataOk
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetMetadataOk() (*[]string, bool)`
+
+GetMetadataOk returns a tuple with the Metadata field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMetadata
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetMetadata(v []string)`
+
+SetMetadata sets Metadata field to given value.
+
+### HasMetadata
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasMetadata() bool`
+
+HasMetadata returns a boolean if a field has been set.
+
+### GetReferences
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetReferences() []string`
+
+GetReferences returns the References field if non-nil, zero value otherwise.
+
+### GetReferencesOk
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) GetReferencesOk() (*[]string, bool)`
+
+GetReferencesOk returns a tuple with the References field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferences
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) SetReferences(v []string)`
+
+SetReferences sets References field to given value.
+
+### HasReferences
+
+`func (o *ResponsePatchApiV2IndicatorsIndicatorIdPatch) HasReferences() bool`
+
+HasReferences returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

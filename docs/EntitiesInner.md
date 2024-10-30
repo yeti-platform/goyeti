@@ -17,17 +17,17 @@ Name | Type | Description | Notes
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
 **RelatedObservablesCount** | **int32** |  | [readonly] 
-**Reference** | Pointer to **string** |  | [optional] [default to ""]
-**Aliases** | Pointer to **[]string** |  | [optional] [default to []]
 **KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
+**Aliases** | Pointer to **[]string** |  | [optional] [default to []]
+**Family** | Pointer to **string** |  | [optional] [default to ""]
 **FirstSeen** | Pointer to **time.Time** |  | [optional] 
 **LastSeen** | Pointer to **time.Time** |  | [optional] 
-**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
-**Family** | Pointer to **string** |  | [optional] [default to ""]
 **ThreatActorTypes** | Pointer to **[]string** |  | [optional] [default to []]
 **Title** | Pointer to **string** |  | [optional] [default to ""]
 **BaseScore** | Pointer to **float32** |  | [optional] [default to 0.0]
 **Severity** | Pointer to [**SeverityType**](SeverityType.md) |  | [optional] 
+**Reference** | Pointer to **string** |  | [optional] [default to ""]
+**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
 
 ## Methods
 
@@ -348,30 +348,30 @@ and a boolean to check if the value has been set.
 SetRelatedObservablesCount sets RelatedObservablesCount field to given value.
 
 
-### GetReference
+### GetKillChainPhases
 
-`func (o *EntitiesInner) GetReference() string`
+`func (o *EntitiesInner) GetKillChainPhases() []string`
 
-GetReference returns the Reference field if non-nil, zero value otherwise.
+GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
 
-### GetReferenceOk
+### GetKillChainPhasesOk
 
-`func (o *EntitiesInner) GetReferenceOk() (*string, bool)`
+`func (o *EntitiesInner) GetKillChainPhasesOk() (*[]string, bool)`
 
-GetReferenceOk returns a tuple with the Reference field if it's non-nil, zero value otherwise
+GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetReference
+### SetKillChainPhases
 
-`func (o *EntitiesInner) SetReference(v string)`
+`func (o *EntitiesInner) SetKillChainPhases(v []string)`
 
-SetReference sets Reference field to given value.
+SetKillChainPhases sets KillChainPhases field to given value.
 
-### HasReference
+### HasKillChainPhases
 
-`func (o *EntitiesInner) HasReference() bool`
+`func (o *EntitiesInner) HasKillChainPhases() bool`
 
-HasReference returns a boolean if a field has been set.
+HasKillChainPhases returns a boolean if a field has been set.
 
 ### GetAliases
 
@@ -398,30 +398,30 @@ SetAliases sets Aliases field to given value.
 
 HasAliases returns a boolean if a field has been set.
 
-### GetKillChainPhases
+### GetFamily
 
-`func (o *EntitiesInner) GetKillChainPhases() []string`
+`func (o *EntitiesInner) GetFamily() string`
 
-GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
+GetFamily returns the Family field if non-nil, zero value otherwise.
 
-### GetKillChainPhasesOk
+### GetFamilyOk
 
-`func (o *EntitiesInner) GetKillChainPhasesOk() (*[]string, bool)`
+`func (o *EntitiesInner) GetFamilyOk() (*string, bool)`
 
-GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
+GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetKillChainPhases
+### SetFamily
 
-`func (o *EntitiesInner) SetKillChainPhases(v []string)`
+`func (o *EntitiesInner) SetFamily(v string)`
 
-SetKillChainPhases sets KillChainPhases field to given value.
+SetFamily sets Family field to given value.
 
-### HasKillChainPhases
+### HasFamily
 
-`func (o *EntitiesInner) HasKillChainPhases() bool`
+`func (o *EntitiesInner) HasFamily() bool`
 
-HasKillChainPhases returns a boolean if a field has been set.
+HasFamily returns a boolean if a field has been set.
 
 ### GetFirstSeen
 
@@ -472,56 +472,6 @@ SetLastSeen sets LastSeen field to given value.
 `func (o *EntitiesInner) HasLastSeen() bool`
 
 HasLastSeen returns a boolean if a field has been set.
-
-### GetToolVersion
-
-`func (o *EntitiesInner) GetToolVersion() string`
-
-GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
-
-### GetToolVersionOk
-
-`func (o *EntitiesInner) GetToolVersionOk() (*string, bool)`
-
-GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetToolVersion
-
-`func (o *EntitiesInner) SetToolVersion(v string)`
-
-SetToolVersion sets ToolVersion field to given value.
-
-### HasToolVersion
-
-`func (o *EntitiesInner) HasToolVersion() bool`
-
-HasToolVersion returns a boolean if a field has been set.
-
-### GetFamily
-
-`func (o *EntitiesInner) GetFamily() string`
-
-GetFamily returns the Family field if non-nil, zero value otherwise.
-
-### GetFamilyOk
-
-`func (o *EntitiesInner) GetFamilyOk() (*string, bool)`
-
-GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFamily
-
-`func (o *EntitiesInner) SetFamily(v string)`
-
-SetFamily sets Family field to given value.
-
-### HasFamily
-
-`func (o *EntitiesInner) HasFamily() bool`
-
-HasFamily returns a boolean if a field has been set.
 
 ### GetThreatActorTypes
 
@@ -622,6 +572,56 @@ SetSeverity sets Severity field to given value.
 `func (o *EntitiesInner) HasSeverity() bool`
 
 HasSeverity returns a boolean if a field has been set.
+
+### GetReference
+
+`func (o *EntitiesInner) GetReference() string`
+
+GetReference returns the Reference field if non-nil, zero value otherwise.
+
+### GetReferenceOk
+
+`func (o *EntitiesInner) GetReferenceOk() (*string, bool)`
+
+GetReferenceOk returns a tuple with the Reference field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReference
+
+`func (o *EntitiesInner) SetReference(v string)`
+
+SetReference sets Reference field to given value.
+
+### HasReference
+
+`func (o *EntitiesInner) HasReference() bool`
+
+HasReference returns a boolean if a field has been set.
+
+### GetToolVersion
+
+`func (o *EntitiesInner) GetToolVersion() string`
+
+GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
+
+### GetToolVersionOk
+
+`func (o *EntitiesInner) GetToolVersionOk() (*string, bool)`
+
+GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetToolVersion
+
+`func (o *EntitiesInner) SetToolVersion(v string)`
+
+SetToolVersion sets ToolVersion field to given value.
+
+### HasToolVersion
+
+`func (o *EntitiesInner) HasToolVersion() bool`
+
+HasToolVersion returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

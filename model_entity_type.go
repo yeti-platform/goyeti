@@ -21,39 +21,39 @@ type EntityType string
 // List of EntityType
 const (
 	IDENTITY         EntityType = "identity"
-	COMPANY          EntityType = "company"
-	PHONE            EntityType = "phone"
-	INVESTIGATION    EntityType = "investigation"
-	ATTACK_PATTERN   EntityType = "attack-pattern"
-	INTRUSION_SET    EntityType = "intrusion-set"
-	TOOL             EntityType = "tool"
 	MALWARE          EntityType = "malware"
-	NOTE             EntityType = "note"
-	THREAT_ACTOR     EntityType = "threat-actor"
+	COMPANY          EntityType = "company"
 	CAMPAIGN         EntityType = "campaign"
+	ATTACK_PATTERN   EntityType = "attack-pattern"
+	THREAT_ACTOR     EntityType = "threat-actor"
 	COURSE_OF_ACTION EntityType = "course-of-action"
+	NOTE             EntityType = "note"
 	VULNERABILITY    EntityType = "vulnerability"
-	HONEYPOT         EntityType = "honeypot"
+	PHONE            EntityType = "phone"
+	TOOL             EntityType = "tool"
+	INTRUSION_SET    EntityType = "intrusion-set"
+	INVESTIGATION    EntityType = "investigation"
 	THREAT_FINDING   EntityType = "threat-finding"
+	HONEYPOT         EntityType = "honeypot"
 )
 
 // All allowed values of EntityType enum
 var AllowedEntityTypeEnumValues = []EntityType{
 	"identity",
-	"company",
-	"phone",
-	"investigation",
-	"attack-pattern",
-	"intrusion-set",
-	"tool",
 	"malware",
-	"note",
-	"threat-actor",
+	"company",
 	"campaign",
+	"attack-pattern",
+	"threat-actor",
 	"course-of-action",
+	"note",
 	"vulnerability",
-	"honeypot",
+	"phone",
+	"tool",
+	"intrusion-set",
+	"investigation",
 	"threat-finding",
+	"honeypot",
 }
 
 func (v *EntityType) UnmarshalJSON(src []byte) error {

@@ -5,13 +5,25 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Value** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "imphash"]
+**Type** | Pointer to **string** |  | [optional] [default to "ipv6"]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Context** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **LastAnalysis** | Pointer to [**map[string]time.Time**](time.Time.md) |  | [optional] [default to {}]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
+**Key** | **string** |  | 
+**Data** | ***os.File** |  | 
+**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
+**PathFile** | Pointer to **string** |  | [optional] 
+**LastSeen** | Pointer to **time.Time** |  | [optional] 
+**FirstSeen** | Pointer to **time.Time** |  | [optional] 
+**Issuer** | Pointer to **string** |  | [optional] 
+**Subject** | Pointer to **string** |  | [optional] 
+**SerialNumber** | Pointer to **string** |  | [optional] 
+**After** | Pointer to **time.Time** |  | [optional] 
+**Before** | Pointer to **time.Time** |  | [optional] 
+**Fingerprint** | Pointer to **string** |  | [optional] 
 **Version** | Pointer to **string** |  | [optional] 
 **RegitryType** | Pointer to **string** |  | [optional] 
 **UserId** | Pointer to **string** |  | [optional] 
@@ -28,28 +40,16 @@ Name | Type | Description | Notes
 **CredentialLastChanged** | Pointer to **time.Time** |  | [optional] 
 **AccountFirstLogin** | Pointer to **time.Time** |  | [optional] 
 **AccountLastLogin** | Pointer to **time.Time** |  | [optional] 
+**Coin** | Pointer to **string** |  | [optional] 
+**Address** | Pointer to **string** |  | [optional] 
 **Country** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
-**LastSeen** | Pointer to **time.Time** |  | [optional] 
-**FirstSeen** | Pointer to **time.Time** |  | [optional] 
-**Issuer** | Pointer to **string** |  | [optional] 
-**Subject** | Pointer to **string** |  | [optional] 
-**SerialNumber** | Pointer to **string** |  | [optional] 
-**After** | Pointer to **time.Time** |  | [optional] 
-**Before** | Pointer to **time.Time** |  | [optional] 
-**Fingerprint** | Pointer to **string** |  | [optional] 
-**Key** | **string** |  | 
-**Data** | ***os.File** |  | 
-**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
-**PathFile** | Pointer to **string** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Size** | Pointer to **int32** |  | [optional] 
 **Sha256** | Pointer to **string** |  | [optional] 
 **Md5** | Pointer to **string** |  | [optional] 
 **Sha1** | Pointer to **string** |  | [optional] 
 **MimeType** | Pointer to **string** |  | [optional] 
-**Coin** | Pointer to **string** |  | [optional] 
-**Address** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -249,6 +249,291 @@ and a boolean to check if the value has been set.
 
 SetRootType sets RootType field to given value.
 
+
+### GetKey
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetKey() string`
+
+GetKey returns the Key field if non-nil, zero value otherwise.
+
+### GetKeyOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetKeyOk() (*string, bool)`
+
+GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKey
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetKey(v string)`
+
+SetKey sets Key field to given value.
+
+
+### GetData
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetData() *os.File`
+
+GetData returns the Data field if non-nil, zero value otherwise.
+
+### GetDataOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetDataOk() (**os.File, bool)`
+
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetData
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetData(v *os.File)`
+
+SetData sets Data field to given value.
+
+
+### GetHive
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetHive() RegistryHive`
+
+GetHive returns the Hive field if non-nil, zero value otherwise.
+
+### GetHiveOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetHiveOk() (*RegistryHive, bool)`
+
+GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHive
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetHive(v RegistryHive)`
+
+SetHive sets Hive field to given value.
+
+
+### GetPathFile
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetPathFile() string`
+
+GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+
+### GetPathFileOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetPathFileOk() (*string, bool)`
+
+GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPathFile
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetPathFile(v string)`
+
+SetPathFile sets PathFile field to given value.
+
+### HasPathFile
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasPathFile() bool`
+
+HasPathFile returns a boolean if a field has been set.
+
+### GetLastSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetLastSeen() time.Time`
+
+GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
+
+### GetLastSeenOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetLastSeenOk() (*time.Time, bool)`
+
+GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetLastSeen(v time.Time)`
+
+SetLastSeen sets LastSeen field to given value.
+
+### HasLastSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasLastSeen() bool`
+
+HasLastSeen returns a boolean if a field has been set.
+
+### GetFirstSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFirstSeen() time.Time`
+
+GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
+
+### GetFirstSeenOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFirstSeenOk() (*time.Time, bool)`
+
+GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirstSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetFirstSeen(v time.Time)`
+
+SetFirstSeen sets FirstSeen field to given value.
+
+### HasFirstSeen
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasFirstSeen() bool`
+
+HasFirstSeen returns a boolean if a field has been set.
+
+### GetIssuer
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetIssuer() string`
+
+GetIssuer returns the Issuer field if non-nil, zero value otherwise.
+
+### GetIssuerOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetIssuerOk() (*string, bool)`
+
+GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIssuer
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetIssuer(v string)`
+
+SetIssuer sets Issuer field to given value.
+
+### HasIssuer
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasIssuer() bool`
+
+HasIssuer returns a boolean if a field has been set.
+
+### GetSubject
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSubject() string`
+
+GetSubject returns the Subject field if non-nil, zero value otherwise.
+
+### GetSubjectOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSubjectOk() (*string, bool)`
+
+GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSubject
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetSubject(v string)`
+
+SetSubject sets Subject field to given value.
+
+### HasSubject
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasSubject() bool`
+
+HasSubject returns a boolean if a field has been set.
+
+### GetSerialNumber
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSerialNumber() string`
+
+GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
+
+### GetSerialNumberOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSerialNumberOk() (*string, bool)`
+
+GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSerialNumber
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetSerialNumber(v string)`
+
+SetSerialNumber sets SerialNumber field to given value.
+
+### HasSerialNumber
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasSerialNumber() bool`
+
+HasSerialNumber returns a boolean if a field has been set.
+
+### GetAfter
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAfter() time.Time`
+
+GetAfter returns the After field if non-nil, zero value otherwise.
+
+### GetAfterOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAfterOk() (*time.Time, bool)`
+
+GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAfter
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetAfter(v time.Time)`
+
+SetAfter sets After field to given value.
+
+### HasAfter
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasAfter() bool`
+
+HasAfter returns a boolean if a field has been set.
+
+### GetBefore
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetBefore() time.Time`
+
+GetBefore returns the Before field if non-nil, zero value otherwise.
+
+### GetBeforeOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetBeforeOk() (*time.Time, bool)`
+
+GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBefore
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetBefore(v time.Time)`
+
+SetBefore sets Before field to given value.
+
+### HasBefore
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasBefore() bool`
+
+HasBefore returns a boolean if a field has been set.
+
+### GetFingerprint
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFingerprint() string`
+
+GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
+
+### GetFingerprintOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFingerprintOk() (*string, bool)`
+
+GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFingerprint
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetFingerprint(v string)`
+
+SetFingerprint sets Fingerprint field to given value.
+
+### HasFingerprint
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasFingerprint() bool`
+
+HasFingerprint returns a boolean if a field has been set.
 
 ### GetVersion
 
@@ -650,6 +935,56 @@ SetAccountLastLogin sets AccountLastLogin field to given value.
 
 HasAccountLastLogin returns a boolean if a field has been set.
 
+### GetCoin
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetCoin() string`
+
+GetCoin returns the Coin field if non-nil, zero value otherwise.
+
+### GetCoinOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetCoinOk() (*string, bool)`
+
+GetCoinOk returns a tuple with the Coin field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCoin
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetCoin(v string)`
+
+SetCoin sets Coin field to given value.
+
+### HasCoin
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasCoin() bool`
+
+HasCoin returns a boolean if a field has been set.
+
+### GetAddress
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAddress() string`
+
+GetAddress returns the Address field if non-nil, zero value otherwise.
+
+### GetAddressOk
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAddressOk() (*string, bool)`
+
+GetAddressOk returns a tuple with the Address field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAddress
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetAddress(v string)`
+
+SetAddress sets Address field to given value.
+
+### HasAddress
+
+`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasAddress() bool`
+
+HasAddress returns a boolean if a field has been set.
+
 ### GetCountry
 
 `func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetCountry() string`
@@ -699,291 +1034,6 @@ SetDescription sets Description field to given value.
 `func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
-
-### GetLastSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetLastSeen() time.Time`
-
-GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
-
-### GetLastSeenOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetLastSeenOk() (*time.Time, bool)`
-
-GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLastSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetLastSeen(v time.Time)`
-
-SetLastSeen sets LastSeen field to given value.
-
-### HasLastSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasLastSeen() bool`
-
-HasLastSeen returns a boolean if a field has been set.
-
-### GetFirstSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFirstSeen() time.Time`
-
-GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
-
-### GetFirstSeenOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFirstSeenOk() (*time.Time, bool)`
-
-GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFirstSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetFirstSeen(v time.Time)`
-
-SetFirstSeen sets FirstSeen field to given value.
-
-### HasFirstSeen
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasFirstSeen() bool`
-
-HasFirstSeen returns a boolean if a field has been set.
-
-### GetIssuer
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetIssuer() string`
-
-GetIssuer returns the Issuer field if non-nil, zero value otherwise.
-
-### GetIssuerOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetIssuerOk() (*string, bool)`
-
-GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetIssuer
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetIssuer(v string)`
-
-SetIssuer sets Issuer field to given value.
-
-### HasIssuer
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasIssuer() bool`
-
-HasIssuer returns a boolean if a field has been set.
-
-### GetSubject
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSubject() string`
-
-GetSubject returns the Subject field if non-nil, zero value otherwise.
-
-### GetSubjectOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSubjectOk() (*string, bool)`
-
-GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSubject
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetSubject(v string)`
-
-SetSubject sets Subject field to given value.
-
-### HasSubject
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasSubject() bool`
-
-HasSubject returns a boolean if a field has been set.
-
-### GetSerialNumber
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSerialNumber() string`
-
-GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
-
-### GetSerialNumberOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetSerialNumberOk() (*string, bool)`
-
-GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSerialNumber
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetSerialNumber(v string)`
-
-SetSerialNumber sets SerialNumber field to given value.
-
-### HasSerialNumber
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasSerialNumber() bool`
-
-HasSerialNumber returns a boolean if a field has been set.
-
-### GetAfter
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAfter() time.Time`
-
-GetAfter returns the After field if non-nil, zero value otherwise.
-
-### GetAfterOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAfterOk() (*time.Time, bool)`
-
-GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAfter
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetAfter(v time.Time)`
-
-SetAfter sets After field to given value.
-
-### HasAfter
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasAfter() bool`
-
-HasAfter returns a boolean if a field has been set.
-
-### GetBefore
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetBefore() time.Time`
-
-GetBefore returns the Before field if non-nil, zero value otherwise.
-
-### GetBeforeOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetBeforeOk() (*time.Time, bool)`
-
-GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetBefore
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetBefore(v time.Time)`
-
-SetBefore sets Before field to given value.
-
-### HasBefore
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasBefore() bool`
-
-HasBefore returns a boolean if a field has been set.
-
-### GetFingerprint
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFingerprint() string`
-
-GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
-
-### GetFingerprintOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetFingerprintOk() (*string, bool)`
-
-GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFingerprint
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetFingerprint(v string)`
-
-SetFingerprint sets Fingerprint field to given value.
-
-### HasFingerprint
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasFingerprint() bool`
-
-HasFingerprint returns a boolean if a field has been set.
-
-### GetKey
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetKey() string`
-
-GetKey returns the Key field if non-nil, zero value otherwise.
-
-### GetKeyOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetKeyOk() (*string, bool)`
-
-GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetKey
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetKey(v string)`
-
-SetKey sets Key field to given value.
-
-
-### GetData
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetData() *os.File`
-
-GetData returns the Data field if non-nil, zero value otherwise.
-
-### GetDataOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetDataOk() (**os.File, bool)`
-
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetData
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetData(v *os.File)`
-
-SetData sets Data field to given value.
-
-
-### GetHive
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetHive() RegistryHive`
-
-GetHive returns the Hive field if non-nil, zero value otherwise.
-
-### GetHiveOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetHiveOk() (*RegistryHive, bool)`
-
-GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetHive
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetHive(v RegistryHive)`
-
-SetHive sets Hive field to given value.
-
-
-### GetPathFile
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetPathFile() string`
-
-GetPathFile returns the PathFile field if non-nil, zero value otherwise.
-
-### GetPathFileOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetPathFileOk() (*string, bool)`
-
-GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetPathFile
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetPathFile(v string)`
-
-SetPathFile sets PathFile field to given value.
-
-### HasPathFile
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasPathFile() bool`
-
-HasPathFile returns a boolean if a field has been set.
 
 ### GetName
 
@@ -1134,56 +1184,6 @@ SetMimeType sets MimeType field to given value.
 `func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasMimeType() bool`
 
 HasMimeType returns a boolean if a field has been set.
-
-### GetCoin
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetCoin() string`
-
-GetCoin returns the Coin field if non-nil, zero value otherwise.
-
-### GetCoinOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetCoinOk() (*string, bool)`
-
-GetCoinOk returns a tuple with the Coin field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCoin
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetCoin(v string)`
-
-SetCoin sets Coin field to given value.
-
-### HasCoin
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasCoin() bool`
-
-HasCoin returns a boolean if a field has been set.
-
-### GetAddress
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAddress() string`
-
-GetAddress returns the Address field if non-nil, zero value otherwise.
-
-### GetAddressOk
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) GetAddressOk() (*string, bool)`
-
-GetAddressOk returns a tuple with the Address field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAddress
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) SetAddress(v string)`
-
-SetAddress sets Address field to given value.
-
-### HasAddress
-
-`func (o *ResponseAddTextApiV2ObservablesAddTextPost) HasAddress() bool`
-
-HasAddress returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

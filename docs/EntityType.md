@@ -5,33 +5,33 @@
 
 * `IDENTITY` (value: `"identity"`)
 
-* `COMPANY` (value: `"company"`)
-
-* `PHONE` (value: `"phone"`)
-
-* `INVESTIGATION` (value: `"investigation"`)
-
-* `ATTACK_PATTERN` (value: `"attack-pattern"`)
-
-* `INTRUSION_SET` (value: `"intrusion-set"`)
-
-* `TOOL` (value: `"tool"`)
-
 * `MALWARE` (value: `"malware"`)
 
-* `NOTE` (value: `"note"`)
-
-* `THREAT_ACTOR` (value: `"threat-actor"`)
+* `COMPANY` (value: `"company"`)
 
 * `CAMPAIGN` (value: `"campaign"`)
 
+* `ATTACK_PATTERN` (value: `"attack-pattern"`)
+
+* `THREAT_ACTOR` (value: `"threat-actor"`)
+
 * `COURSE_OF_ACTION` (value: `"course-of-action"`)
+
+* `NOTE` (value: `"note"`)
 
 * `VULNERABILITY` (value: `"vulnerability"`)
 
-* `HONEYPOT` (value: `"honeypot"`)
+* `PHONE` (value: `"phone"`)
+
+* `TOOL` (value: `"tool"`)
+
+* `INTRUSION_SET` (value: `"intrusion-set"`)
+
+* `INVESTIGATION` (value: `"investigation"`)
 
 * `THREAT_FINDING` (value: `"threat-finding"`)
+
+* `HONEYPOT` (value: `"honeypot"`)
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -503,17 +502,4 @@ model_worker_status_response.go
 model_yara_input.go
 model_yara_output.go
 response.go
-test/api_auth_test.go
-test/api_dfiq_test.go
-test/api_entities_test.go
-test/api_graph_test.go
-test/api_import_data_test.go
-test/api_import_misp_json_test.go
-test/api_indicators_test.go
-test/api_observables_test.go
-test/api_system_test.go
-test/api_tags_test.go
-test/api_tasks_test.go
-test/api_templates_test.go
-test/api_users_test.go
 utils.go

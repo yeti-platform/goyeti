@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "sigma"]
+**Type** | Pointer to **string** |  | [optional] [default to "regex"]
 **Description** | Pointer to **string** |  | [optional] [default to ""]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Modified** | Pointer to **time.Time** |  | [optional] 
@@ -19,14 +19,14 @@ Name | Type | Description | Notes
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
-**Sid** | Pointer to **int32** |  | [optional] [default to 0]
-**Metadata** | Pointer to **[]string** |  | [optional] [default to []]
-**References** | Pointer to **[]string** |  | [optional] [default to []]
-**QueryType** | **string** |  | 
-**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
 **Sources** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **Aliases** | Pointer to **[]string** |  | [optional] [default to []]
 **SupportedOs** | Pointer to **[]string** |  | [optional] [default to []]
+**QueryType** | **string** |  | 
+**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
+**Sid** | Pointer to **int32** |  | [optional] [default to 0]
+**Metadata** | Pointer to **[]string** |  | [optional] [default to []]
+**References** | Pointer to **[]string** |  | [optional] [default to []]
 
 ## Methods
 
@@ -392,126 +392,6 @@ and a boolean to check if the value has been set.
 SetRootType sets RootType field to given value.
 
 
-### GetSid
-
-`func (o *IndicatorsInner) GetSid() int32`
-
-GetSid returns the Sid field if non-nil, zero value otherwise.
-
-### GetSidOk
-
-`func (o *IndicatorsInner) GetSidOk() (*int32, bool)`
-
-GetSidOk returns a tuple with the Sid field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSid
-
-`func (o *IndicatorsInner) SetSid(v int32)`
-
-SetSid sets Sid field to given value.
-
-### HasSid
-
-`func (o *IndicatorsInner) HasSid() bool`
-
-HasSid returns a boolean if a field has been set.
-
-### GetMetadata
-
-`func (o *IndicatorsInner) GetMetadata() []string`
-
-GetMetadata returns the Metadata field if non-nil, zero value otherwise.
-
-### GetMetadataOk
-
-`func (o *IndicatorsInner) GetMetadataOk() (*[]string, bool)`
-
-GetMetadataOk returns a tuple with the Metadata field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMetadata
-
-`func (o *IndicatorsInner) SetMetadata(v []string)`
-
-SetMetadata sets Metadata field to given value.
-
-### HasMetadata
-
-`func (o *IndicatorsInner) HasMetadata() bool`
-
-HasMetadata returns a boolean if a field has been set.
-
-### GetReferences
-
-`func (o *IndicatorsInner) GetReferences() []string`
-
-GetReferences returns the References field if non-nil, zero value otherwise.
-
-### GetReferencesOk
-
-`func (o *IndicatorsInner) GetReferencesOk() (*[]string, bool)`
-
-GetReferencesOk returns a tuple with the References field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetReferences
-
-`func (o *IndicatorsInner) SetReferences(v []string)`
-
-SetReferences sets References field to given value.
-
-### HasReferences
-
-`func (o *IndicatorsInner) HasReferences() bool`
-
-HasReferences returns a boolean if a field has been set.
-
-### GetQueryType
-
-`func (o *IndicatorsInner) GetQueryType() string`
-
-GetQueryType returns the QueryType field if non-nil, zero value otherwise.
-
-### GetQueryTypeOk
-
-`func (o *IndicatorsInner) GetQueryTypeOk() (*string, bool)`
-
-GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetQueryType
-
-`func (o *IndicatorsInner) SetQueryType(v string)`
-
-SetQueryType sets QueryType field to given value.
-
-
-### GetTargetSystems
-
-`func (o *IndicatorsInner) GetTargetSystems() []string`
-
-GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
-
-### GetTargetSystemsOk
-
-`func (o *IndicatorsInner) GetTargetSystemsOk() (*[]string, bool)`
-
-GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetSystems
-
-`func (o *IndicatorsInner) SetTargetSystems(v []string)`
-
-SetTargetSystems sets TargetSystems field to given value.
-
-### HasTargetSystems
-
-`func (o *IndicatorsInner) HasTargetSystems() bool`
-
-HasTargetSystems returns a boolean if a field has been set.
-
 ### GetSources
 
 `func (o *IndicatorsInner) GetSources() []map[string]interface{}`
@@ -586,6 +466,126 @@ SetSupportedOs sets SupportedOs field to given value.
 `func (o *IndicatorsInner) HasSupportedOs() bool`
 
 HasSupportedOs returns a boolean if a field has been set.
+
+### GetQueryType
+
+`func (o *IndicatorsInner) GetQueryType() string`
+
+GetQueryType returns the QueryType field if non-nil, zero value otherwise.
+
+### GetQueryTypeOk
+
+`func (o *IndicatorsInner) GetQueryTypeOk() (*string, bool)`
+
+GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetQueryType
+
+`func (o *IndicatorsInner) SetQueryType(v string)`
+
+SetQueryType sets QueryType field to given value.
+
+
+### GetTargetSystems
+
+`func (o *IndicatorsInner) GetTargetSystems() []string`
+
+GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
+
+### GetTargetSystemsOk
+
+`func (o *IndicatorsInner) GetTargetSystemsOk() (*[]string, bool)`
+
+GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetSystems
+
+`func (o *IndicatorsInner) SetTargetSystems(v []string)`
+
+SetTargetSystems sets TargetSystems field to given value.
+
+### HasTargetSystems
+
+`func (o *IndicatorsInner) HasTargetSystems() bool`
+
+HasTargetSystems returns a boolean if a field has been set.
+
+### GetSid
+
+`func (o *IndicatorsInner) GetSid() int32`
+
+GetSid returns the Sid field if non-nil, zero value otherwise.
+
+### GetSidOk
+
+`func (o *IndicatorsInner) GetSidOk() (*int32, bool)`
+
+GetSidOk returns a tuple with the Sid field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSid
+
+`func (o *IndicatorsInner) SetSid(v int32)`
+
+SetSid sets Sid field to given value.
+
+### HasSid
+
+`func (o *IndicatorsInner) HasSid() bool`
+
+HasSid returns a boolean if a field has been set.
+
+### GetMetadata
+
+`func (o *IndicatorsInner) GetMetadata() []string`
+
+GetMetadata returns the Metadata field if non-nil, zero value otherwise.
+
+### GetMetadataOk
+
+`func (o *IndicatorsInner) GetMetadataOk() (*[]string, bool)`
+
+GetMetadataOk returns a tuple with the Metadata field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMetadata
+
+`func (o *IndicatorsInner) SetMetadata(v []string)`
+
+SetMetadata sets Metadata field to given value.
+
+### HasMetadata
+
+`func (o *IndicatorsInner) HasMetadata() bool`
+
+HasMetadata returns a boolean if a field has been set.
+
+### GetReferences
+
+`func (o *IndicatorsInner) GetReferences() []string`
+
+GetReferences returns the References field if non-nil, zero value otherwise.
+
+### GetReferencesOk
+
+`func (o *IndicatorsInner) GetReferencesOk() (*[]string, bool)`
+
+GetReferencesOk returns a tuple with the References field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReferences
+
+`func (o *IndicatorsInner) SetReferences(v []string)`
+
+SetReferences sets References field to given value.
+
+### HasReferences
+
+`func (o *IndicatorsInner) HasReferences() bool`
+
+HasReferences returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

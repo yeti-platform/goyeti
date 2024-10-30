@@ -9,7 +9,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func main() {
+func ExampleObservable() {
 	domain := "email2.elibria.io"
 	auth := context.WithValue(
 		context.Background(),
@@ -35,8 +35,19 @@ func main() {
 		AccessToken: access_token,
 		TokenType:   "Bearer",
 	})
+	auth = context.WithValue(context.Background(), goyeti.ContextOAuth2, tokenSource)
+
+	whoami, response, err := client.AuthAPI.MeApiV2AuthMeGet(auth).Execute()
+	if err != nil {
+		panic(err)
+	}
+	if response.StatusCode != 200 {
+		panic(fmt.Errorf("Failed to get user details with status code %d", response.StatusCode))
+	}
+	_, connected := whoami.GetIdOk()
+	fmt.Println("Connected:", connected)
+
 	queryType := goyeti.HOSTNAME
-	auth = context.WithValue(oauth2.NoContext, goyeti.ContextOAuth2, tokenSource)
 	observableSearchRequest := goyeti.NewObservableSearchRequest()
 	observableSearchRequest.SetType(
 		goyeti.ObservableSearchRequestType{
@@ -50,7 +61,19 @@ func main() {
 	}
 	observableSearchRequest.SetQuery(query)
 
-	foo, response, err := client.ObservablesAPI.SearchApiV2ObservablesSearchPost(auth).ObservableSearchRequest(*observableSearchRequest).Execute()
-	fmt.Println(foo)
-	fmt.Println(response)
+	observableResponse, reponse, err := client.ObservablesAPI.SearchApiV2ObservablesSearchPost(auth).ObservableSearchRequest(*observableSearchRequest).Execute()
+	if err != nil {
+		panic(err)
+	}
+	if reponse.StatusCode != 200 {
+		panic(fmt.Errorf("Failed to search observables with status code %d", reponse.StatusCode))
+	}
+	obeservables := observableResponse.GetObservables()
+	fmt.Printf("Total observables found %d for domain %s\n", len(observableResponse.Observables), domain)
+	for _, observable := range obeservables {
+		fmt.Printf("%s created at %s\n", observable.ASNOutput.Value, observable.ASNOutput.Created)
+	}
+	//Output: Connected: true
+	//Total observables found 1 for domain email2.elibria.io
+	//email2.elibria.io created at 2024-07-05 13:20:42.782787 +0000 UTC
 }

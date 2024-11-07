@@ -20,40 +20,40 @@ type EntityType string
 
 // List of EntityType
 const (
-	IDENTITY         EntityType = "identity"
-	MALWARE          EntityType = "malware"
-	COMPANY          EntityType = "company"
-	CAMPAIGN         EntityType = "campaign"
-	ATTACK_PATTERN   EntityType = "attack-pattern"
-	THREAT_ACTOR     EntityType = "threat-actor"
-	COURSE_OF_ACTION EntityType = "course-of-action"
-	NOTE             EntityType = "note"
-	VULNERABILITY    EntityType = "vulnerability"
-	PHONE            EntityType = "phone"
-	TOOL             EntityType = "tool"
-	INTRUSION_SET    EntityType = "intrusion-set"
 	INVESTIGATION    EntityType = "investigation"
-	THREAT_FINDING   EntityType = "threat-finding"
+	COURSE_OF_ACTION EntityType = "course-of-action"
+	IDENTITY         EntityType = "identity"
+	INTRUSION_SET    EntityType = "intrusion-set"
+	TOOL             EntityType = "tool"
+	THREAT_ACTOR     EntityType = "threat-actor"
+	CAMPAIGN         EntityType = "campaign"
+	COMPANY          EntityType = "company"
+	MALWARE          EntityType = "malware"
+	PHONE            EntityType = "phone"
+	NOTE             EntityType = "note"
+	ATTACK_PATTERN   EntityType = "attack-pattern"
+	VULNERABILITY    EntityType = "vulnerability"
 	HONEYPOT         EntityType = "honeypot"
+	THREAT_FINDING   EntityType = "threat-finding"
 )
 
 // All allowed values of EntityType enum
 var AllowedEntityTypeEnumValues = []EntityType{
-	"identity",
-	"malware",
-	"company",
-	"campaign",
-	"attack-pattern",
-	"threat-actor",
-	"course-of-action",
-	"note",
-	"vulnerability",
-	"phone",
-	"tool",
-	"intrusion-set",
 	"investigation",
-	"threat-finding",
+	"course-of-action",
+	"identity",
+	"intrusion-set",
+	"tool",
+	"threat-actor",
+	"campaign",
+	"company",
+	"malware",
+	"phone",
+	"note",
+	"attack-pattern",
+	"vulnerability",
 	"honeypot",
+	"threat-finding",
 }
 
 func (v *EntityType) UnmarshalJSON(src []byte) error {

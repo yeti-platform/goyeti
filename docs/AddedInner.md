@@ -5,27 +5,21 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Value** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "mutex"]
+**Type** | Pointer to **string** |  | [optional] [default to "cidr"]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Context** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **LastAnalysis** | Pointer to [**map[string]time.Time**](time.Time.md) |  | [optional] [default to {}]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
-**Version** | Pointer to **string** |  | [optional] 
-**RegitryType** | Pointer to **string** |  | [optional] 
-**Key** | **string** |  | 
-**Data** | ***os.File** |  | 
-**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
-**PathFile** | Pointer to **string** |  | [optional] 
-**Country** | Pointer to **string** |  | [optional] 
-**Description** | Pointer to **string** |  | [optional] 
-**Name** | Pointer to **string** |  | [optional] 
-**Size** | Pointer to **int32** |  | [optional] 
-**Sha256** | Pointer to **string** |  | [optional] 
-**Md5** | Pointer to **string** |  | [optional] 
-**Sha1** | Pointer to **string** |  | [optional] 
-**MimeType** | Pointer to **string** |  | [optional] 
+**LastSeen** | Pointer to **time.Time** |  | [optional] 
+**FirstSeen** | Pointer to **time.Time** |  | [optional] 
+**Issuer** | Pointer to **string** |  | [optional] 
+**Subject** | Pointer to **string** |  | [optional] 
+**SerialNumber** | Pointer to **string** |  | [optional] 
+**After** | Pointer to **time.Time** |  | [optional] 
+**Before** | Pointer to **time.Time** |  | [optional] 
+**Fingerprint** | Pointer to **string** |  | [optional] 
 **UserId** | Pointer to **string** |  | [optional] 
 **Credential** | Pointer to **string** |  | [optional] 
 **AccountLogin** | Pointer to **string** |  | [optional] 
@@ -40,16 +34,22 @@ Name | Type | Description | Notes
 **CredentialLastChanged** | Pointer to **time.Time** |  | [optional] 
 **AccountFirstLogin** | Pointer to **time.Time** |  | [optional] 
 **AccountLastLogin** | Pointer to **time.Time** |  | [optional] 
+**Version** | Pointer to **string** |  | [optional] 
+**RegitryType** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** |  | [optional] 
+**Size** | Pointer to **int32** |  | [optional] 
+**Sha256** | Pointer to **string** |  | [optional] 
+**Md5** | Pointer to **string** |  | [optional] 
+**Sha1** | Pointer to **string** |  | [optional] 
+**MimeType** | Pointer to **string** |  | [optional] 
+**Key** | **string** |  | 
+**Data** | ***os.File** |  | 
+**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
+**PathFile** | Pointer to **string** |  | [optional] 
 **Coin** | Pointer to **string** |  | [optional] 
 **Address** | Pointer to **string** |  | [optional] 
-**LastSeen** | Pointer to **time.Time** |  | [optional] 
-**FirstSeen** | Pointer to **time.Time** |  | [optional] 
-**Issuer** | Pointer to **string** |  | [optional] 
-**Subject** | Pointer to **string** |  | [optional] 
-**SerialNumber** | Pointer to **string** |  | [optional] 
-**After** | Pointer to **time.Time** |  | [optional] 
-**Before** | Pointer to **time.Time** |  | [optional] 
-**Fingerprint** | Pointer to **string** |  | [optional] 
+**Country** | Pointer to **string** |  | [optional] 
+**Description** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -250,340 +250,205 @@ and a boolean to check if the value has been set.
 SetRootType sets RootType field to given value.
 
 
-### GetVersion
+### GetLastSeen
 
-`func (o *AddedInner) GetVersion() string`
+`func (o *AddedInner) GetLastSeen() time.Time`
 
-GetVersion returns the Version field if non-nil, zero value otherwise.
+GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
 
-### GetVersionOk
+### GetLastSeenOk
 
-`func (o *AddedInner) GetVersionOk() (*string, bool)`
+`func (o *AddedInner) GetLastSeenOk() (*time.Time, bool)`
 
-GetVersionOk returns a tuple with the Version field if it's non-nil, zero value otherwise
+GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetVersion
+### SetLastSeen
 
-`func (o *AddedInner) SetVersion(v string)`
+`func (o *AddedInner) SetLastSeen(v time.Time)`
 
-SetVersion sets Version field to given value.
+SetLastSeen sets LastSeen field to given value.
 
-### HasVersion
+### HasLastSeen
 
-`func (o *AddedInner) HasVersion() bool`
+`func (o *AddedInner) HasLastSeen() bool`
 
-HasVersion returns a boolean if a field has been set.
+HasLastSeen returns a boolean if a field has been set.
 
-### GetRegitryType
+### GetFirstSeen
 
-`func (o *AddedInner) GetRegitryType() string`
+`func (o *AddedInner) GetFirstSeen() time.Time`
 
-GetRegitryType returns the RegitryType field if non-nil, zero value otherwise.
+GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
 
-### GetRegitryTypeOk
+### GetFirstSeenOk
 
-`func (o *AddedInner) GetRegitryTypeOk() (*string, bool)`
+`func (o *AddedInner) GetFirstSeenOk() (*time.Time, bool)`
 
-GetRegitryTypeOk returns a tuple with the RegitryType field if it's non-nil, zero value otherwise
+GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetRegitryType
+### SetFirstSeen
 
-`func (o *AddedInner) SetRegitryType(v string)`
+`func (o *AddedInner) SetFirstSeen(v time.Time)`
 
-SetRegitryType sets RegitryType field to given value.
+SetFirstSeen sets FirstSeen field to given value.
 
-### HasRegitryType
+### HasFirstSeen
 
-`func (o *AddedInner) HasRegitryType() bool`
+`func (o *AddedInner) HasFirstSeen() bool`
 
-HasRegitryType returns a boolean if a field has been set.
+HasFirstSeen returns a boolean if a field has been set.
 
-### GetKey
+### GetIssuer
 
-`func (o *AddedInner) GetKey() string`
+`func (o *AddedInner) GetIssuer() string`
 
-GetKey returns the Key field if non-nil, zero value otherwise.
+GetIssuer returns the Issuer field if non-nil, zero value otherwise.
 
-### GetKeyOk
+### GetIssuerOk
 
-`func (o *AddedInner) GetKeyOk() (*string, bool)`
+`func (o *AddedInner) GetIssuerOk() (*string, bool)`
 
-GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetKey
+### SetIssuer
 
-`func (o *AddedInner) SetKey(v string)`
+`func (o *AddedInner) SetIssuer(v string)`
 
-SetKey sets Key field to given value.
+SetIssuer sets Issuer field to given value.
 
+### HasIssuer
 
-### GetData
+`func (o *AddedInner) HasIssuer() bool`
 
-`func (o *AddedInner) GetData() *os.File`
+HasIssuer returns a boolean if a field has been set.
 
-GetData returns the Data field if non-nil, zero value otherwise.
+### GetSubject
 
-### GetDataOk
+`func (o *AddedInner) GetSubject() string`
 
-`func (o *AddedInner) GetDataOk() (**os.File, bool)`
+GetSubject returns the Subject field if non-nil, zero value otherwise.
 
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+### GetSubjectOk
+
+`func (o *AddedInner) GetSubjectOk() (*string, bool)`
+
+GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetData
+### SetSubject
 
-`func (o *AddedInner) SetData(v *os.File)`
+`func (o *AddedInner) SetSubject(v string)`
 
-SetData sets Data field to given value.
+SetSubject sets Subject field to given value.
 
+### HasSubject
 
-### GetHive
+`func (o *AddedInner) HasSubject() bool`
 
-`func (o *AddedInner) GetHive() RegistryHive`
+HasSubject returns a boolean if a field has been set.
 
-GetHive returns the Hive field if non-nil, zero value otherwise.
+### GetSerialNumber
 
-### GetHiveOk
+`func (o *AddedInner) GetSerialNumber() string`
 
-`func (o *AddedInner) GetHiveOk() (*RegistryHive, bool)`
+GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
 
-GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+### GetSerialNumberOk
+
+`func (o *AddedInner) GetSerialNumberOk() (*string, bool)`
+
+GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetHive
+### SetSerialNumber
 
-`func (o *AddedInner) SetHive(v RegistryHive)`
+`func (o *AddedInner) SetSerialNumber(v string)`
 
-SetHive sets Hive field to given value.
+SetSerialNumber sets SerialNumber field to given value.
 
+### HasSerialNumber
 
-### GetPathFile
+`func (o *AddedInner) HasSerialNumber() bool`
 
-`func (o *AddedInner) GetPathFile() string`
+HasSerialNumber returns a boolean if a field has been set.
 
-GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+### GetAfter
 
-### GetPathFileOk
+`func (o *AddedInner) GetAfter() time.Time`
 
-`func (o *AddedInner) GetPathFileOk() (*string, bool)`
+GetAfter returns the After field if non-nil, zero value otherwise.
 
-GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+### GetAfterOk
+
+`func (o *AddedInner) GetAfterOk() (*time.Time, bool)`
+
+GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPathFile
+### SetAfter
 
-`func (o *AddedInner) SetPathFile(v string)`
+`func (o *AddedInner) SetAfter(v time.Time)`
 
-SetPathFile sets PathFile field to given value.
+SetAfter sets After field to given value.
 
-### HasPathFile
+### HasAfter
 
-`func (o *AddedInner) HasPathFile() bool`
+`func (o *AddedInner) HasAfter() bool`
 
-HasPathFile returns a boolean if a field has been set.
+HasAfter returns a boolean if a field has been set.
 
-### GetCountry
+### GetBefore
 
-`func (o *AddedInner) GetCountry() string`
+`func (o *AddedInner) GetBefore() time.Time`
 
-GetCountry returns the Country field if non-nil, zero value otherwise.
+GetBefore returns the Before field if non-nil, zero value otherwise.
 
-### GetCountryOk
+### GetBeforeOk
 
-`func (o *AddedInner) GetCountryOk() (*string, bool)`
+`func (o *AddedInner) GetBeforeOk() (*time.Time, bool)`
 
-GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCountry
+### SetBefore
 
-`func (o *AddedInner) SetCountry(v string)`
+`func (o *AddedInner) SetBefore(v time.Time)`
 
-SetCountry sets Country field to given value.
+SetBefore sets Before field to given value.
 
-### HasCountry
+### HasBefore
 
-`func (o *AddedInner) HasCountry() bool`
+`func (o *AddedInner) HasBefore() bool`
 
-HasCountry returns a boolean if a field has been set.
+HasBefore returns a boolean if a field has been set.
 
-### GetDescription
+### GetFingerprint
 
-`func (o *AddedInner) GetDescription() string`
+`func (o *AddedInner) GetFingerprint() string`
 
-GetDescription returns the Description field if non-nil, zero value otherwise.
+GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
 
-### GetDescriptionOk
+### GetFingerprintOk
 
-`func (o *AddedInner) GetDescriptionOk() (*string, bool)`
+`func (o *AddedInner) GetFingerprintOk() (*string, bool)`
 
-GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
+GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDescription
+### SetFingerprint
 
-`func (o *AddedInner) SetDescription(v string)`
+`func (o *AddedInner) SetFingerprint(v string)`
 
-SetDescription sets Description field to given value.
+SetFingerprint sets Fingerprint field to given value.
 
-### HasDescription
+### HasFingerprint
 
-`func (o *AddedInner) HasDescription() bool`
+`func (o *AddedInner) HasFingerprint() bool`
 
-HasDescription returns a boolean if a field has been set.
-
-### GetName
-
-`func (o *AddedInner) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *AddedInner) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *AddedInner) SetName(v string)`
-
-SetName sets Name field to given value.
-
-### HasName
-
-`func (o *AddedInner) HasName() bool`
-
-HasName returns a boolean if a field has been set.
-
-### GetSize
-
-`func (o *AddedInner) GetSize() int32`
-
-GetSize returns the Size field if non-nil, zero value otherwise.
-
-### GetSizeOk
-
-`func (o *AddedInner) GetSizeOk() (*int32, bool)`
-
-GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSize
-
-`func (o *AddedInner) SetSize(v int32)`
-
-SetSize sets Size field to given value.
-
-### HasSize
-
-`func (o *AddedInner) HasSize() bool`
-
-HasSize returns a boolean if a field has been set.
-
-### GetSha256
-
-`func (o *AddedInner) GetSha256() string`
-
-GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
-
-### GetSha256Ok
-
-`func (o *AddedInner) GetSha256Ok() (*string, bool)`
-
-GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha256
-
-`func (o *AddedInner) SetSha256(v string)`
-
-SetSha256 sets Sha256 field to given value.
-
-### HasSha256
-
-`func (o *AddedInner) HasSha256() bool`
-
-HasSha256 returns a boolean if a field has been set.
-
-### GetMd5
-
-`func (o *AddedInner) GetMd5() string`
-
-GetMd5 returns the Md5 field if non-nil, zero value otherwise.
-
-### GetMd5Ok
-
-`func (o *AddedInner) GetMd5Ok() (*string, bool)`
-
-GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMd5
-
-`func (o *AddedInner) SetMd5(v string)`
-
-SetMd5 sets Md5 field to given value.
-
-### HasMd5
-
-`func (o *AddedInner) HasMd5() bool`
-
-HasMd5 returns a boolean if a field has been set.
-
-### GetSha1
-
-`func (o *AddedInner) GetSha1() string`
-
-GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
-
-### GetSha1Ok
-
-`func (o *AddedInner) GetSha1Ok() (*string, bool)`
-
-GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha1
-
-`func (o *AddedInner) SetSha1(v string)`
-
-SetSha1 sets Sha1 field to given value.
-
-### HasSha1
-
-`func (o *AddedInner) HasSha1() bool`
-
-HasSha1 returns a boolean if a field has been set.
-
-### GetMimeType
-
-`func (o *AddedInner) GetMimeType() string`
-
-GetMimeType returns the MimeType field if non-nil, zero value otherwise.
-
-### GetMimeTypeOk
-
-`func (o *AddedInner) GetMimeTypeOk() (*string, bool)`
-
-GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMimeType
-
-`func (o *AddedInner) SetMimeType(v string)`
-
-SetMimeType sets MimeType field to given value.
-
-### HasMimeType
-
-`func (o *AddedInner) HasMimeType() bool`
-
-HasMimeType returns a boolean if a field has been set.
+HasFingerprint returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -935,6 +800,291 @@ SetAccountLastLogin sets AccountLastLogin field to given value.
 
 HasAccountLastLogin returns a boolean if a field has been set.
 
+### GetVersion
+
+`func (o *AddedInner) GetVersion() string`
+
+GetVersion returns the Version field if non-nil, zero value otherwise.
+
+### GetVersionOk
+
+`func (o *AddedInner) GetVersionOk() (*string, bool)`
+
+GetVersionOk returns a tuple with the Version field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetVersion
+
+`func (o *AddedInner) SetVersion(v string)`
+
+SetVersion sets Version field to given value.
+
+### HasVersion
+
+`func (o *AddedInner) HasVersion() bool`
+
+HasVersion returns a boolean if a field has been set.
+
+### GetRegitryType
+
+`func (o *AddedInner) GetRegitryType() string`
+
+GetRegitryType returns the RegitryType field if non-nil, zero value otherwise.
+
+### GetRegitryTypeOk
+
+`func (o *AddedInner) GetRegitryTypeOk() (*string, bool)`
+
+GetRegitryTypeOk returns a tuple with the RegitryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRegitryType
+
+`func (o *AddedInner) SetRegitryType(v string)`
+
+SetRegitryType sets RegitryType field to given value.
+
+### HasRegitryType
+
+`func (o *AddedInner) HasRegitryType() bool`
+
+HasRegitryType returns a boolean if a field has been set.
+
+### GetName
+
+`func (o *AddedInner) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *AddedInner) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *AddedInner) SetName(v string)`
+
+SetName sets Name field to given value.
+
+### HasName
+
+`func (o *AddedInner) HasName() bool`
+
+HasName returns a boolean if a field has been set.
+
+### GetSize
+
+`func (o *AddedInner) GetSize() int32`
+
+GetSize returns the Size field if non-nil, zero value otherwise.
+
+### GetSizeOk
+
+`func (o *AddedInner) GetSizeOk() (*int32, bool)`
+
+GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSize
+
+`func (o *AddedInner) SetSize(v int32)`
+
+SetSize sets Size field to given value.
+
+### HasSize
+
+`func (o *AddedInner) HasSize() bool`
+
+HasSize returns a boolean if a field has been set.
+
+### GetSha256
+
+`func (o *AddedInner) GetSha256() string`
+
+GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
+
+### GetSha256Ok
+
+`func (o *AddedInner) GetSha256Ok() (*string, bool)`
+
+GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha256
+
+`func (o *AddedInner) SetSha256(v string)`
+
+SetSha256 sets Sha256 field to given value.
+
+### HasSha256
+
+`func (o *AddedInner) HasSha256() bool`
+
+HasSha256 returns a boolean if a field has been set.
+
+### GetMd5
+
+`func (o *AddedInner) GetMd5() string`
+
+GetMd5 returns the Md5 field if non-nil, zero value otherwise.
+
+### GetMd5Ok
+
+`func (o *AddedInner) GetMd5Ok() (*string, bool)`
+
+GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMd5
+
+`func (o *AddedInner) SetMd5(v string)`
+
+SetMd5 sets Md5 field to given value.
+
+### HasMd5
+
+`func (o *AddedInner) HasMd5() bool`
+
+HasMd5 returns a boolean if a field has been set.
+
+### GetSha1
+
+`func (o *AddedInner) GetSha1() string`
+
+GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
+
+### GetSha1Ok
+
+`func (o *AddedInner) GetSha1Ok() (*string, bool)`
+
+GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha1
+
+`func (o *AddedInner) SetSha1(v string)`
+
+SetSha1 sets Sha1 field to given value.
+
+### HasSha1
+
+`func (o *AddedInner) HasSha1() bool`
+
+HasSha1 returns a boolean if a field has been set.
+
+### GetMimeType
+
+`func (o *AddedInner) GetMimeType() string`
+
+GetMimeType returns the MimeType field if non-nil, zero value otherwise.
+
+### GetMimeTypeOk
+
+`func (o *AddedInner) GetMimeTypeOk() (*string, bool)`
+
+GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMimeType
+
+`func (o *AddedInner) SetMimeType(v string)`
+
+SetMimeType sets MimeType field to given value.
+
+### HasMimeType
+
+`func (o *AddedInner) HasMimeType() bool`
+
+HasMimeType returns a boolean if a field has been set.
+
+### GetKey
+
+`func (o *AddedInner) GetKey() string`
+
+GetKey returns the Key field if non-nil, zero value otherwise.
+
+### GetKeyOk
+
+`func (o *AddedInner) GetKeyOk() (*string, bool)`
+
+GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKey
+
+`func (o *AddedInner) SetKey(v string)`
+
+SetKey sets Key field to given value.
+
+
+### GetData
+
+`func (o *AddedInner) GetData() *os.File`
+
+GetData returns the Data field if non-nil, zero value otherwise.
+
+### GetDataOk
+
+`func (o *AddedInner) GetDataOk() (**os.File, bool)`
+
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetData
+
+`func (o *AddedInner) SetData(v *os.File)`
+
+SetData sets Data field to given value.
+
+
+### GetHive
+
+`func (o *AddedInner) GetHive() RegistryHive`
+
+GetHive returns the Hive field if non-nil, zero value otherwise.
+
+### GetHiveOk
+
+`func (o *AddedInner) GetHiveOk() (*RegistryHive, bool)`
+
+GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHive
+
+`func (o *AddedInner) SetHive(v RegistryHive)`
+
+SetHive sets Hive field to given value.
+
+
+### GetPathFile
+
+`func (o *AddedInner) GetPathFile() string`
+
+GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+
+### GetPathFileOk
+
+`func (o *AddedInner) GetPathFileOk() (*string, bool)`
+
+GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPathFile
+
+`func (o *AddedInner) SetPathFile(v string)`
+
+SetPathFile sets PathFile field to given value.
+
+### HasPathFile
+
+`func (o *AddedInner) HasPathFile() bool`
+
+HasPathFile returns a boolean if a field has been set.
+
 ### GetCoin
 
 `func (o *AddedInner) GetCoin() string`
@@ -985,205 +1135,55 @@ SetAddress sets Address field to given value.
 
 HasAddress returns a boolean if a field has been set.
 
-### GetLastSeen
+### GetCountry
 
-`func (o *AddedInner) GetLastSeen() time.Time`
+`func (o *AddedInner) GetCountry() string`
 
-GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
+GetCountry returns the Country field if non-nil, zero value otherwise.
 
-### GetLastSeenOk
+### GetCountryOk
 
-`func (o *AddedInner) GetLastSeenOk() (*time.Time, bool)`
+`func (o *AddedInner) GetCountryOk() (*string, bool)`
 
-GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
+GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetLastSeen
+### SetCountry
 
-`func (o *AddedInner) SetLastSeen(v time.Time)`
+`func (o *AddedInner) SetCountry(v string)`
 
-SetLastSeen sets LastSeen field to given value.
+SetCountry sets Country field to given value.
 
-### HasLastSeen
+### HasCountry
 
-`func (o *AddedInner) HasLastSeen() bool`
+`func (o *AddedInner) HasCountry() bool`
 
-HasLastSeen returns a boolean if a field has been set.
+HasCountry returns a boolean if a field has been set.
 
-### GetFirstSeen
+### GetDescription
 
-`func (o *AddedInner) GetFirstSeen() time.Time`
+`func (o *AddedInner) GetDescription() string`
 
-GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
+GetDescription returns the Description field if non-nil, zero value otherwise.
 
-### GetFirstSeenOk
+### GetDescriptionOk
 
-`func (o *AddedInner) GetFirstSeenOk() (*time.Time, bool)`
+`func (o *AddedInner) GetDescriptionOk() (*string, bool)`
 
-GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
+GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetFirstSeen
+### SetDescription
 
-`func (o *AddedInner) SetFirstSeen(v time.Time)`
+`func (o *AddedInner) SetDescription(v string)`
 
-SetFirstSeen sets FirstSeen field to given value.
+SetDescription sets Description field to given value.
 
-### HasFirstSeen
+### HasDescription
 
-`func (o *AddedInner) HasFirstSeen() bool`
+`func (o *AddedInner) HasDescription() bool`
 
-HasFirstSeen returns a boolean if a field has been set.
-
-### GetIssuer
-
-`func (o *AddedInner) GetIssuer() string`
-
-GetIssuer returns the Issuer field if non-nil, zero value otherwise.
-
-### GetIssuerOk
-
-`func (o *AddedInner) GetIssuerOk() (*string, bool)`
-
-GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetIssuer
-
-`func (o *AddedInner) SetIssuer(v string)`
-
-SetIssuer sets Issuer field to given value.
-
-### HasIssuer
-
-`func (o *AddedInner) HasIssuer() bool`
-
-HasIssuer returns a boolean if a field has been set.
-
-### GetSubject
-
-`func (o *AddedInner) GetSubject() string`
-
-GetSubject returns the Subject field if non-nil, zero value otherwise.
-
-### GetSubjectOk
-
-`func (o *AddedInner) GetSubjectOk() (*string, bool)`
-
-GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSubject
-
-`func (o *AddedInner) SetSubject(v string)`
-
-SetSubject sets Subject field to given value.
-
-### HasSubject
-
-`func (o *AddedInner) HasSubject() bool`
-
-HasSubject returns a boolean if a field has been set.
-
-### GetSerialNumber
-
-`func (o *AddedInner) GetSerialNumber() string`
-
-GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
-
-### GetSerialNumberOk
-
-`func (o *AddedInner) GetSerialNumberOk() (*string, bool)`
-
-GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSerialNumber
-
-`func (o *AddedInner) SetSerialNumber(v string)`
-
-SetSerialNumber sets SerialNumber field to given value.
-
-### HasSerialNumber
-
-`func (o *AddedInner) HasSerialNumber() bool`
-
-HasSerialNumber returns a boolean if a field has been set.
-
-### GetAfter
-
-`func (o *AddedInner) GetAfter() time.Time`
-
-GetAfter returns the After field if non-nil, zero value otherwise.
-
-### GetAfterOk
-
-`func (o *AddedInner) GetAfterOk() (*time.Time, bool)`
-
-GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAfter
-
-`func (o *AddedInner) SetAfter(v time.Time)`
-
-SetAfter sets After field to given value.
-
-### HasAfter
-
-`func (o *AddedInner) HasAfter() bool`
-
-HasAfter returns a boolean if a field has been set.
-
-### GetBefore
-
-`func (o *AddedInner) GetBefore() time.Time`
-
-GetBefore returns the Before field if non-nil, zero value otherwise.
-
-### GetBeforeOk
-
-`func (o *AddedInner) GetBeforeOk() (*time.Time, bool)`
-
-GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetBefore
-
-`func (o *AddedInner) SetBefore(v time.Time)`
-
-SetBefore sets Before field to given value.
-
-### HasBefore
-
-`func (o *AddedInner) HasBefore() bool`
-
-HasBefore returns a boolean if a field has been set.
-
-### GetFingerprint
-
-`func (o *AddedInner) GetFingerprint() string`
-
-GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
-
-### GetFingerprintOk
-
-`func (o *AddedInner) GetFingerprintOk() (*string, bool)`
-
-GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFingerprint
-
-`func (o *AddedInner) SetFingerprint(v string)`
-
-SetFingerprint sets Fingerprint field to given value.
-
-### HasFingerprint
-
-`func (o *AddedInner) HasFingerprint() bool`
-
-HasFingerprint returns a boolean if a field has been set.
+HasDescription returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

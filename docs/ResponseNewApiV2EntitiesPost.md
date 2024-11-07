@@ -4,30 +4,30 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | Pointer to **string** |  | [optional] [default to "phone"]
+**Type** | Pointer to **string** |  | [optional] [default to "tool"]
 **Name** | **string** |  | 
 **Description** | Pointer to **string** |  | [optional] [default to ""]
 **Context** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Modified** | Pointer to **time.Time** |  | [optional] 
+**Aliases** | Pointer to **[]string** |  | [optional] [default to []]
+**KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
+**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
 **RelatedObservablesCount** | **int32** |  | [readonly] 
-**ThreatActorTypes** | Pointer to **[]string** |  | [optional] [default to []]
-**Aliases** | Pointer to **[]string** |  | [optional] [default to []]
-**FirstSeen** | Pointer to **time.Time** |  | [optional] 
-**LastSeen** | Pointer to **time.Time** |  | [optional] 
 **Title** | Pointer to **string** |  | [optional] [default to ""]
 **BaseScore** | Pointer to **float32** |  | [optional] [default to 0.0]
 **Severity** | Pointer to [**SeverityType**](SeverityType.md) |  | [optional] 
 **Reference** | Pointer to **string** |  | [optional] [default to ""]
-**KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
-**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
+**Family** | Pointer to **string** |  | [optional] [default to ""]
+**FirstSeen** | Pointer to **time.Time** |  | [optional] 
+**LastSeen** | Pointer to **time.Time** |  | [optional] 
+**ThreatActorTypes** | Pointer to **[]string** |  | [optional] [default to []]
 **IdentityClass** | Pointer to **string** |  | [optional] [default to ""]
 **Sectors** | Pointer to **[]string** |  | [optional] [default to []]
 **ContactInformation** | Pointer to **string** |  | [optional] [default to ""]
-**Family** | Pointer to **string** |  | [optional] [default to ""]
 
 ## Methods
 
@@ -193,6 +193,81 @@ SetModified sets Modified field to given value.
 
 HasModified returns a boolean if a field has been set.
 
+### GetAliases
+
+`func (o *ResponseNewApiV2EntitiesPost) GetAliases() []string`
+
+GetAliases returns the Aliases field if non-nil, zero value otherwise.
+
+### GetAliasesOk
+
+`func (o *ResponseNewApiV2EntitiesPost) GetAliasesOk() (*[]string, bool)`
+
+GetAliasesOk returns a tuple with the Aliases field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAliases
+
+`func (o *ResponseNewApiV2EntitiesPost) SetAliases(v []string)`
+
+SetAliases sets Aliases field to given value.
+
+### HasAliases
+
+`func (o *ResponseNewApiV2EntitiesPost) HasAliases() bool`
+
+HasAliases returns a boolean if a field has been set.
+
+### GetKillChainPhases
+
+`func (o *ResponseNewApiV2EntitiesPost) GetKillChainPhases() []string`
+
+GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
+
+### GetKillChainPhasesOk
+
+`func (o *ResponseNewApiV2EntitiesPost) GetKillChainPhasesOk() (*[]string, bool)`
+
+GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKillChainPhases
+
+`func (o *ResponseNewApiV2EntitiesPost) SetKillChainPhases(v []string)`
+
+SetKillChainPhases sets KillChainPhases field to given value.
+
+### HasKillChainPhases
+
+`func (o *ResponseNewApiV2EntitiesPost) HasKillChainPhases() bool`
+
+HasKillChainPhases returns a boolean if a field has been set.
+
+### GetToolVersion
+
+`func (o *ResponseNewApiV2EntitiesPost) GetToolVersion() string`
+
+GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
+
+### GetToolVersionOk
+
+`func (o *ResponseNewApiV2EntitiesPost) GetToolVersionOk() (*string, bool)`
+
+GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetToolVersion
+
+`func (o *ResponseNewApiV2EntitiesPost) SetToolVersion(v string)`
+
+SetToolVersion sets ToolVersion field to given value.
+
+### HasToolVersion
+
+`func (o *ResponseNewApiV2EntitiesPost) HasToolVersion() bool`
+
+HasToolVersion returns a boolean if a field has been set.
+
 ### GetId
 
 `func (o *ResponseNewApiV2EntitiesPost) GetId() string`
@@ -272,106 +347,6 @@ and a boolean to check if the value has been set.
 
 SetRelatedObservablesCount sets RelatedObservablesCount field to given value.
 
-
-### GetThreatActorTypes
-
-`func (o *ResponseNewApiV2EntitiesPost) GetThreatActorTypes() []string`
-
-GetThreatActorTypes returns the ThreatActorTypes field if non-nil, zero value otherwise.
-
-### GetThreatActorTypesOk
-
-`func (o *ResponseNewApiV2EntitiesPost) GetThreatActorTypesOk() (*[]string, bool)`
-
-GetThreatActorTypesOk returns a tuple with the ThreatActorTypes field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetThreatActorTypes
-
-`func (o *ResponseNewApiV2EntitiesPost) SetThreatActorTypes(v []string)`
-
-SetThreatActorTypes sets ThreatActorTypes field to given value.
-
-### HasThreatActorTypes
-
-`func (o *ResponseNewApiV2EntitiesPost) HasThreatActorTypes() bool`
-
-HasThreatActorTypes returns a boolean if a field has been set.
-
-### GetAliases
-
-`func (o *ResponseNewApiV2EntitiesPost) GetAliases() []string`
-
-GetAliases returns the Aliases field if non-nil, zero value otherwise.
-
-### GetAliasesOk
-
-`func (o *ResponseNewApiV2EntitiesPost) GetAliasesOk() (*[]string, bool)`
-
-GetAliasesOk returns a tuple with the Aliases field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAliases
-
-`func (o *ResponseNewApiV2EntitiesPost) SetAliases(v []string)`
-
-SetAliases sets Aliases field to given value.
-
-### HasAliases
-
-`func (o *ResponseNewApiV2EntitiesPost) HasAliases() bool`
-
-HasAliases returns a boolean if a field has been set.
-
-### GetFirstSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) GetFirstSeen() time.Time`
-
-GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
-
-### GetFirstSeenOk
-
-`func (o *ResponseNewApiV2EntitiesPost) GetFirstSeenOk() (*time.Time, bool)`
-
-GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFirstSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) SetFirstSeen(v time.Time)`
-
-SetFirstSeen sets FirstSeen field to given value.
-
-### HasFirstSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) HasFirstSeen() bool`
-
-HasFirstSeen returns a boolean if a field has been set.
-
-### GetLastSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) GetLastSeen() time.Time`
-
-GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
-
-### GetLastSeenOk
-
-`func (o *ResponseNewApiV2EntitiesPost) GetLastSeenOk() (*time.Time, bool)`
-
-GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLastSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) SetLastSeen(v time.Time)`
-
-SetLastSeen sets LastSeen field to given value.
-
-### HasLastSeen
-
-`func (o *ResponseNewApiV2EntitiesPost) HasLastSeen() bool`
-
-HasLastSeen returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -473,55 +448,105 @@ SetReference sets Reference field to given value.
 
 HasReference returns a boolean if a field has been set.
 
-### GetKillChainPhases
+### GetFamily
 
-`func (o *ResponseNewApiV2EntitiesPost) GetKillChainPhases() []string`
+`func (o *ResponseNewApiV2EntitiesPost) GetFamily() string`
 
-GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
+GetFamily returns the Family field if non-nil, zero value otherwise.
 
-### GetKillChainPhasesOk
+### GetFamilyOk
 
-`func (o *ResponseNewApiV2EntitiesPost) GetKillChainPhasesOk() (*[]string, bool)`
+`func (o *ResponseNewApiV2EntitiesPost) GetFamilyOk() (*string, bool)`
 
-GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
+GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetKillChainPhases
+### SetFamily
 
-`func (o *ResponseNewApiV2EntitiesPost) SetKillChainPhases(v []string)`
+`func (o *ResponseNewApiV2EntitiesPost) SetFamily(v string)`
 
-SetKillChainPhases sets KillChainPhases field to given value.
+SetFamily sets Family field to given value.
 
-### HasKillChainPhases
+### HasFamily
 
-`func (o *ResponseNewApiV2EntitiesPost) HasKillChainPhases() bool`
+`func (o *ResponseNewApiV2EntitiesPost) HasFamily() bool`
 
-HasKillChainPhases returns a boolean if a field has been set.
+HasFamily returns a boolean if a field has been set.
 
-### GetToolVersion
+### GetFirstSeen
 
-`func (o *ResponseNewApiV2EntitiesPost) GetToolVersion() string`
+`func (o *ResponseNewApiV2EntitiesPost) GetFirstSeen() time.Time`
 
-GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
+GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
 
-### GetToolVersionOk
+### GetFirstSeenOk
 
-`func (o *ResponseNewApiV2EntitiesPost) GetToolVersionOk() (*string, bool)`
+`func (o *ResponseNewApiV2EntitiesPost) GetFirstSeenOk() (*time.Time, bool)`
 
-GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
+GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetToolVersion
+### SetFirstSeen
 
-`func (o *ResponseNewApiV2EntitiesPost) SetToolVersion(v string)`
+`func (o *ResponseNewApiV2EntitiesPost) SetFirstSeen(v time.Time)`
 
-SetToolVersion sets ToolVersion field to given value.
+SetFirstSeen sets FirstSeen field to given value.
 
-### HasToolVersion
+### HasFirstSeen
 
-`func (o *ResponseNewApiV2EntitiesPost) HasToolVersion() bool`
+`func (o *ResponseNewApiV2EntitiesPost) HasFirstSeen() bool`
 
-HasToolVersion returns a boolean if a field has been set.
+HasFirstSeen returns a boolean if a field has been set.
+
+### GetLastSeen
+
+`func (o *ResponseNewApiV2EntitiesPost) GetLastSeen() time.Time`
+
+GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
+
+### GetLastSeenOk
+
+`func (o *ResponseNewApiV2EntitiesPost) GetLastSeenOk() (*time.Time, bool)`
+
+GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastSeen
+
+`func (o *ResponseNewApiV2EntitiesPost) SetLastSeen(v time.Time)`
+
+SetLastSeen sets LastSeen field to given value.
+
+### HasLastSeen
+
+`func (o *ResponseNewApiV2EntitiesPost) HasLastSeen() bool`
+
+HasLastSeen returns a boolean if a field has been set.
+
+### GetThreatActorTypes
+
+`func (o *ResponseNewApiV2EntitiesPost) GetThreatActorTypes() []string`
+
+GetThreatActorTypes returns the ThreatActorTypes field if non-nil, zero value otherwise.
+
+### GetThreatActorTypesOk
+
+`func (o *ResponseNewApiV2EntitiesPost) GetThreatActorTypesOk() (*[]string, bool)`
+
+GetThreatActorTypesOk returns a tuple with the ThreatActorTypes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetThreatActorTypes
+
+`func (o *ResponseNewApiV2EntitiesPost) SetThreatActorTypes(v []string)`
+
+SetThreatActorTypes sets ThreatActorTypes field to given value.
+
+### HasThreatActorTypes
+
+`func (o *ResponseNewApiV2EntitiesPost) HasThreatActorTypes() bool`
+
+HasThreatActorTypes returns a boolean if a field has been set.
 
 ### GetIdentityClass
 
@@ -597,31 +622,6 @@ SetContactInformation sets ContactInformation field to given value.
 `func (o *ResponseNewApiV2EntitiesPost) HasContactInformation() bool`
 
 HasContactInformation returns a boolean if a field has been set.
-
-### GetFamily
-
-`func (o *ResponseNewApiV2EntitiesPost) GetFamily() string`
-
-GetFamily returns the Family field if non-nil, zero value otherwise.
-
-### GetFamilyOk
-
-`func (o *ResponseNewApiV2EntitiesPost) GetFamilyOk() (*string, bool)`
-
-GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFamily
-
-`func (o *ResponseNewApiV2EntitiesPost) SetFamily(v string)`
-
-SetFamily sets Family field to given value.
-
-### HasFamily
-
-`func (o *ResponseNewApiV2EntitiesPost) HasFamily() bool`
-
-HasFamily returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

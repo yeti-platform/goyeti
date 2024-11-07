@@ -5,24 +5,18 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Value** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "mutex"]
+**Type** | Pointer to **string** |  | [optional] [default to "cidr"]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Context** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **LastAnalysis** | Pointer to [**map[string]time.Time**](time.Time.md) |  | [optional] [default to {}]
-**Version** | Pointer to **string** |  | [optional] 
-**RegitryType** | Pointer to **string** |  | [optional] 
-**Key** | **string** |  | 
-**Data** | ***os.File** |  | 
-**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
-**PathFile** | Pointer to **string** |  | [optional] 
-**Country** | Pointer to **string** |  | [optional] 
-**Description** | Pointer to **string** |  | [optional] 
-**Name** | Pointer to **string** |  | [optional] 
-**Size** | Pointer to **int32** |  | [optional] 
-**Sha256** | Pointer to **string** |  | [optional] 
-**Md5** | Pointer to **string** |  | [optional] 
-**Sha1** | Pointer to **string** |  | [optional] 
-**MimeType** | Pointer to **string** |  | [optional] 
+**LastSeen** | Pointer to **time.Time** |  | [optional] 
+**FirstSeen** | Pointer to **time.Time** |  | [optional] 
+**Issuer** | Pointer to **string** |  | [optional] 
+**Subject** | Pointer to **string** |  | [optional] 
+**SerialNumber** | Pointer to **string** |  | [optional] 
+**After** | Pointer to **time.Time** |  | [optional] 
+**Before** | Pointer to **time.Time** |  | [optional] 
+**Fingerprint** | Pointer to **string** |  | [optional] 
 **UserId** | Pointer to **string** |  | [optional] 
 **Credential** | Pointer to **string** |  | [optional] 
 **AccountLogin** | Pointer to **string** |  | [optional] 
@@ -37,16 +31,22 @@ Name | Type | Description | Notes
 **CredentialLastChanged** | Pointer to **time.Time** |  | [optional] 
 **AccountFirstLogin** | Pointer to **time.Time** |  | [optional] 
 **AccountLastLogin** | Pointer to **time.Time** |  | [optional] 
+**Version** | Pointer to **string** |  | [optional] 
+**RegitryType** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** |  | [optional] 
+**Size** | Pointer to **int32** |  | [optional] 
+**Sha256** | Pointer to **string** |  | [optional] 
+**Md5** | Pointer to **string** |  | [optional] 
+**Sha1** | Pointer to **string** |  | [optional] 
+**MimeType** | Pointer to **string** |  | [optional] 
+**Key** | **string** |  | 
+**Data** | ***os.File** |  | 
+**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
+**PathFile** | Pointer to **string** |  | [optional] 
 **Coin** | Pointer to **string** |  | [optional] 
 **Address** | Pointer to **string** |  | [optional] 
-**LastSeen** | Pointer to **time.Time** |  | [optional] 
-**FirstSeen** | Pointer to **time.Time** |  | [optional] 
-**Issuer** | Pointer to **string** |  | [optional] 
-**Subject** | Pointer to **string** |  | [optional] 
-**SerialNumber** | Pointer to **string** |  | [optional] 
-**After** | Pointer to **time.Time** |  | [optional] 
-**Before** | Pointer to **time.Time** |  | [optional] 
-**Fingerprint** | Pointer to **string** |  | [optional] 
+**Country** | Pointer to **string** |  | [optional] 
+**Description** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -187,340 +187,205 @@ SetLastAnalysis sets LastAnalysis field to given value.
 
 HasLastAnalysis returns a boolean if a field has been set.
 
-### GetVersion
+### GetLastSeen
 
-`func (o *Observable1) GetVersion() string`
+`func (o *Observable1) GetLastSeen() time.Time`
 
-GetVersion returns the Version field if non-nil, zero value otherwise.
+GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
 
-### GetVersionOk
+### GetLastSeenOk
 
-`func (o *Observable1) GetVersionOk() (*string, bool)`
+`func (o *Observable1) GetLastSeenOk() (*time.Time, bool)`
 
-GetVersionOk returns a tuple with the Version field if it's non-nil, zero value otherwise
+GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetVersion
+### SetLastSeen
 
-`func (o *Observable1) SetVersion(v string)`
+`func (o *Observable1) SetLastSeen(v time.Time)`
 
-SetVersion sets Version field to given value.
+SetLastSeen sets LastSeen field to given value.
 
-### HasVersion
+### HasLastSeen
 
-`func (o *Observable1) HasVersion() bool`
+`func (o *Observable1) HasLastSeen() bool`
 
-HasVersion returns a boolean if a field has been set.
+HasLastSeen returns a boolean if a field has been set.
 
-### GetRegitryType
+### GetFirstSeen
 
-`func (o *Observable1) GetRegitryType() string`
+`func (o *Observable1) GetFirstSeen() time.Time`
 
-GetRegitryType returns the RegitryType field if non-nil, zero value otherwise.
+GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
 
-### GetRegitryTypeOk
+### GetFirstSeenOk
 
-`func (o *Observable1) GetRegitryTypeOk() (*string, bool)`
+`func (o *Observable1) GetFirstSeenOk() (*time.Time, bool)`
 
-GetRegitryTypeOk returns a tuple with the RegitryType field if it's non-nil, zero value otherwise
+GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetRegitryType
+### SetFirstSeen
 
-`func (o *Observable1) SetRegitryType(v string)`
+`func (o *Observable1) SetFirstSeen(v time.Time)`
 
-SetRegitryType sets RegitryType field to given value.
+SetFirstSeen sets FirstSeen field to given value.
 
-### HasRegitryType
+### HasFirstSeen
 
-`func (o *Observable1) HasRegitryType() bool`
+`func (o *Observable1) HasFirstSeen() bool`
 
-HasRegitryType returns a boolean if a field has been set.
+HasFirstSeen returns a boolean if a field has been set.
 
-### GetKey
+### GetIssuer
 
-`func (o *Observable1) GetKey() string`
+`func (o *Observable1) GetIssuer() string`
 
-GetKey returns the Key field if non-nil, zero value otherwise.
+GetIssuer returns the Issuer field if non-nil, zero value otherwise.
 
-### GetKeyOk
+### GetIssuerOk
 
-`func (o *Observable1) GetKeyOk() (*string, bool)`
+`func (o *Observable1) GetIssuerOk() (*string, bool)`
 
-GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetKey
+### SetIssuer
 
-`func (o *Observable1) SetKey(v string)`
+`func (o *Observable1) SetIssuer(v string)`
 
-SetKey sets Key field to given value.
+SetIssuer sets Issuer field to given value.
 
+### HasIssuer
 
-### GetData
+`func (o *Observable1) HasIssuer() bool`
 
-`func (o *Observable1) GetData() *os.File`
+HasIssuer returns a boolean if a field has been set.
 
-GetData returns the Data field if non-nil, zero value otherwise.
+### GetSubject
 
-### GetDataOk
+`func (o *Observable1) GetSubject() string`
 
-`func (o *Observable1) GetDataOk() (**os.File, bool)`
+GetSubject returns the Subject field if non-nil, zero value otherwise.
 
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+### GetSubjectOk
+
+`func (o *Observable1) GetSubjectOk() (*string, bool)`
+
+GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetData
+### SetSubject
 
-`func (o *Observable1) SetData(v *os.File)`
+`func (o *Observable1) SetSubject(v string)`
 
-SetData sets Data field to given value.
+SetSubject sets Subject field to given value.
 
+### HasSubject
 
-### GetHive
+`func (o *Observable1) HasSubject() bool`
 
-`func (o *Observable1) GetHive() RegistryHive`
+HasSubject returns a boolean if a field has been set.
 
-GetHive returns the Hive field if non-nil, zero value otherwise.
+### GetSerialNumber
 
-### GetHiveOk
+`func (o *Observable1) GetSerialNumber() string`
 
-`func (o *Observable1) GetHiveOk() (*RegistryHive, bool)`
+GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
 
-GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+### GetSerialNumberOk
+
+`func (o *Observable1) GetSerialNumberOk() (*string, bool)`
+
+GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetHive
+### SetSerialNumber
 
-`func (o *Observable1) SetHive(v RegistryHive)`
+`func (o *Observable1) SetSerialNumber(v string)`
 
-SetHive sets Hive field to given value.
+SetSerialNumber sets SerialNumber field to given value.
 
+### HasSerialNumber
 
-### GetPathFile
+`func (o *Observable1) HasSerialNumber() bool`
 
-`func (o *Observable1) GetPathFile() string`
+HasSerialNumber returns a boolean if a field has been set.
 
-GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+### GetAfter
 
-### GetPathFileOk
+`func (o *Observable1) GetAfter() time.Time`
 
-`func (o *Observable1) GetPathFileOk() (*string, bool)`
+GetAfter returns the After field if non-nil, zero value otherwise.
 
-GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+### GetAfterOk
+
+`func (o *Observable1) GetAfterOk() (*time.Time, bool)`
+
+GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetPathFile
+### SetAfter
 
-`func (o *Observable1) SetPathFile(v string)`
+`func (o *Observable1) SetAfter(v time.Time)`
 
-SetPathFile sets PathFile field to given value.
+SetAfter sets After field to given value.
 
-### HasPathFile
+### HasAfter
 
-`func (o *Observable1) HasPathFile() bool`
+`func (o *Observable1) HasAfter() bool`
 
-HasPathFile returns a boolean if a field has been set.
+HasAfter returns a boolean if a field has been set.
 
-### GetCountry
+### GetBefore
 
-`func (o *Observable1) GetCountry() string`
+`func (o *Observable1) GetBefore() time.Time`
 
-GetCountry returns the Country field if non-nil, zero value otherwise.
+GetBefore returns the Before field if non-nil, zero value otherwise.
 
-### GetCountryOk
+### GetBeforeOk
 
-`func (o *Observable1) GetCountryOk() (*string, bool)`
+`func (o *Observable1) GetBeforeOk() (*time.Time, bool)`
 
-GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCountry
+### SetBefore
 
-`func (o *Observable1) SetCountry(v string)`
+`func (o *Observable1) SetBefore(v time.Time)`
 
-SetCountry sets Country field to given value.
+SetBefore sets Before field to given value.
 
-### HasCountry
+### HasBefore
 
-`func (o *Observable1) HasCountry() bool`
+`func (o *Observable1) HasBefore() bool`
 
-HasCountry returns a boolean if a field has been set.
+HasBefore returns a boolean if a field has been set.
 
-### GetDescription
+### GetFingerprint
 
-`func (o *Observable1) GetDescription() string`
+`func (o *Observable1) GetFingerprint() string`
 
-GetDescription returns the Description field if non-nil, zero value otherwise.
+GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
 
-### GetDescriptionOk
+### GetFingerprintOk
 
-`func (o *Observable1) GetDescriptionOk() (*string, bool)`
+`func (o *Observable1) GetFingerprintOk() (*string, bool)`
 
-GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
+GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetDescription
+### SetFingerprint
 
-`func (o *Observable1) SetDescription(v string)`
+`func (o *Observable1) SetFingerprint(v string)`
 
-SetDescription sets Description field to given value.
+SetFingerprint sets Fingerprint field to given value.
 
-### HasDescription
+### HasFingerprint
 
-`func (o *Observable1) HasDescription() bool`
+`func (o *Observable1) HasFingerprint() bool`
 
-HasDescription returns a boolean if a field has been set.
-
-### GetName
-
-`func (o *Observable1) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *Observable1) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *Observable1) SetName(v string)`
-
-SetName sets Name field to given value.
-
-### HasName
-
-`func (o *Observable1) HasName() bool`
-
-HasName returns a boolean if a field has been set.
-
-### GetSize
-
-`func (o *Observable1) GetSize() int32`
-
-GetSize returns the Size field if non-nil, zero value otherwise.
-
-### GetSizeOk
-
-`func (o *Observable1) GetSizeOk() (*int32, bool)`
-
-GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSize
-
-`func (o *Observable1) SetSize(v int32)`
-
-SetSize sets Size field to given value.
-
-### HasSize
-
-`func (o *Observable1) HasSize() bool`
-
-HasSize returns a boolean if a field has been set.
-
-### GetSha256
-
-`func (o *Observable1) GetSha256() string`
-
-GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
-
-### GetSha256Ok
-
-`func (o *Observable1) GetSha256Ok() (*string, bool)`
-
-GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha256
-
-`func (o *Observable1) SetSha256(v string)`
-
-SetSha256 sets Sha256 field to given value.
-
-### HasSha256
-
-`func (o *Observable1) HasSha256() bool`
-
-HasSha256 returns a boolean if a field has been set.
-
-### GetMd5
-
-`func (o *Observable1) GetMd5() string`
-
-GetMd5 returns the Md5 field if non-nil, zero value otherwise.
-
-### GetMd5Ok
-
-`func (o *Observable1) GetMd5Ok() (*string, bool)`
-
-GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMd5
-
-`func (o *Observable1) SetMd5(v string)`
-
-SetMd5 sets Md5 field to given value.
-
-### HasMd5
-
-`func (o *Observable1) HasMd5() bool`
-
-HasMd5 returns a boolean if a field has been set.
-
-### GetSha1
-
-`func (o *Observable1) GetSha1() string`
-
-GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
-
-### GetSha1Ok
-
-`func (o *Observable1) GetSha1Ok() (*string, bool)`
-
-GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha1
-
-`func (o *Observable1) SetSha1(v string)`
-
-SetSha1 sets Sha1 field to given value.
-
-### HasSha1
-
-`func (o *Observable1) HasSha1() bool`
-
-HasSha1 returns a boolean if a field has been set.
-
-### GetMimeType
-
-`func (o *Observable1) GetMimeType() string`
-
-GetMimeType returns the MimeType field if non-nil, zero value otherwise.
-
-### GetMimeTypeOk
-
-`func (o *Observable1) GetMimeTypeOk() (*string, bool)`
-
-GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMimeType
-
-`func (o *Observable1) SetMimeType(v string)`
-
-SetMimeType sets MimeType field to given value.
-
-### HasMimeType
-
-`func (o *Observable1) HasMimeType() bool`
-
-HasMimeType returns a boolean if a field has been set.
+HasFingerprint returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -872,6 +737,291 @@ SetAccountLastLogin sets AccountLastLogin field to given value.
 
 HasAccountLastLogin returns a boolean if a field has been set.
 
+### GetVersion
+
+`func (o *Observable1) GetVersion() string`
+
+GetVersion returns the Version field if non-nil, zero value otherwise.
+
+### GetVersionOk
+
+`func (o *Observable1) GetVersionOk() (*string, bool)`
+
+GetVersionOk returns a tuple with the Version field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetVersion
+
+`func (o *Observable1) SetVersion(v string)`
+
+SetVersion sets Version field to given value.
+
+### HasVersion
+
+`func (o *Observable1) HasVersion() bool`
+
+HasVersion returns a boolean if a field has been set.
+
+### GetRegitryType
+
+`func (o *Observable1) GetRegitryType() string`
+
+GetRegitryType returns the RegitryType field if non-nil, zero value otherwise.
+
+### GetRegitryTypeOk
+
+`func (o *Observable1) GetRegitryTypeOk() (*string, bool)`
+
+GetRegitryTypeOk returns a tuple with the RegitryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRegitryType
+
+`func (o *Observable1) SetRegitryType(v string)`
+
+SetRegitryType sets RegitryType field to given value.
+
+### HasRegitryType
+
+`func (o *Observable1) HasRegitryType() bool`
+
+HasRegitryType returns a boolean if a field has been set.
+
+### GetName
+
+`func (o *Observable1) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *Observable1) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *Observable1) SetName(v string)`
+
+SetName sets Name field to given value.
+
+### HasName
+
+`func (o *Observable1) HasName() bool`
+
+HasName returns a boolean if a field has been set.
+
+### GetSize
+
+`func (o *Observable1) GetSize() int32`
+
+GetSize returns the Size field if non-nil, zero value otherwise.
+
+### GetSizeOk
+
+`func (o *Observable1) GetSizeOk() (*int32, bool)`
+
+GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSize
+
+`func (o *Observable1) SetSize(v int32)`
+
+SetSize sets Size field to given value.
+
+### HasSize
+
+`func (o *Observable1) HasSize() bool`
+
+HasSize returns a boolean if a field has been set.
+
+### GetSha256
+
+`func (o *Observable1) GetSha256() string`
+
+GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
+
+### GetSha256Ok
+
+`func (o *Observable1) GetSha256Ok() (*string, bool)`
+
+GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha256
+
+`func (o *Observable1) SetSha256(v string)`
+
+SetSha256 sets Sha256 field to given value.
+
+### HasSha256
+
+`func (o *Observable1) HasSha256() bool`
+
+HasSha256 returns a boolean if a field has been set.
+
+### GetMd5
+
+`func (o *Observable1) GetMd5() string`
+
+GetMd5 returns the Md5 field if non-nil, zero value otherwise.
+
+### GetMd5Ok
+
+`func (o *Observable1) GetMd5Ok() (*string, bool)`
+
+GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMd5
+
+`func (o *Observable1) SetMd5(v string)`
+
+SetMd5 sets Md5 field to given value.
+
+### HasMd5
+
+`func (o *Observable1) HasMd5() bool`
+
+HasMd5 returns a boolean if a field has been set.
+
+### GetSha1
+
+`func (o *Observable1) GetSha1() string`
+
+GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
+
+### GetSha1Ok
+
+`func (o *Observable1) GetSha1Ok() (*string, bool)`
+
+GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha1
+
+`func (o *Observable1) SetSha1(v string)`
+
+SetSha1 sets Sha1 field to given value.
+
+### HasSha1
+
+`func (o *Observable1) HasSha1() bool`
+
+HasSha1 returns a boolean if a field has been set.
+
+### GetMimeType
+
+`func (o *Observable1) GetMimeType() string`
+
+GetMimeType returns the MimeType field if non-nil, zero value otherwise.
+
+### GetMimeTypeOk
+
+`func (o *Observable1) GetMimeTypeOk() (*string, bool)`
+
+GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMimeType
+
+`func (o *Observable1) SetMimeType(v string)`
+
+SetMimeType sets MimeType field to given value.
+
+### HasMimeType
+
+`func (o *Observable1) HasMimeType() bool`
+
+HasMimeType returns a boolean if a field has been set.
+
+### GetKey
+
+`func (o *Observable1) GetKey() string`
+
+GetKey returns the Key field if non-nil, zero value otherwise.
+
+### GetKeyOk
+
+`func (o *Observable1) GetKeyOk() (*string, bool)`
+
+GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKey
+
+`func (o *Observable1) SetKey(v string)`
+
+SetKey sets Key field to given value.
+
+
+### GetData
+
+`func (o *Observable1) GetData() *os.File`
+
+GetData returns the Data field if non-nil, zero value otherwise.
+
+### GetDataOk
+
+`func (o *Observable1) GetDataOk() (**os.File, bool)`
+
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetData
+
+`func (o *Observable1) SetData(v *os.File)`
+
+SetData sets Data field to given value.
+
+
+### GetHive
+
+`func (o *Observable1) GetHive() RegistryHive`
+
+GetHive returns the Hive field if non-nil, zero value otherwise.
+
+### GetHiveOk
+
+`func (o *Observable1) GetHiveOk() (*RegistryHive, bool)`
+
+GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHive
+
+`func (o *Observable1) SetHive(v RegistryHive)`
+
+SetHive sets Hive field to given value.
+
+
+### GetPathFile
+
+`func (o *Observable1) GetPathFile() string`
+
+GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+
+### GetPathFileOk
+
+`func (o *Observable1) GetPathFileOk() (*string, bool)`
+
+GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPathFile
+
+`func (o *Observable1) SetPathFile(v string)`
+
+SetPathFile sets PathFile field to given value.
+
+### HasPathFile
+
+`func (o *Observable1) HasPathFile() bool`
+
+HasPathFile returns a boolean if a field has been set.
+
 ### GetCoin
 
 `func (o *Observable1) GetCoin() string`
@@ -922,205 +1072,55 @@ SetAddress sets Address field to given value.
 
 HasAddress returns a boolean if a field has been set.
 
-### GetLastSeen
+### GetCountry
 
-`func (o *Observable1) GetLastSeen() time.Time`
+`func (o *Observable1) GetCountry() string`
 
-GetLastSeen returns the LastSeen field if non-nil, zero value otherwise.
+GetCountry returns the Country field if non-nil, zero value otherwise.
 
-### GetLastSeenOk
+### GetCountryOk
 
-`func (o *Observable1) GetLastSeenOk() (*time.Time, bool)`
+`func (o *Observable1) GetCountryOk() (*string, bool)`
 
-GetLastSeenOk returns a tuple with the LastSeen field if it's non-nil, zero value otherwise
+GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetLastSeen
+### SetCountry
 
-`func (o *Observable1) SetLastSeen(v time.Time)`
+`func (o *Observable1) SetCountry(v string)`
 
-SetLastSeen sets LastSeen field to given value.
+SetCountry sets Country field to given value.
 
-### HasLastSeen
+### HasCountry
 
-`func (o *Observable1) HasLastSeen() bool`
+`func (o *Observable1) HasCountry() bool`
 
-HasLastSeen returns a boolean if a field has been set.
+HasCountry returns a boolean if a field has been set.
 
-### GetFirstSeen
+### GetDescription
 
-`func (o *Observable1) GetFirstSeen() time.Time`
+`func (o *Observable1) GetDescription() string`
 
-GetFirstSeen returns the FirstSeen field if non-nil, zero value otherwise.
+GetDescription returns the Description field if non-nil, zero value otherwise.
 
-### GetFirstSeenOk
+### GetDescriptionOk
 
-`func (o *Observable1) GetFirstSeenOk() (*time.Time, bool)`
+`func (o *Observable1) GetDescriptionOk() (*string, bool)`
 
-GetFirstSeenOk returns a tuple with the FirstSeen field if it's non-nil, zero value otherwise
+GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetFirstSeen
+### SetDescription
 
-`func (o *Observable1) SetFirstSeen(v time.Time)`
+`func (o *Observable1) SetDescription(v string)`
 
-SetFirstSeen sets FirstSeen field to given value.
+SetDescription sets Description field to given value.
 
-### HasFirstSeen
+### HasDescription
 
-`func (o *Observable1) HasFirstSeen() bool`
+`func (o *Observable1) HasDescription() bool`
 
-HasFirstSeen returns a boolean if a field has been set.
-
-### GetIssuer
-
-`func (o *Observable1) GetIssuer() string`
-
-GetIssuer returns the Issuer field if non-nil, zero value otherwise.
-
-### GetIssuerOk
-
-`func (o *Observable1) GetIssuerOk() (*string, bool)`
-
-GetIssuerOk returns a tuple with the Issuer field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetIssuer
-
-`func (o *Observable1) SetIssuer(v string)`
-
-SetIssuer sets Issuer field to given value.
-
-### HasIssuer
-
-`func (o *Observable1) HasIssuer() bool`
-
-HasIssuer returns a boolean if a field has been set.
-
-### GetSubject
-
-`func (o *Observable1) GetSubject() string`
-
-GetSubject returns the Subject field if non-nil, zero value otherwise.
-
-### GetSubjectOk
-
-`func (o *Observable1) GetSubjectOk() (*string, bool)`
-
-GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSubject
-
-`func (o *Observable1) SetSubject(v string)`
-
-SetSubject sets Subject field to given value.
-
-### HasSubject
-
-`func (o *Observable1) HasSubject() bool`
-
-HasSubject returns a boolean if a field has been set.
-
-### GetSerialNumber
-
-`func (o *Observable1) GetSerialNumber() string`
-
-GetSerialNumber returns the SerialNumber field if non-nil, zero value otherwise.
-
-### GetSerialNumberOk
-
-`func (o *Observable1) GetSerialNumberOk() (*string, bool)`
-
-GetSerialNumberOk returns a tuple with the SerialNumber field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSerialNumber
-
-`func (o *Observable1) SetSerialNumber(v string)`
-
-SetSerialNumber sets SerialNumber field to given value.
-
-### HasSerialNumber
-
-`func (o *Observable1) HasSerialNumber() bool`
-
-HasSerialNumber returns a boolean if a field has been set.
-
-### GetAfter
-
-`func (o *Observable1) GetAfter() time.Time`
-
-GetAfter returns the After field if non-nil, zero value otherwise.
-
-### GetAfterOk
-
-`func (o *Observable1) GetAfterOk() (*time.Time, bool)`
-
-GetAfterOk returns a tuple with the After field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetAfter
-
-`func (o *Observable1) SetAfter(v time.Time)`
-
-SetAfter sets After field to given value.
-
-### HasAfter
-
-`func (o *Observable1) HasAfter() bool`
-
-HasAfter returns a boolean if a field has been set.
-
-### GetBefore
-
-`func (o *Observable1) GetBefore() time.Time`
-
-GetBefore returns the Before field if non-nil, zero value otherwise.
-
-### GetBeforeOk
-
-`func (o *Observable1) GetBeforeOk() (*time.Time, bool)`
-
-GetBeforeOk returns a tuple with the Before field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetBefore
-
-`func (o *Observable1) SetBefore(v time.Time)`
-
-SetBefore sets Before field to given value.
-
-### HasBefore
-
-`func (o *Observable1) HasBefore() bool`
-
-HasBefore returns a boolean if a field has been set.
-
-### GetFingerprint
-
-`func (o *Observable1) GetFingerprint() string`
-
-GetFingerprint returns the Fingerprint field if non-nil, zero value otherwise.
-
-### GetFingerprintOk
-
-`func (o *Observable1) GetFingerprintOk() (*string, bool)`
-
-GetFingerprintOk returns a tuple with the Fingerprint field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFingerprint
-
-`func (o *Observable1) SetFingerprint(v string)`
-
-SetFingerprint sets Fingerprint field to given value.
-
-### HasFingerprint
-
-`func (o *Observable1) HasFingerprint() bool`
-
-HasFingerprint returns a boolean if a field has been set.
+HasDescription returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

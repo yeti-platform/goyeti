@@ -15,31 +15,31 @@ Name | Type | Description | Notes
 **Name** | **string** |  | 
 **Description** | Pointer to **string** |  | [optional] [default to ""]
 **Modified** | Pointer to **time.Time** |  | [optional] 
+**Reference** | Pointer to **string** |  | [optional] [default to ""]
+**RelatedObservablesCount** | **int32** |  | [readonly] 
 **IdentityClass** | Pointer to **string** |  | [optional] [default to ""]
 **Sectors** | Pointer to **[]string** |  | [optional] [default to []]
 **ContactInformation** | Pointer to **string** |  | [optional] [default to ""]
-**RelatedObservablesCount** | **int32** |  | [readonly] 
-**KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
 **Aliases** | Pointer to **[]string** |  | [optional] [default to []]
-**Family** | Pointer to **string** |  | [optional] [default to ""]
 **FirstSeen** | Pointer to **time.Time** |  | [optional] 
 **LastSeen** | Pointer to **time.Time** |  | [optional] 
+**KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
+**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
 **ThreatActorTypes** | Pointer to **[]string** |  | [optional] [default to []]
+**Family** | Pointer to **string** |  | [optional] [default to ""]
 **Title** | Pointer to **string** |  | [optional] [default to ""]
 **BaseScore** | Pointer to **float32** |  | [optional] [default to 0.0]
 **Severity** | Pointer to [**SeverityType**](SeverityType.md) |  | [optional] 
-**Reference** | Pointer to **string** |  | [optional] [default to ""]
-**ToolVersion** | Pointer to **string** |  | [optional] [default to ""]
 **ValidFrom** | Pointer to **time.Time** |  | [optional] 
 **ValidUntil** | Pointer to **time.Time** |  | [optional] 
 **Pattern** | **string** |  | 
 **Location** | Pointer to **string** |  | [optional] [default to ""]
 **Diamond** | [**DiamondModel**](DiamondModel.md) |  | 
 **RelevantTags** | Pointer to **[]string** |  | [optional] [default to []]
-**Sources** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
-**SupportedOs** | Pointer to **[]string** |  | [optional] [default to []]
 **QueryType** | **string** |  | 
 **TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
+**Sources** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
+**SupportedOs** | Pointer to **[]string** |  | [optional] [default to []]
 **Sid** | Pointer to **int32** |  | [optional] [default to 0]
 **Metadata** | Pointer to **[]string** |  | [optional] [default to []]
 **References** | Pointer to **[]string** |  | [optional] [default to []]
@@ -312,6 +312,51 @@ SetModified sets Modified field to given value.
 
 HasModified returns a boolean if a field has been set.
 
+### GetReference
+
+`func (o *VerticesValue) GetReference() string`
+
+GetReference returns the Reference field if non-nil, zero value otherwise.
+
+### GetReferenceOk
+
+`func (o *VerticesValue) GetReferenceOk() (*string, bool)`
+
+GetReferenceOk returns a tuple with the Reference field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReference
+
+`func (o *VerticesValue) SetReference(v string)`
+
+SetReference sets Reference field to given value.
+
+### HasReference
+
+`func (o *VerticesValue) HasReference() bool`
+
+HasReference returns a boolean if a field has been set.
+
+### GetRelatedObservablesCount
+
+`func (o *VerticesValue) GetRelatedObservablesCount() int32`
+
+GetRelatedObservablesCount returns the RelatedObservablesCount field if non-nil, zero value otherwise.
+
+### GetRelatedObservablesCountOk
+
+`func (o *VerticesValue) GetRelatedObservablesCountOk() (*int32, bool)`
+
+GetRelatedObservablesCountOk returns a tuple with the RelatedObservablesCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRelatedObservablesCount
+
+`func (o *VerticesValue) SetRelatedObservablesCount(v int32)`
+
+SetRelatedObservablesCount sets RelatedObservablesCount field to given value.
+
+
 ### GetIdentityClass
 
 `func (o *VerticesValue) GetIdentityClass() string`
@@ -387,51 +432,6 @@ SetContactInformation sets ContactInformation field to given value.
 
 HasContactInformation returns a boolean if a field has been set.
 
-### GetRelatedObservablesCount
-
-`func (o *VerticesValue) GetRelatedObservablesCount() int32`
-
-GetRelatedObservablesCount returns the RelatedObservablesCount field if non-nil, zero value otherwise.
-
-### GetRelatedObservablesCountOk
-
-`func (o *VerticesValue) GetRelatedObservablesCountOk() (*int32, bool)`
-
-GetRelatedObservablesCountOk returns a tuple with the RelatedObservablesCount field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetRelatedObservablesCount
-
-`func (o *VerticesValue) SetRelatedObservablesCount(v int32)`
-
-SetRelatedObservablesCount sets RelatedObservablesCount field to given value.
-
-
-### GetKillChainPhases
-
-`func (o *VerticesValue) GetKillChainPhases() []string`
-
-GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
-
-### GetKillChainPhasesOk
-
-`func (o *VerticesValue) GetKillChainPhasesOk() (*[]string, bool)`
-
-GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetKillChainPhases
-
-`func (o *VerticesValue) SetKillChainPhases(v []string)`
-
-SetKillChainPhases sets KillChainPhases field to given value.
-
-### HasKillChainPhases
-
-`func (o *VerticesValue) HasKillChainPhases() bool`
-
-HasKillChainPhases returns a boolean if a field has been set.
-
 ### GetAliases
 
 `func (o *VerticesValue) GetAliases() []string`
@@ -456,31 +456,6 @@ SetAliases sets Aliases field to given value.
 `func (o *VerticesValue) HasAliases() bool`
 
 HasAliases returns a boolean if a field has been set.
-
-### GetFamily
-
-`func (o *VerticesValue) GetFamily() string`
-
-GetFamily returns the Family field if non-nil, zero value otherwise.
-
-### GetFamilyOk
-
-`func (o *VerticesValue) GetFamilyOk() (*string, bool)`
-
-GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFamily
-
-`func (o *VerticesValue) SetFamily(v string)`
-
-SetFamily sets Family field to given value.
-
-### HasFamily
-
-`func (o *VerticesValue) HasFamily() bool`
-
-HasFamily returns a boolean if a field has been set.
 
 ### GetFirstSeen
 
@@ -532,6 +507,56 @@ SetLastSeen sets LastSeen field to given value.
 
 HasLastSeen returns a boolean if a field has been set.
 
+### GetKillChainPhases
+
+`func (o *VerticesValue) GetKillChainPhases() []string`
+
+GetKillChainPhases returns the KillChainPhases field if non-nil, zero value otherwise.
+
+### GetKillChainPhasesOk
+
+`func (o *VerticesValue) GetKillChainPhasesOk() (*[]string, bool)`
+
+GetKillChainPhasesOk returns a tuple with the KillChainPhases field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKillChainPhases
+
+`func (o *VerticesValue) SetKillChainPhases(v []string)`
+
+SetKillChainPhases sets KillChainPhases field to given value.
+
+### HasKillChainPhases
+
+`func (o *VerticesValue) HasKillChainPhases() bool`
+
+HasKillChainPhases returns a boolean if a field has been set.
+
+### GetToolVersion
+
+`func (o *VerticesValue) GetToolVersion() string`
+
+GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
+
+### GetToolVersionOk
+
+`func (o *VerticesValue) GetToolVersionOk() (*string, bool)`
+
+GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetToolVersion
+
+`func (o *VerticesValue) SetToolVersion(v string)`
+
+SetToolVersion sets ToolVersion field to given value.
+
+### HasToolVersion
+
+`func (o *VerticesValue) HasToolVersion() bool`
+
+HasToolVersion returns a boolean if a field has been set.
+
 ### GetThreatActorTypes
 
 `func (o *VerticesValue) GetThreatActorTypes() []string`
@@ -556,6 +581,31 @@ SetThreatActorTypes sets ThreatActorTypes field to given value.
 `func (o *VerticesValue) HasThreatActorTypes() bool`
 
 HasThreatActorTypes returns a boolean if a field has been set.
+
+### GetFamily
+
+`func (o *VerticesValue) GetFamily() string`
+
+GetFamily returns the Family field if non-nil, zero value otherwise.
+
+### GetFamilyOk
+
+`func (o *VerticesValue) GetFamilyOk() (*string, bool)`
+
+GetFamilyOk returns a tuple with the Family field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFamily
+
+`func (o *VerticesValue) SetFamily(v string)`
+
+SetFamily sets Family field to given value.
+
+### HasFamily
+
+`func (o *VerticesValue) HasFamily() bool`
+
+HasFamily returns a boolean if a field has been set.
 
 ### GetTitle
 
@@ -631,56 +681,6 @@ SetSeverity sets Severity field to given value.
 `func (o *VerticesValue) HasSeverity() bool`
 
 HasSeverity returns a boolean if a field has been set.
-
-### GetReference
-
-`func (o *VerticesValue) GetReference() string`
-
-GetReference returns the Reference field if non-nil, zero value otherwise.
-
-### GetReferenceOk
-
-`func (o *VerticesValue) GetReferenceOk() (*string, bool)`
-
-GetReferenceOk returns a tuple with the Reference field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetReference
-
-`func (o *VerticesValue) SetReference(v string)`
-
-SetReference sets Reference field to given value.
-
-### HasReference
-
-`func (o *VerticesValue) HasReference() bool`
-
-HasReference returns a boolean if a field has been set.
-
-### GetToolVersion
-
-`func (o *VerticesValue) GetToolVersion() string`
-
-GetToolVersion returns the ToolVersion field if non-nil, zero value otherwise.
-
-### GetToolVersionOk
-
-`func (o *VerticesValue) GetToolVersionOk() (*string, bool)`
-
-GetToolVersionOk returns a tuple with the ToolVersion field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetToolVersion
-
-`func (o *VerticesValue) SetToolVersion(v string)`
-
-SetToolVersion sets ToolVersion field to given value.
-
-### HasToolVersion
-
-`func (o *VerticesValue) HasToolVersion() bool`
-
-HasToolVersion returns a boolean if a field has been set.
 
 ### GetValidFrom
 
@@ -822,6 +822,51 @@ SetRelevantTags sets RelevantTags field to given value.
 
 HasRelevantTags returns a boolean if a field has been set.
 
+### GetQueryType
+
+`func (o *VerticesValue) GetQueryType() string`
+
+GetQueryType returns the QueryType field if non-nil, zero value otherwise.
+
+### GetQueryTypeOk
+
+`func (o *VerticesValue) GetQueryTypeOk() (*string, bool)`
+
+GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetQueryType
+
+`func (o *VerticesValue) SetQueryType(v string)`
+
+SetQueryType sets QueryType field to given value.
+
+
+### GetTargetSystems
+
+`func (o *VerticesValue) GetTargetSystems() []string`
+
+GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
+
+### GetTargetSystemsOk
+
+`func (o *VerticesValue) GetTargetSystemsOk() (*[]string, bool)`
+
+GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetSystems
+
+`func (o *VerticesValue) SetTargetSystems(v []string)`
+
+SetTargetSystems sets TargetSystems field to given value.
+
+### HasTargetSystems
+
+`func (o *VerticesValue) HasTargetSystems() bool`
+
+HasTargetSystems returns a boolean if a field has been set.
+
 ### GetSources
 
 `func (o *VerticesValue) GetSources() []map[string]interface{}`
@@ -871,51 +916,6 @@ SetSupportedOs sets SupportedOs field to given value.
 `func (o *VerticesValue) HasSupportedOs() bool`
 
 HasSupportedOs returns a boolean if a field has been set.
-
-### GetQueryType
-
-`func (o *VerticesValue) GetQueryType() string`
-
-GetQueryType returns the QueryType field if non-nil, zero value otherwise.
-
-### GetQueryTypeOk
-
-`func (o *VerticesValue) GetQueryTypeOk() (*string, bool)`
-
-GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetQueryType
-
-`func (o *VerticesValue) SetQueryType(v string)`
-
-SetQueryType sets QueryType field to given value.
-
-
-### GetTargetSystems
-
-`func (o *VerticesValue) GetTargetSystems() []string`
-
-GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
-
-### GetTargetSystemsOk
-
-`func (o *VerticesValue) GetTargetSystemsOk() (*[]string, bool)`
-
-GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetSystems
-
-`func (o *VerticesValue) SetTargetSystems(v []string)`
-
-SetTargetSystems sets TargetSystems field to given value.
-
-### HasTargetSystems
-
-`func (o *VerticesValue) HasTargetSystems() bool`
-
-HasTargetSystems returns a boolean if a field has been set.
 
 ### GetSid
 

@@ -36,18 +36,21 @@ cov: tidy fmt generate ## run go test against code and generate coverage report
 	go tool cover -html=coverage.out
 	rm -f coverage.out
 
+_generate_templates: ## PRIVATE generate the templates. Warning: this will overwrite the templates
+	docker run --rm -v "$(shell pwd):/local" openapitools/openapi-generator-cli author template -g go -o /local/templates
+
 _update_spec: ## PRIVATE update the openapi spec, you need to set YETI_INSTANCE
 ifndef YETI_INSTANCE
 	$(error YETI_INSTANCE is undefined)
 endif
 	docker run --rm -v "$(shell pwd):/local" openapitools/openapi-generator-cli generate \
 	    -i https://${YETI_INSTANCE}/openapi.json \
+		--openapi-generator-ignore-list ".travis.yml" \
 	    -g go \
 	    --config /local/config.yaml \
 	    -o /local/
 
 _patch_spec_update: ## PRIVATE patch the spec update until it is fixed
-	rm -f .travis.yml
 	gsed -i -e "s/var error_ Error =/var error_ Error/g" model_dfiq_validate_response.go
 
 update_spec: _update_spec _patch_spec_update fmt test ## update the openapi spec, you need to set YETI_INSTANCE

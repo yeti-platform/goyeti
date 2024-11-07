@@ -3,35 +3,35 @@
 ## Enum
 
 
-* `IDENTITY` (value: `"identity"`)
-
-* `MALWARE` (value: `"malware"`)
-
-* `COMPANY` (value: `"company"`)
-
-* `CAMPAIGN` (value: `"campaign"`)
-
-* `ATTACK_PATTERN` (value: `"attack-pattern"`)
-
-* `THREAT_ACTOR` (value: `"threat-actor"`)
+* `INVESTIGATION` (value: `"investigation"`)
 
 * `COURSE_OF_ACTION` (value: `"course-of-action"`)
 
-* `NOTE` (value: `"note"`)
-
-* `VULNERABILITY` (value: `"vulnerability"`)
-
-* `PHONE` (value: `"phone"`)
-
-* `TOOL` (value: `"tool"`)
+* `IDENTITY` (value: `"identity"`)
 
 * `INTRUSION_SET` (value: `"intrusion-set"`)
 
-* `INVESTIGATION` (value: `"investigation"`)
+* `TOOL` (value: `"tool"`)
 
-* `THREAT_FINDING` (value: `"threat-finding"`)
+* `THREAT_ACTOR` (value: `"threat-actor"`)
+
+* `CAMPAIGN` (value: `"campaign"`)
+
+* `COMPANY` (value: `"company"`)
+
+* `MALWARE` (value: `"malware"`)
+
+* `PHONE` (value: `"phone"`)
+
+* `NOTE` (value: `"note"`)
+
+* `ATTACK_PATTERN` (value: `"attack-pattern"`)
+
+* `VULNERABILITY` (value: `"vulnerability"`)
 
 * `HONEYPOT` (value: `"honeypot"`)
+
+* `THREAT_FINDING` (value: `"threat-finding"`)
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

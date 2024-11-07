@@ -20,22 +20,22 @@ type IndicatorType string
 
 // List of IndicatorType
 const (
-	REGEX            IndicatorType = "regex"
-	YARA             IndicatorType = "yara"
-	FORENSICARTIFACT IndicatorType = "forensicartifact"
-	SIGMA            IndicatorType = "sigma"
 	QUERY            IndicatorType = "query"
+	SIGMA            IndicatorType = "sigma"
+	REGEX            IndicatorType = "regex"
+	FORENSICARTIFACT IndicatorType = "forensicartifact"
 	SURICATA         IndicatorType = "suricata"
+	YARA             IndicatorType = "yara"
 )
 
 // All allowed values of IndicatorType enum
 var AllowedIndicatorTypeEnumValues = []IndicatorType{
-	"regex",
-	"yara",
-	"forensicartifact",
-	"sigma",
 	"query",
+	"sigma",
+	"regex",
+	"forensicartifact",
 	"suricata",
+	"yara",
 }
 
 func (v *IndicatorType) UnmarshalJSON(src []byte) error {

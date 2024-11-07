@@ -20,72 +20,72 @@ type ObservableTypeInput string
 
 // List of ObservableType-Input
 const (
-	MUTEX        ObservableTypeInput = "mutex"
-	MD5          ObservableTypeInput = "md5"
-	JARM         ObservableTypeInput = "jarm"
-	MAC_ADDRESS  ObservableTypeInput = "mac_address"
-	NAMED_PIPE   ObservableTypeInput = "named_pipe"
-	SHA1         ObservableTypeInput = "sha1"
-	TLSH         ObservableTypeInput = "tlsh"
-	PACKAGE      ObservableTypeInput = "package"
-	HOSTNAME     ObservableTypeInput = "hostname"
-	GENERIC      ObservableTypeInput = "generic"
-	URL          ObservableTypeInput = "url"
-	SSDEEP       ObservableTypeInput = "ssdeep"
-	REGISTRY_KEY ObservableTypeInput = "registry_key"
-	ASN          ObservableTypeInput = "asn"
-	IPV4         ObservableTypeInput = "ipv4"
-	FILE         ObservableTypeInput = "file"
-	USER_ACCOUNT ObservableTypeInput = "user_account"
 	CIDR         ObservableTypeInput = "cidr"
-	EMAIL        ObservableTypeInput = "email"
-	WALLET       ObservableTypeInput = "wallet"
-	IBAN         ObservableTypeInput = "iban"
-	IMPHASH      ObservableTypeInput = "imphash"
-	PATH         ObservableTypeInput = "path"
-	USER_AGENT   ObservableTypeInput = "user_agent"
-	COMMAND_LINE ObservableTypeInput = "command_line"
-	SHA256       ObservableTypeInput = "sha256"
-	DOCKER_IMAGE ObservableTypeInput = "docker_image"
+	HOSTNAME     ObservableTypeInput = "hostname"
+	MAC_ADDRESS  ObservableTypeInput = "mac_address"
 	CERTIFICATE  ObservableTypeInput = "certificate"
 	IPV6         ObservableTypeInput = "ipv6"
+	USER_ACCOUNT ObservableTypeInput = "user_account"
+	SSDEEP       ObservableTypeInput = "ssdeep"
 	BIC          ObservableTypeInput = "bic"
+	PACKAGE      ObservableTypeInput = "package"
+	SHA256       ObservableTypeInput = "sha256"
+	DOCKER_IMAGE ObservableTypeInput = "docker_image"
+	EMAIL        ObservableTypeInput = "email"
+	JARM         ObservableTypeInput = "jarm"
+	FILE         ObservableTypeInput = "file"
+	MUTEX        ObservableTypeInput = "mutex"
+	IBAN         ObservableTypeInput = "iban"
+	COMMAND_LINE ObservableTypeInput = "command_line"
+	URL          ObservableTypeInput = "url"
+	REGISTRY_KEY ObservableTypeInput = "registry_key"
+	PATH         ObservableTypeInput = "path"
+	IPV4         ObservableTypeInput = "ipv4"
+	TLSH         ObservableTypeInput = "tlsh"
+	GENERIC      ObservableTypeInput = "generic"
+	SHA1         ObservableTypeInput = "sha1"
+	USER_AGENT   ObservableTypeInput = "user_agent"
+	WALLET       ObservableTypeInput = "wallet"
+	MD5          ObservableTypeInput = "md5"
+	IMPHASH      ObservableTypeInput = "imphash"
+	ASN          ObservableTypeInput = "asn"
+	NAMED_PIPE   ObservableTypeInput = "named_pipe"
 	JA3          ObservableTypeInput = "ja3"
 	GUESS        ObservableTypeInput = "guess"
 )
 
 // All allowed values of ObservableTypeInput enum
 var AllowedObservableTypeInputEnumValues = []ObservableTypeInput{
-	"mutex",
-	"md5",
-	"jarm",
-	"mac_address",
-	"named_pipe",
-	"sha1",
-	"tlsh",
-	"package",
-	"hostname",
-	"generic",
-	"url",
-	"ssdeep",
-	"registry_key",
-	"asn",
-	"ipv4",
-	"file",
-	"user_account",
 	"cidr",
-	"email",
-	"wallet",
-	"iban",
-	"imphash",
-	"path",
-	"user_agent",
-	"command_line",
-	"sha256",
-	"docker_image",
+	"hostname",
+	"mac_address",
 	"certificate",
 	"ipv6",
+	"user_account",
+	"ssdeep",
 	"bic",
+	"package",
+	"sha256",
+	"docker_image",
+	"email",
+	"jarm",
+	"file",
+	"mutex",
+	"iban",
+	"command_line",
+	"url",
+	"registry_key",
+	"path",
+	"ipv4",
+	"tlsh",
+	"generic",
+	"sha1",
+	"user_agent",
+	"wallet",
+	"md5",
+	"imphash",
+	"asn",
+	"named_pipe",
 	"ja3",
 	"guess",
 }

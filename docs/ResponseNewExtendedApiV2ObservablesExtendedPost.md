@@ -5,17 +5,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Value** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "ipv6"]
+**Type** | Pointer to **string** |  | [optional] [default to "url"]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Context** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **LastAnalysis** | Pointer to [**map[string]time.Time**](time.Time.md) |  | [optional] [default to {}]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
-**Key** | **string** |  | 
-**Data** | ***os.File** |  | 
-**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
-**PathFile** | Pointer to **string** |  | [optional] 
 **LastSeen** | Pointer to **time.Time** |  | [optional] 
 **FirstSeen** | Pointer to **time.Time** |  | [optional] 
 **Issuer** | Pointer to **string** |  | [optional] 
@@ -24,8 +20,20 @@ Name | Type | Description | Notes
 **After** | Pointer to **time.Time** |  | [optional] 
 **Before** | Pointer to **time.Time** |  | [optional] 
 **Fingerprint** | Pointer to **string** |  | [optional] 
+**Key** | **string** |  | 
+**Data** | ***os.File** |  | 
+**Hive** | [**RegistryHive**](RegistryHive.md) |  | 
+**PathFile** | Pointer to **string** |  | [optional] 
+**Country** | Pointer to **string** |  | [optional] 
+**Description** | Pointer to **string** |  | [optional] 
 **Version** | Pointer to **string** |  | [optional] 
 **RegitryType** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** |  | [optional] 
+**Size** | Pointer to **int32** |  | [optional] 
+**Sha256** | Pointer to **string** |  | [optional] 
+**Md5** | Pointer to **string** |  | [optional] 
+**Sha1** | Pointer to **string** |  | [optional] 
+**MimeType** | Pointer to **string** |  | [optional] 
 **UserId** | Pointer to **string** |  | [optional] 
 **Credential** | Pointer to **string** |  | [optional] 
 **AccountLogin** | Pointer to **string** |  | [optional] 
@@ -42,14 +50,6 @@ Name | Type | Description | Notes
 **AccountLastLogin** | Pointer to **time.Time** |  | [optional] 
 **Coin** | Pointer to **string** |  | [optional] 
 **Address** | Pointer to **string** |  | [optional] 
-**Country** | Pointer to **string** |  | [optional] 
-**Description** | Pointer to **string** |  | [optional] 
-**Name** | Pointer to **string** |  | [optional] 
-**Size** | Pointer to **int32** |  | [optional] 
-**Sha256** | Pointer to **string** |  | [optional] 
-**Md5** | Pointer to **string** |  | [optional] 
-**Sha1** | Pointer to **string** |  | [optional] 
-**MimeType** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -249,91 +249,6 @@ and a boolean to check if the value has been set.
 
 SetRootType sets RootType field to given value.
 
-
-### GetKey
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetKey() string`
-
-GetKey returns the Key field if non-nil, zero value otherwise.
-
-### GetKeyOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetKeyOk() (*string, bool)`
-
-GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetKey
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetKey(v string)`
-
-SetKey sets Key field to given value.
-
-
-### GetData
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetData() *os.File`
-
-GetData returns the Data field if non-nil, zero value otherwise.
-
-### GetDataOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDataOk() (**os.File, bool)`
-
-GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetData
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetData(v *os.File)`
-
-SetData sets Data field to given value.
-
-
-### GetHive
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetHive() RegistryHive`
-
-GetHive returns the Hive field if non-nil, zero value otherwise.
-
-### GetHiveOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetHiveOk() (*RegistryHive, bool)`
-
-GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetHive
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetHive(v RegistryHive)`
-
-SetHive sets Hive field to given value.
-
-
-### GetPathFile
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetPathFile() string`
-
-GetPathFile returns the PathFile field if non-nil, zero value otherwise.
-
-### GetPathFileOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetPathFileOk() (*string, bool)`
-
-GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetPathFile
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetPathFile(v string)`
-
-SetPathFile sets PathFile field to given value.
-
-### HasPathFile
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasPathFile() bool`
-
-HasPathFile returns a boolean if a field has been set.
 
 ### GetLastSeen
 
@@ -535,6 +450,141 @@ SetFingerprint sets Fingerprint field to given value.
 
 HasFingerprint returns a boolean if a field has been set.
 
+### GetKey
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetKey() string`
+
+GetKey returns the Key field if non-nil, zero value otherwise.
+
+### GetKeyOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetKeyOk() (*string, bool)`
+
+GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetKey
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetKey(v string)`
+
+SetKey sets Key field to given value.
+
+
+### GetData
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetData() *os.File`
+
+GetData returns the Data field if non-nil, zero value otherwise.
+
+### GetDataOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDataOk() (**os.File, bool)`
+
+GetDataOk returns a tuple with the Data field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetData
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetData(v *os.File)`
+
+SetData sets Data field to given value.
+
+
+### GetHive
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetHive() RegistryHive`
+
+GetHive returns the Hive field if non-nil, zero value otherwise.
+
+### GetHiveOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetHiveOk() (*RegistryHive, bool)`
+
+GetHiveOk returns a tuple with the Hive field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHive
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetHive(v RegistryHive)`
+
+SetHive sets Hive field to given value.
+
+
+### GetPathFile
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetPathFile() string`
+
+GetPathFile returns the PathFile field if non-nil, zero value otherwise.
+
+### GetPathFileOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetPathFileOk() (*string, bool)`
+
+GetPathFileOk returns a tuple with the PathFile field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPathFile
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetPathFile(v string)`
+
+SetPathFile sets PathFile field to given value.
+
+### HasPathFile
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasPathFile() bool`
+
+HasPathFile returns a boolean if a field has been set.
+
+### GetCountry
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetCountry() string`
+
+GetCountry returns the Country field if non-nil, zero value otherwise.
+
+### GetCountryOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetCountryOk() (*string, bool)`
+
+GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCountry
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetCountry(v string)`
+
+SetCountry sets Country field to given value.
+
+### HasCountry
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasCountry() bool`
+
+HasCountry returns a boolean if a field has been set.
+
+### GetDescription
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDescription() string`
+
+GetDescription returns the Description field if non-nil, zero value otherwise.
+
+### GetDescriptionOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDescriptionOk() (*string, bool)`
+
+GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDescription
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetDescription(v string)`
+
+SetDescription sets Description field to given value.
+
+### HasDescription
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
+
 ### GetVersion
 
 `func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetVersion() string`
@@ -584,6 +634,156 @@ SetRegitryType sets RegitryType field to given value.
 `func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasRegitryType() bool`
 
 HasRegitryType returns a boolean if a field has been set.
+
+### GetName
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetName(v string)`
+
+SetName sets Name field to given value.
+
+### HasName
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasName() bool`
+
+HasName returns a boolean if a field has been set.
+
+### GetSize
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSize() int32`
+
+GetSize returns the Size field if non-nil, zero value otherwise.
+
+### GetSizeOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSizeOk() (*int32, bool)`
+
+GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSize
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSize(v int32)`
+
+SetSize sets Size field to given value.
+
+### HasSize
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSize() bool`
+
+HasSize returns a boolean if a field has been set.
+
+### GetSha256
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha256() string`
+
+GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
+
+### GetSha256Ok
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha256Ok() (*string, bool)`
+
+GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha256
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSha256(v string)`
+
+SetSha256 sets Sha256 field to given value.
+
+### HasSha256
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSha256() bool`
+
+HasSha256 returns a boolean if a field has been set.
+
+### GetMd5
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMd5() string`
+
+GetMd5 returns the Md5 field if non-nil, zero value otherwise.
+
+### GetMd5Ok
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMd5Ok() (*string, bool)`
+
+GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMd5
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetMd5(v string)`
+
+SetMd5 sets Md5 field to given value.
+
+### HasMd5
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasMd5() bool`
+
+HasMd5 returns a boolean if a field has been set.
+
+### GetSha1
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha1() string`
+
+GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
+
+### GetSha1Ok
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha1Ok() (*string, bool)`
+
+GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSha1
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSha1(v string)`
+
+SetSha1 sets Sha1 field to given value.
+
+### HasSha1
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSha1() bool`
+
+HasSha1 returns a boolean if a field has been set.
+
+### GetMimeType
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMimeType() string`
+
+GetMimeType returns the MimeType field if non-nil, zero value otherwise.
+
+### GetMimeTypeOk
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMimeTypeOk() (*string, bool)`
+
+GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMimeType
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetMimeType(v string)`
+
+SetMimeType sets MimeType field to given value.
+
+### HasMimeType
+
+`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasMimeType() bool`
+
+HasMimeType returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -984,206 +1184,6 @@ SetAddress sets Address field to given value.
 `func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasAddress() bool`
 
 HasAddress returns a boolean if a field has been set.
-
-### GetCountry
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetCountry() string`
-
-GetCountry returns the Country field if non-nil, zero value otherwise.
-
-### GetCountryOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetCountryOk() (*string, bool)`
-
-GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCountry
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetCountry(v string)`
-
-SetCountry sets Country field to given value.
-
-### HasCountry
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasCountry() bool`
-
-HasCountry returns a boolean if a field has been set.
-
-### GetDescription
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDescription() string`
-
-GetDescription returns the Description field if non-nil, zero value otherwise.
-
-### GetDescriptionOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetDescriptionOk() (*string, bool)`
-
-GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDescription
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetDescription(v string)`
-
-SetDescription sets Description field to given value.
-
-### HasDescription
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasDescription() bool`
-
-HasDescription returns a boolean if a field has been set.
-
-### GetName
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetName(v string)`
-
-SetName sets Name field to given value.
-
-### HasName
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasName() bool`
-
-HasName returns a boolean if a field has been set.
-
-### GetSize
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSize() int32`
-
-GetSize returns the Size field if non-nil, zero value otherwise.
-
-### GetSizeOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSizeOk() (*int32, bool)`
-
-GetSizeOk returns a tuple with the Size field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSize
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSize(v int32)`
-
-SetSize sets Size field to given value.
-
-### HasSize
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSize() bool`
-
-HasSize returns a boolean if a field has been set.
-
-### GetSha256
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha256() string`
-
-GetSha256 returns the Sha256 field if non-nil, zero value otherwise.
-
-### GetSha256Ok
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha256Ok() (*string, bool)`
-
-GetSha256Ok returns a tuple with the Sha256 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha256
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSha256(v string)`
-
-SetSha256 sets Sha256 field to given value.
-
-### HasSha256
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSha256() bool`
-
-HasSha256 returns a boolean if a field has been set.
-
-### GetMd5
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMd5() string`
-
-GetMd5 returns the Md5 field if non-nil, zero value otherwise.
-
-### GetMd5Ok
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMd5Ok() (*string, bool)`
-
-GetMd5Ok returns a tuple with the Md5 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMd5
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetMd5(v string)`
-
-SetMd5 sets Md5 field to given value.
-
-### HasMd5
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasMd5() bool`
-
-HasMd5 returns a boolean if a field has been set.
-
-### GetSha1
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha1() string`
-
-GetSha1 returns the Sha1 field if non-nil, zero value otherwise.
-
-### GetSha1Ok
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetSha1Ok() (*string, bool)`
-
-GetSha1Ok returns a tuple with the Sha1 field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSha1
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetSha1(v string)`
-
-SetSha1 sets Sha1 field to given value.
-
-### HasSha1
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasSha1() bool`
-
-HasSha1 returns a boolean if a field has been set.
-
-### GetMimeType
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMimeType() string`
-
-GetMimeType returns the MimeType field if non-nil, zero value otherwise.
-
-### GetMimeTypeOk
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) GetMimeTypeOk() (*string, bool)`
-
-GetMimeTypeOk returns a tuple with the MimeType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetMimeType
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) SetMimeType(v string)`
-
-SetMimeType sets MimeType field to given value.
-
-### HasMimeType
-
-`func (o *ResponseNewExtendedApiV2ObservablesExtendedPost) HasMimeType() bool`
-
-HasMimeType returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

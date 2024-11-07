@@ -2165,7 +2165,7 @@ components:
         add_unknown: false
         regex_match: false
         fetch_neighbors: true
-        add_type: mutex
+        add_type: cidr
       properties:
         observables:
           items:
@@ -2576,7 +2576,7 @@ components:
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
           id: id
-          type: mutex
+          type: cidr
           value: value
           tags:
             key:
@@ -2594,7 +2594,7 @@ components:
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
           id: id
-          type: mutex
+          type: cidr
           value: value
           tags:
             key:
@@ -2619,6 +2619,15 @@ components:
           title: Failed
       title: BulkObservableAddResponse
     CIDR-Input:
+      example:
+        created: 2000-01-23T04:56:07.000+00:00
+        context:
+        - "{}"
+        - "{}"
+        last_analysis:
+          key: 2000-01-23T04:56:07.000+00:00
+        type: cidr
+        value: value
       properties:
         value:
           minLength: 1
@@ -2649,6 +2658,25 @@ components:
       - value
       title: CIDR
     CIDR-Output:
+      example:
+        root_type: observable
+        created: 2000-01-23T04:56:07.000+00:00
+        context:
+        - "{}"
+        - "{}"
+        last_analysis:
+          key: 2000-01-23T04:56:07.000+00:00
+        id: id
+        type: cidr
+        value: value
+        tags:
+          key:
+            expires: 2000-01-23T04:56:07.000+00:00
+            last_seen: 2000-01-23T04:56:07.000+00:00
+            source: source
+            id: id
+            fresh: true
+            target: target
       properties:
         value:
           minLength: 1
@@ -3932,7 +3960,7 @@ components:
         - - ""
           - ""
         page: 6
-        type: identity
+        type: investigation
       properties:
         query:
           additionalProperties:
@@ -3967,16 +3995,18 @@ components:
       example:
         total: 6
         entities:
-        - identity_class: ""
-          sectors:
-          - sectors
-          - sectors
+        - reference: ""
           root_type: entity
           created: 2000-01-23T04:56:07.000+00:00
+          name: name
+          context:
+          - "{}"
+          - "{}"
           description: ""
-          contact_information: ""
+          modified: 2000-01-23T04:56:07.000+00:00
+          id: id
           related_observables_count: 0
-          type: identity
+          type: investigation
           tags:
             key:
               expires: 2000-01-23T04:56:07.000+00:00
@@ -3985,22 +4015,18 @@ components:
               id: id
               fresh: true
               target: target
+        - reference: ""
+          root_type: entity
+          created: 2000-01-23T04:56:07.000+00:00
           name: name
           context:
           - "{}"
           - "{}"
+          description: ""
           modified: 2000-01-23T04:56:07.000+00:00
           id: id
-        - identity_class: ""
-          sectors:
-          - sectors
-          - sectors
-          root_type: entity
-          created: 2000-01-23T04:56:07.000+00:00
-          description: ""
-          contact_information: ""
           related_observables_count: 0
-          type: identity
+          type: investigation
           tags:
             key:
               expires: 2000-01-23T04:56:07.000+00:00
@@ -4009,12 +4035,6 @@ components:
               id: id
               fresh: true
               target: target
-          name: name
-          context:
-          - "{}"
-          - "{}"
-          modified: 2000-01-23T04:56:07.000+00:00
-          id: id
       properties:
         entities:
           items:
@@ -4081,21 +4101,21 @@ components:
       title: EntityTagResponse
     EntityType:
       enum:
-      - identity
-      - malware
-      - company
-      - campaign
-      - attack-pattern
-      - threat-actor
-      - course-of-action
-      - note
-      - vulnerability
-      - phone
-      - tool
-      - intrusion-set
       - investigation
-      - threat-finding
+      - course-of-action
+      - identity
+      - intrusion-set
+      - tool
+      - threat-actor
+      - campaign
+      - company
+      - malware
+      - phone
+      - note
+      - attack-pattern
+      - vulnerability
       - honeypot
+      - threat-finding
       title: EntityType
       type: string
     ExportTask-Input:
@@ -4117,8 +4137,8 @@ components:
         template_name: template_name
         name: name
         acts_on:
-        - mutex
-        - mutex
+        - cidr
+        - cidr
         include_tags:
         - include_tags
         - include_tags
@@ -5210,25 +5230,6 @@ components:
       - value
       title: IPv6
     IPv6-Output:
-      example:
-        root_type: observable
-        created: 2000-01-23T04:56:07.000+00:00
-        context:
-        - "{}"
-        - "{}"
-        last_analysis:
-          key: 2000-01-23T04:56:07.000+00:00
-        id: id
-        type: ipv6
-        value: value
-        tags:
-          key:
-            expires: 2000-01-23T04:56:07.000+00:00
-            last_seen: 2000-01-23T04:56:07.000+00:00
-            source: source
-            id: id
-            fresh: true
-            target: target
       properties:
         value:
           minLength: 1
@@ -5277,20 +5278,6 @@ components:
       - value
       title: IPv6
     Identity-Input:
-      example:
-        identity_class: ""
-        sectors:
-        - sectors
-        - sectors
-        created: 2000-01-23T04:56:07.000+00:00
-        name: name
-        context:
-        - "{}"
-        - "{}"
-        description: ""
-        modified: 2000-01-23T04:56:07.000+00:00
-        contact_information: ""
-        type: identity
       properties:
         type:
           default: identity
@@ -5336,31 +5323,6 @@ components:
       - name
       title: Identity
     Identity-Output:
-      example:
-        identity_class: ""
-        sectors:
-        - sectors
-        - sectors
-        root_type: entity
-        created: 2000-01-23T04:56:07.000+00:00
-        description: ""
-        contact_information: ""
-        related_observables_count: 0
-        type: identity
-        tags:
-          key:
-            expires: 2000-01-23T04:56:07.000+00:00
-            last_seen: 2000-01-23T04:56:07.000+00:00
-            source: source
-            id: id
-            fresh: true
-            target: target
-        name: name
-        context:
-        - "{}"
-        - "{}"
-        modified: 2000-01-23T04:56:07.000+00:00
-        id: id
       properties:
         type:
           default: identity
@@ -5595,7 +5557,7 @@ components:
         - - ""
           - ""
         page: 6
-        type: regex
+        type: query
       properties:
         query:
           additionalProperties:
@@ -5638,7 +5600,8 @@ components:
           relevant_tags:
           - relevant_tags
           - relevant_tags
-          type: regex
+          query_type: query_type
+          type: query
           tags:
             key:
               expires: 2000-01-23T04:56:07.000+00:00
@@ -5649,6 +5612,9 @@ components:
               target: target
           diamond: adversary
           valid_until: 2000-01-23T04:56:07.000+00:00
+          target_systems:
+          - target_systems
+          - target_systems
           name: name
           modified: 2000-01-23T04:56:07.000+00:00
           location: ""
@@ -5664,7 +5630,8 @@ components:
           relevant_tags:
           - relevant_tags
           - relevant_tags
-          type: regex
+          query_type: query_type
+          type: query
           tags:
             key:
               expires: 2000-01-23T04:56:07.000+00:00
@@ -5675,6 +5642,9 @@ components:
               target: target
           diamond: adversary
           valid_until: 2000-01-23T04:56:07.000+00:00
+          target_systems:
+          - target_systems
+          - target_systems
           name: name
           modified: 2000-01-23T04:56:07.000+00:00
           location: ""
@@ -5748,12 +5718,12 @@ components:
       title: IndicatorTagResponse
     IndicatorType:
       enum:
-      - regex
-      - yara
-      - forensicartifact
-      - sigma
       - query
+      - sigma
+      - regex
+      - forensicartifact
       - suricata
+      - yara
       title: IndicatorType
       type: string
     IntrusionSet-Input:
@@ -5870,6 +5840,16 @@ components:
       - tags
       title: IntrusionSet
     Investigation-Input:
+      example:
+        reference: ""
+        created: 2000-01-23T04:56:07.000+00:00
+        name: name
+        context:
+        - "{}"
+        - "{}"
+        description: ""
+        modified: 2000-01-23T04:56:07.000+00:00
+        type: investigation
       properties:
         type:
           default: investigation
@@ -5906,6 +5886,27 @@ components:
       - name
       title: Investigation
     Investigation-Output:
+      example:
+        reference: ""
+        root_type: entity
+        created: 2000-01-23T04:56:07.000+00:00
+        name: name
+        context:
+        - "{}"
+        - "{}"
+        description: ""
+        modified: 2000-01-23T04:56:07.000+00:00
+        id: id
+        related_observables_count: 0
+        type: investigation
+        tags:
+          key:
+            expires: 2000-01-23T04:56:07.000+00:00
+            last_seen: 2000-01-23T04:56:07.000+00:00
+            source: source
+            id: id
+            fresh: true
+            target: target
       properties:
         type:
           default: investigation
@@ -6438,15 +6439,6 @@ components:
       - merged
       title: MergeTagResult
     Mutex-Input:
-      example:
-        created: 2000-01-23T04:56:07.000+00:00
-        context:
-        - "{}"
-        - "{}"
-        last_analysis:
-          key: 2000-01-23T04:56:07.000+00:00
-        type: mutex
-        value: value
       properties:
         value:
           minLength: 1
@@ -6477,25 +6469,6 @@ components:
       - value
       title: Mutex
     Mutex-Output:
-      example:
-        root_type: observable
-        created: 2000-01-23T04:56:07.000+00:00
-        context:
-        - "{}"
-        - "{}"
-        last_analysis:
-          key: 2000-01-23T04:56:07.000+00:00
-        id: id
-        type: mutex
-        value: value
-        tags:
-          key:
-            expires: 2000-01-23T04:56:07.000+00:00
-            last_seen: 2000-01-23T04:56:07.000+00:00
-            source: source
-            id: id
-            fresh: true
-            target: target
       properties:
         value:
           minLength: 1
@@ -6625,7 +6598,7 @@ components:
       additionalProperties: {}
       example:
         observables:
-        - type: mutex
+        - type: cidr
           value: value
           tags:
           - tags
@@ -6633,7 +6606,7 @@ components:
           - tags
           - tags
           - tags
-        - type: mutex
+        - type: cidr
           value: value
           tags:
           - tags
@@ -6671,10 +6644,7 @@ components:
       additionalProperties: {}
       example:
         entity:
-          identity_class: ""
-          sectors:
-          - sectors
-          - sectors
+          reference: ""
           created: 2000-01-23T04:56:07.000+00:00
           name: name
           context:
@@ -6682,8 +6652,7 @@ components:
           - "{}"
           description: ""
           modified: 2000-01-23T04:56:07.000+00:00
-          contact_information: ""
-          type: identity
+          type: investigation
         tags:
         - tags
         - tags
@@ -6722,8 +6691,8 @@ components:
           template_name: template_name
           name: name
           acts_on:
-          - mutex
-          - mutex
+          - cidr
+          - cidr
           include_tags:
           - include_tags
           - include_tags
@@ -6744,7 +6713,7 @@ components:
           - "{}"
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
-          type: mutex
+          type: cidr
           value: value
         tags:
         - tags
@@ -6767,22 +6736,26 @@ components:
       additionalProperties: {}
       example:
         indicator:
-          diamond: adversary
-          valid_until: 2000-01-23T04:56:07.000+00:00
           created: 2000-01-23T04:56:07.000+00:00
-          name: name
           pattern: pattern
           description: ""
-          modified: 2000-01-23T04:56:07.000+00:00
           valid_from: 2000-01-23T04:56:07.000+00:00
+          relevant_tags:
+          - relevant_tags
+          - relevant_tags
+          query_type: query_type
+          type: query
+          diamond: adversary
+          valid_until: 2000-01-23T04:56:07.000+00:00
+          target_systems:
+          - target_systems
+          - target_systems
+          name: name
+          modified: 2000-01-23T04:56:07.000+00:00
           location: ""
           kill_chain_phases:
           - kill_chain_phases
           - kill_chain_phases
-          relevant_tags:
-          - relevant_tags
-          - relevant_tags
-          type: regex
       properties:
         indicator:
           $ref: '#/components/schemas/Indicator_1'
@@ -6792,7 +6765,7 @@ components:
     NewObservableRequest:
       additionalProperties: {}
       example:
-        type: mutex
+        type: cidr
         value: value
         tags:
         - tags
@@ -7025,7 +6998,7 @@ components:
           - ""
         count: 0
         page: 6
-        type: mutex
+        type: cidr
       properties:
         query:
           additionalProperties:
@@ -7060,7 +7033,7 @@ components:
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
           id: id
-          type: mutex
+          type: cidr
           value: value
           tags:
             key:
@@ -7078,7 +7051,7 @@ components:
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
           id: id
-          type: mutex
+          type: cidr
           value: value
           tags:
             key:
@@ -7155,36 +7128,36 @@ components:
       title: ObservableTagResponse
     ObservableType-Input:
       enum:
-      - mutex
-      - md5
-      - jarm
-      - mac_address
-      - named_pipe
-      - sha1
-      - tlsh
-      - package
-      - hostname
-      - generic
-      - url
-      - ssdeep
-      - registry_key
-      - asn
-      - ipv4
-      - file
-      - user_account
       - cidr
-      - email
-      - wallet
-      - iban
-      - imphash
-      - path
-      - user_agent
-      - command_line
-      - sha256
-      - docker_image
+      - hostname
+      - mac_address
       - certificate
       - ipv6
+      - user_account
+      - ssdeep
       - bic
+      - package
+      - sha256
+      - docker_image
+      - email
+      - jarm
+      - file
+      - mutex
+      - iban
+      - command_line
+      - url
+      - registry_key
+      - path
+      - ipv4
+      - tlsh
+      - generic
+      - sha1
+      - user_agent
+      - wallet
+      - md5
+      - imphash
+      - asn
+      - named_pipe
       - ja3
       - guess
       title: ObservableType
@@ -7350,10 +7323,7 @@ components:
       additionalProperties: {}
       example:
         entity:
-          identity_class: ""
-          sectors:
-          - sectors
-          - sectors
+          reference: ""
           created: 2000-01-23T04:56:07.000+00:00
           name: name
           context:
@@ -7361,8 +7331,7 @@ components:
           - "{}"
           description: ""
           modified: 2000-01-23T04:56:07.000+00:00
-          contact_information: ""
-          type: identity
+          type: investigation
       properties:
         entity:
           $ref: '#/components/schemas/Entity_1'
@@ -7390,8 +7359,8 @@ components:
           template_name: template_name
           name: name
           acts_on:
-          - mutex
-          - mutex
+          - cidr
+          - cidr
           include_tags:
           - include_tags
           - include_tags
@@ -7406,22 +7375,26 @@ components:
       additionalProperties: {}
       example:
         indicator:
-          diamond: adversary
-          valid_until: 2000-01-23T04:56:07.000+00:00
           created: 2000-01-23T04:56:07.000+00:00
-          name: name
           pattern: pattern
           description: ""
-          modified: 2000-01-23T04:56:07.000+00:00
           valid_from: 2000-01-23T04:56:07.000+00:00
+          relevant_tags:
+          - relevant_tags
+          - relevant_tags
+          query_type: query_type
+          type: query
+          diamond: adversary
+          valid_until: 2000-01-23T04:56:07.000+00:00
+          target_systems:
+          - target_systems
+          - target_systems
+          name: name
+          modified: 2000-01-23T04:56:07.000+00:00
           location: ""
           kill_chain_phases:
           - kill_chain_phases
           - kill_chain_phases
-          relevant_tags:
-          - relevant_tags
-          - relevant_tags
-          type: regex
       properties:
         indicator:
           $ref: '#/components/schemas/Indicator_1'
@@ -7438,7 +7411,7 @@ components:
           - "{}"
           last_analysis:
             key: 2000-01-23T04:56:07.000+00:00
-          type: mutex
+          type: cidr
           value: value
       properties:
         observable:
@@ -7557,26 +7530,6 @@ components:
       - name
       title: Phone
     Phone-Output:
-      example:
-        root_type: entity
-        created: 2000-01-23T04:56:07.000+00:00
-        name: name
-        context:
-        - "{}"
-        - "{}"
-        description: ""
-        modified: 2000-01-23T04:56:07.000+00:00
-        id: id
-        related_observables_count: 0
-        type: phone
-        tags:
-          key:
-            expires: 2000-01-23T04:56:07.000+00:00
-            last_seen: 2000-01-23T04:56:07.000+00:00
-            source: source
-            id: id
-            fresh: true
-            target: target
       properties:
         type:
           default: phone
@@ -7633,6 +7586,27 @@ components:
       title: Phone
     Query-Input:
       description: Represents a query that can be sent to another system.
+      example:
+        created: 2000-01-23T04:56:07.000+00:00
+        pattern: pattern
+        description: ""
+        valid_from: 2000-01-23T04:56:07.000+00:00
+        relevant_tags:
+        - relevant_tags
+        - relevant_tags
+        query_type: query_type
+        type: query
+        diamond: adversary
+        valid_until: 2000-01-23T04:56:07.000+00:00
+        target_systems:
+        - target_systems
+        - target_systems
+        name: name
+        modified: 2000-01-23T04:56:07.000+00:00
+        location: ""
+        kill_chain_phases:
+        - kill_chain_phases
+        - kill_chain_phases
       properties:
         name:
           title: Name
@@ -7813,23 +7787,6 @@ components:
       - tags
       title: Query
     Regex-Input:
-      example:
-        diamond: adversary
-        valid_until: 2000-01-23T04:56:07.000+00:00
-        created: 2000-01-23T04:56:07.000+00:00
-        name: name
-        pattern: pattern
-        description: ""
-        modified: 2000-01-23T04:56:07.000+00:00
-        valid_from: 2000-01-23T04:56:07.000+00:00
-        location: ""
-        kill_chain_phases:
-        - kill_chain_phases
-        - kill_chain_phases
-        relevant_tags:
-        - relevant_tags
-        - relevant_tags
-        type: regex
       properties:
         name:
           title: Name
@@ -7886,33 +7843,6 @@ components:
       - pattern
       title: Regex
     Regex-Output:
-      example:
-        root_type: indicator
-        created: 2000-01-23T04:56:07.000+00:00
-        pattern: pattern
-        description: ""
-        valid_from: 2000-01-23T04:56:07.000+00:00
-        relevant_tags:
-        - relevant_tags
-        - relevant_tags
-        type: regex
-        tags:
-          key:
-            expires: 2000-01-23T04:56:07.000+00:00
-            last_seen: 2000-01-23T04:56:07.000+00:00
-            source: source
-            id: id
-            fresh: true
-            target: target
-        diamond: adversary
-        valid_until: 2000-01-23T04:56:07.000+00:00
-        name: name
-        modified: 2000-01-23T04:56:07.000+00:00
-        location: ""
-        kill_chain_phases:
-        - kill_chain_phases
-        - kill_chain_phases
-        id: id
       properties:
         name:
           title: Name
@@ -8718,6 +8648,40 @@ components:
         Represents a Suricata rule.
 
         Parsing and matching is yet TODO.
+      example:
+        metadata:
+        - metadata
+        - metadata
+        references:
+        - references
+        - references
+        root_type: indicator
+        created: 2000-01-23T04:56:07.000+00:00
+        pattern: pattern
+        description: ""
+        valid_from: 2000-01-23T04:56:07.000+00:00
+        relevant_tags:
+        - relevant_tags
+        - relevant_tags
+        type: suricata
+        sid: 0
+        tags:
+          key:
+            expires: 2000-01-23T04:56:07.000+00:00
+            last_seen: 2000-01-23T04:56:07.000+00:00
+            source: source
+            id: id
+            fresh: true
+            target: target
+        diamond: adversary
+        valid_until: 2000-01-23T04:56:07.000+00:00
+        name: name
+        modified: 2000-01-23T04:56:07.000+00:00
+        location: ""
+        kill_chain_phases:
+        - kill_chain_phases
+        - kill_chain_phases
+        id: id
       properties:
         name:
           title: Name
@@ -9415,6 +9379,33 @@ components:
       - name
       title: Tool
     Tool-Output:
+      example:
+        aliases:
+        - aliases
+        - aliases
+        root_type: entity
+        created: 2000-01-23T04:56:07.000+00:00
+        description: ""
+        related_observables_count: 0
+        type: tool
+        tags:
+          key:
+            expires: 2000-01-23T04:56:07.000+00:00
+            last_seen: 2000-01-23T04:56:07.000+00:00
+            source: source
+            id: id
+            fresh: true
+            target: target
+        tool_version: ""
+        name: name
+        context:
+        - "{}"
+        - "{}"
+        modified: 2000-01-23T04:56:07.000+00:00
+        kill_chain_phases:
+        - kill_chain_phases
+        - kill_chain_phases
+        id: id
       properties:
         type:
           default: tool
@@ -9543,6 +9534,25 @@ components:
       - value
       title: Url
     Url-Output:
+      example:
+        root_type: observable
+        created: 2000-01-23T04:56:07.000+00:00
+        context:
+        - "{}"
+        - "{}"
+        last_analysis:
+          key: 2000-01-23T04:56:07.000+00:00
+        id: id
+        type: url
+        value: value
+        tags:
+          key:
+            expires: 2000-01-23T04:56:07.000+00:00
+            last_seen: 2000-01-23T04:56:07.000+00:00
+            source: source
+            id: id
+            fresh: true
+            target: target
       properties:
         value:
           minLength: 1
@@ -10335,316 +10345,316 @@ components:
       title: Yara
     Response_New_Api_V2_Observables__Post:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response New Api V2 Observables  Post
     Response_New_Extended_Api_V2_Observables_Extended_Post:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response New Extended Api V2 Observables Extended Post
     Response_Details_Api_V2_Observables__Observable_Id__Get:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response Details Api V2 Observables  Observable Id  Get
     Response_Patch_Api_V2_Observables__Observable_Id__Patch:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response Patch Api V2 Observables  Observable Id  Patch
     Response_Add_Context_Api_V2_Observables__Observable_Id__Context_Post:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response Add Context Api V2 Observables  Observable Id  Context Post
     Response_Delete_Context_Api_V2_Observables__Observable_Id__Context_Delete_Post:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response Delete Context Api V2 Observables  Observable Id  Context Delete
         Post
     Response_Add_Text_Api_V2_Observables_Add_Text_Post:
       anyOf:
-      - $ref: '#/components/schemas/IPv6-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Certificate-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
       - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Certificate-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/Generic-Output'
       - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/JA3-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/BIC-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
       - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/Path-Output'
       - $ref: '#/components/schemas/ASN-Output'
       - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/CIDR-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
       - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/JA3-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
       title: Response Add Text Api V2 Observables Add Text Post
     Response_New_Api_V2_Entities__Post:
       anyOf:
-      - $ref: '#/components/schemas/Phone-Output'
-      - $ref: '#/components/schemas/ThreatActor-Output'
-      - $ref: '#/components/schemas/IntrusionSet-Output'
-      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Tool-Output'
-      - $ref: '#/components/schemas/Campaign-Output'
-      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Malware-Output'
+      - $ref: '#/components/schemas/IntrusionSet-Output'
+      - $ref: '#/components/schemas/Investigation-Output'
+      - $ref: '#/components/schemas/ThreatActor-Output'
+      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/AttackPattern-Output'
+      - $ref: '#/components/schemas/Company-Output'
+      - $ref: '#/components/schemas/Phone-Output'
+      - $ref: '#/components/schemas/Campaign-Output'
       - $ref: '#/components/schemas/CourseOfAction-Output'
       - $ref: '#/components/schemas/Note-Output'
-      - $ref: '#/components/schemas/Company-Output'
-      - $ref: '#/components/schemas/Investigation-Output'
-      - $ref: '#/components/schemas/AttackPattern-Output'
       title: Response New Api V2 Entities  Post
     Response_Details_Api_V2_Entities__Entity_Id__Get:
       anyOf:
-      - $ref: '#/components/schemas/Phone-Output'
-      - $ref: '#/components/schemas/ThreatActor-Output'
-      - $ref: '#/components/schemas/IntrusionSet-Output'
-      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Tool-Output'
-      - $ref: '#/components/schemas/Campaign-Output'
-      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Malware-Output'
+      - $ref: '#/components/schemas/IntrusionSet-Output'
+      - $ref: '#/components/schemas/Investigation-Output'
+      - $ref: '#/components/schemas/ThreatActor-Output'
+      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/AttackPattern-Output'
+      - $ref: '#/components/schemas/Company-Output'
+      - $ref: '#/components/schemas/Phone-Output'
+      - $ref: '#/components/schemas/Campaign-Output'
       - $ref: '#/components/schemas/CourseOfAction-Output'
       - $ref: '#/components/schemas/Note-Output'
-      - $ref: '#/components/schemas/Company-Output'
-      - $ref: '#/components/schemas/Investigation-Output'
-      - $ref: '#/components/schemas/AttackPattern-Output'
       title: Response Details Api V2 Entities  Entity Id  Get
     Response_Patch_Api_V2_Entities__Entity_Id__Patch:
       anyOf:
-      - $ref: '#/components/schemas/Phone-Output'
-      - $ref: '#/components/schemas/ThreatActor-Output'
-      - $ref: '#/components/schemas/IntrusionSet-Output'
-      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Tool-Output'
-      - $ref: '#/components/schemas/Campaign-Output'
-      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Malware-Output'
+      - $ref: '#/components/schemas/IntrusionSet-Output'
+      - $ref: '#/components/schemas/Investigation-Output'
+      - $ref: '#/components/schemas/ThreatActor-Output'
+      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/AttackPattern-Output'
+      - $ref: '#/components/schemas/Company-Output'
+      - $ref: '#/components/schemas/Phone-Output'
+      - $ref: '#/components/schemas/Campaign-Output'
       - $ref: '#/components/schemas/CourseOfAction-Output'
       - $ref: '#/components/schemas/Note-Output'
-      - $ref: '#/components/schemas/Company-Output'
-      - $ref: '#/components/schemas/Investigation-Output'
-      - $ref: '#/components/schemas/AttackPattern-Output'
       title: Response Patch Api V2 Entities  Entity Id  Patch
     Response_New_Api_V2_Indicators__Post:
       anyOf:
-      - $ref: '#/components/schemas/Query-Output'
-      - $ref: '#/components/schemas/ForensicArtifact-Output'
-      - $ref: '#/components/schemas/Yara-Output'
       - $ref: '#/components/schemas/Suricata-Output'
+      - $ref: '#/components/schemas/Yara-Output'
+      - $ref: '#/components/schemas/ForensicArtifact-Output'
       - $ref: '#/components/schemas/Regex-Output'
+      - $ref: '#/components/schemas/Query-Output'
       - $ref: '#/components/schemas/Sigma-Output'
       title: Response New Api V2 Indicators  Post
     Response_Details_Api_V2_Indicators__Indicator_Id__Get:
       anyOf:
-      - $ref: '#/components/schemas/Query-Output'
-      - $ref: '#/components/schemas/ForensicArtifact-Output'
-      - $ref: '#/components/schemas/Yara-Output'
       - $ref: '#/components/schemas/Suricata-Output'
+      - $ref: '#/components/schemas/Yara-Output'
+      - $ref: '#/components/schemas/ForensicArtifact-Output'
       - $ref: '#/components/schemas/Regex-Output'
+      - $ref: '#/components/schemas/Query-Output'
       - $ref: '#/components/schemas/Sigma-Output'
       title: Response Details Api V2 Indicators  Indicator Id  Get
     Response_Patch_Api_V2_Indicators__Indicator_Id__Patch:
       anyOf:
-      - $ref: '#/components/schemas/Query-Output'
-      - $ref: '#/components/schemas/ForensicArtifact-Output'
-      - $ref: '#/components/schemas/Yara-Output'
       - $ref: '#/components/schemas/Suricata-Output'
+      - $ref: '#/components/schemas/Yara-Output'
+      - $ref: '#/components/schemas/ForensicArtifact-Output'
       - $ref: '#/components/schemas/Regex-Output'
+      - $ref: '#/components/schemas/Query-Output'
       - $ref: '#/components/schemas/Sigma-Output'
       title: Response Patch Api V2 Indicators  Indicator Id  Patch
     Response_New_From_Yaml_Api_V2_Dfiq_From_Yaml_Post:
@@ -10692,36 +10702,36 @@ components:
       title: Response Toggle Api V2 Tasks  Task Name  Toggle Post
     Added_inner:
       anyOf:
-      - $ref: '#/components/schemas/Mutex-Output'
-      - $ref: '#/components/schemas/MD5-Output'
-      - $ref: '#/components/schemas/JARM-Output'
-      - $ref: '#/components/schemas/MacAddress-Output'
-      - $ref: '#/components/schemas/NamedPipe-Output'
-      - $ref: '#/components/schemas/SHA1-Output'
-      - $ref: '#/components/schemas/TLSH-Output'
-      - $ref: '#/components/schemas/Package-Output'
-      - $ref: '#/components/schemas/Hostname-Output'
-      - $ref: '#/components/schemas/Generic-Output'
-      - $ref: '#/components/schemas/Url-Output'
-      - $ref: '#/components/schemas/Ssdeep-Output'
-      - $ref: '#/components/schemas/RegistryKey-Output'
-      - $ref: '#/components/schemas/ASN-Output'
-      - $ref: '#/components/schemas/IPv4-Output'
-      - $ref: '#/components/schemas/File-Output'
-      - $ref: '#/components/schemas/UserAccount-Output'
       - $ref: '#/components/schemas/CIDR-Output'
-      - $ref: '#/components/schemas/Email-Output'
-      - $ref: '#/components/schemas/Wallet-Output'
-      - $ref: '#/components/schemas/IBAN-Output'
-      - $ref: '#/components/schemas/Imphash-Output'
-      - $ref: '#/components/schemas/Path-Output'
-      - $ref: '#/components/schemas/UserAgent-Output'
-      - $ref: '#/components/schemas/CommandLine-Output'
-      - $ref: '#/components/schemas/SHA256-Output'
-      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/Hostname-Output'
+      - $ref: '#/components/schemas/MacAddress-Output'
       - $ref: '#/components/schemas/Certificate-Output'
       - $ref: '#/components/schemas/IPv6-Output'
+      - $ref: '#/components/schemas/UserAccount-Output'
+      - $ref: '#/components/schemas/Ssdeep-Output'
       - $ref: '#/components/schemas/BIC-Output'
+      - $ref: '#/components/schemas/Package-Output'
+      - $ref: '#/components/schemas/SHA256-Output'
+      - $ref: '#/components/schemas/DockerImage-Output'
+      - $ref: '#/components/schemas/Email-Output'
+      - $ref: '#/components/schemas/JARM-Output'
+      - $ref: '#/components/schemas/File-Output'
+      - $ref: '#/components/schemas/Mutex-Output'
+      - $ref: '#/components/schemas/IBAN-Output'
+      - $ref: '#/components/schemas/CommandLine-Output'
+      - $ref: '#/components/schemas/Url-Output'
+      - $ref: '#/components/schemas/RegistryKey-Output'
+      - $ref: '#/components/schemas/Path-Output'
+      - $ref: '#/components/schemas/IPv4-Output'
+      - $ref: '#/components/schemas/TLSH-Output'
+      - $ref: '#/components/schemas/Generic-Output'
+      - $ref: '#/components/schemas/SHA1-Output'
+      - $ref: '#/components/schemas/UserAgent-Output'
+      - $ref: '#/components/schemas/Wallet-Output'
+      - $ref: '#/components/schemas/MD5-Output'
+      - $ref: '#/components/schemas/Imphash-Output'
+      - $ref: '#/components/schemas/ASN-Output'
+      - $ref: '#/components/schemas/NamedPipe-Output'
       - $ref: '#/components/schemas/JA3-Output'
     Query_value:
       anyOf:
@@ -10755,19 +10765,19 @@ components:
       - {}
     Entities_inner:
       anyOf:
-      - $ref: '#/components/schemas/Identity-Output'
-      - $ref: '#/components/schemas/Malware-Output'
-      - $ref: '#/components/schemas/Company-Output'
-      - $ref: '#/components/schemas/Campaign-Output'
-      - $ref: '#/components/schemas/AttackPattern-Output'
-      - $ref: '#/components/schemas/ThreatActor-Output'
-      - $ref: '#/components/schemas/CourseOfAction-Output'
-      - $ref: '#/components/schemas/Note-Output'
-      - $ref: '#/components/schemas/Vulnerability-Output'
-      - $ref: '#/components/schemas/Phone-Output'
-      - $ref: '#/components/schemas/Tool-Output'
-      - $ref: '#/components/schemas/IntrusionSet-Output'
       - $ref: '#/components/schemas/Investigation-Output'
+      - $ref: '#/components/schemas/CourseOfAction-Output'
+      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/IntrusionSet-Output'
+      - $ref: '#/components/schemas/Tool-Output'
+      - $ref: '#/components/schemas/ThreatActor-Output'
+      - $ref: '#/components/schemas/Campaign-Output'
+      - $ref: '#/components/schemas/Company-Output'
+      - $ref: '#/components/schemas/Malware-Output'
+      - $ref: '#/components/schemas/Phone-Output'
+      - $ref: '#/components/schemas/Note-Output'
+      - $ref: '#/components/schemas/AttackPattern-Output'
+      - $ref: '#/components/schemas/Vulnerability-Output'
     Hops:
       anyOf:
       - {}
@@ -10786,25 +10796,25 @@ components:
     Vertices_value:
       anyOf:
       - $ref: '#/components/schemas/Observable'
-      - $ref: '#/components/schemas/Identity-Output'
-      - $ref: '#/components/schemas/Malware-Output'
-      - $ref: '#/components/schemas/Company-Output'
-      - $ref: '#/components/schemas/Campaign-Output'
-      - $ref: '#/components/schemas/AttackPattern-Output'
-      - $ref: '#/components/schemas/ThreatActor-Output'
-      - $ref: '#/components/schemas/CourseOfAction-Output'
-      - $ref: '#/components/schemas/Note-Output'
-      - $ref: '#/components/schemas/Vulnerability-Output'
-      - $ref: '#/components/schemas/Phone-Output'
-      - $ref: '#/components/schemas/Tool-Output'
-      - $ref: '#/components/schemas/IntrusionSet-Output'
       - $ref: '#/components/schemas/Investigation-Output'
-      - $ref: '#/components/schemas/Regex-Output'
-      - $ref: '#/components/schemas/Yara-Output'
-      - $ref: '#/components/schemas/ForensicArtifact-Output'
-      - $ref: '#/components/schemas/Sigma-Output'
+      - $ref: '#/components/schemas/CourseOfAction-Output'
+      - $ref: '#/components/schemas/Identity-Output'
+      - $ref: '#/components/schemas/IntrusionSet-Output'
+      - $ref: '#/components/schemas/Tool-Output'
+      - $ref: '#/components/schemas/ThreatActor-Output'
+      - $ref: '#/components/schemas/Campaign-Output'
+      - $ref: '#/components/schemas/Company-Output'
+      - $ref: '#/components/schemas/Malware-Output'
+      - $ref: '#/components/schemas/Phone-Output'
+      - $ref: '#/components/schemas/Note-Output'
+      - $ref: '#/components/schemas/AttackPattern-Output'
+      - $ref: '#/components/schemas/Vulnerability-Output'
       - $ref: '#/components/schemas/Query-Output'
+      - $ref: '#/components/schemas/Sigma-Output'
+      - $ref: '#/components/schemas/Regex-Output'
+      - $ref: '#/components/schemas/ForensicArtifact-Output'
       - $ref: '#/components/schemas/Suricata-Output'
+      - $ref: '#/components/schemas/Yara-Output'
       - $ref: '#/components/schemas/Tag'
       - $ref: '#/components/schemas/Dfiq_inner'
     Paths_inner_inner:
@@ -10817,12 +10827,12 @@ components:
       - {}
     Indicators_inner:
       anyOf:
-      - $ref: '#/components/schemas/Regex-Output'
-      - $ref: '#/components/schemas/Yara-Output'
-      - $ref: '#/components/schemas/ForensicArtifact-Output'
-      - $ref: '#/components/schemas/Sigma-Output'
       - $ref: '#/components/schemas/Query-Output'
+      - $ref: '#/components/schemas/Sigma-Output'
+      - $ref: '#/components/schemas/Regex-Output'
+      - $ref: '#/components/schemas/ForensicArtifact-Output'
       - $ref: '#/components/schemas/Suricata-Output'
+      - $ref: '#/components/schemas/Yara-Output'
     Entity_1:
       discriminator:
         mapping:
@@ -10841,52 +10851,52 @@ components:
           vulnerability: '#/components/schemas/Vulnerability-Input'
         propertyName: type
       oneOf:
-      - $ref: '#/components/schemas/Identity-Input'
-      - $ref: '#/components/schemas/Malware-Input'
-      - $ref: '#/components/schemas/Company-Input'
-      - $ref: '#/components/schemas/Campaign-Input'
-      - $ref: '#/components/schemas/AttackPattern-Input'
-      - $ref: '#/components/schemas/ThreatActor-Input'
-      - $ref: '#/components/schemas/CourseOfAction-Input'
-      - $ref: '#/components/schemas/Note-Input'
-      - $ref: '#/components/schemas/Vulnerability-Input'
-      - $ref: '#/components/schemas/Phone-Input'
-      - $ref: '#/components/schemas/Tool-Input'
-      - $ref: '#/components/schemas/IntrusionSet-Input'
       - $ref: '#/components/schemas/Investigation-Input'
+      - $ref: '#/components/schemas/CourseOfAction-Input'
+      - $ref: '#/components/schemas/Identity-Input'
+      - $ref: '#/components/schemas/IntrusionSet-Input'
+      - $ref: '#/components/schemas/Tool-Input'
+      - $ref: '#/components/schemas/ThreatActor-Input'
+      - $ref: '#/components/schemas/Campaign-Input'
+      - $ref: '#/components/schemas/Company-Input'
+      - $ref: '#/components/schemas/Malware-Input'
+      - $ref: '#/components/schemas/Phone-Input'
+      - $ref: '#/components/schemas/Note-Input'
+      - $ref: '#/components/schemas/AttackPattern-Input'
+      - $ref: '#/components/schemas/Vulnerability-Input'
       title: Entity
     Observable_1:
       anyOf:
-      - $ref: '#/components/schemas/Mutex-Input'
-      - $ref: '#/components/schemas/MD5-Input'
-      - $ref: '#/components/schemas/JARM-Input'
-      - $ref: '#/components/schemas/MacAddress-Input'
-      - $ref: '#/components/schemas/NamedPipe-Input'
-      - $ref: '#/components/schemas/SHA1-Input'
-      - $ref: '#/components/schemas/TLSH-Input'
-      - $ref: '#/components/schemas/Package-Input'
-      - $ref: '#/components/schemas/Hostname-Input'
-      - $ref: '#/components/schemas/Generic-Input'
-      - $ref: '#/components/schemas/Url-Input'
-      - $ref: '#/components/schemas/Ssdeep-Input'
-      - $ref: '#/components/schemas/RegistryKey-Input'
-      - $ref: '#/components/schemas/ASN-Input'
-      - $ref: '#/components/schemas/IPv4-Input'
-      - $ref: '#/components/schemas/File-Input'
-      - $ref: '#/components/schemas/UserAccount-Input'
       - $ref: '#/components/schemas/CIDR-Input'
-      - $ref: '#/components/schemas/Email-Input'
-      - $ref: '#/components/schemas/Wallet-Input'
-      - $ref: '#/components/schemas/IBAN-Input'
-      - $ref: '#/components/schemas/Imphash-Input'
-      - $ref: '#/components/schemas/Path-Input'
-      - $ref: '#/components/schemas/UserAgent-Input'
-      - $ref: '#/components/schemas/CommandLine-Input'
-      - $ref: '#/components/schemas/SHA256-Input'
-      - $ref: '#/components/schemas/DockerImage-Input'
+      - $ref: '#/components/schemas/Hostname-Input'
+      - $ref: '#/components/schemas/MacAddress-Input'
       - $ref: '#/components/schemas/Certificate-Input'
       - $ref: '#/components/schemas/IPv6-Input'
+      - $ref: '#/components/schemas/UserAccount-Input'
+      - $ref: '#/components/schemas/Ssdeep-Input'
       - $ref: '#/components/schemas/BIC-Input'
+      - $ref: '#/components/schemas/Package-Input'
+      - $ref: '#/components/schemas/SHA256-Input'
+      - $ref: '#/components/schemas/DockerImage-Input'
+      - $ref: '#/components/schemas/Email-Input'
+      - $ref: '#/components/schemas/JARM-Input'
+      - $ref: '#/components/schemas/File-Input'
+      - $ref: '#/components/schemas/Mutex-Input'
+      - $ref: '#/components/schemas/IBAN-Input'
+      - $ref: '#/components/schemas/CommandLine-Input'
+      - $ref: '#/components/schemas/Url-Input'
+      - $ref: '#/components/schemas/RegistryKey-Input'
+      - $ref: '#/components/schemas/Path-Input'
+      - $ref: '#/components/schemas/IPv4-Input'
+      - $ref: '#/components/schemas/TLSH-Input'
+      - $ref: '#/components/schemas/Generic-Input'
+      - $ref: '#/components/schemas/SHA1-Input'
+      - $ref: '#/components/schemas/UserAgent-Input'
+      - $ref: '#/components/schemas/Wallet-Input'
+      - $ref: '#/components/schemas/MD5-Input'
+      - $ref: '#/components/schemas/Imphash-Input'
+      - $ref: '#/components/schemas/ASN-Input'
+      - $ref: '#/components/schemas/NamedPipe-Input'
       - $ref: '#/components/schemas/JA3-Input'
       title: Observable
       discriminant: type
@@ -10901,12 +10911,12 @@ components:
           yara: '#/components/schemas/Yara-Input'
         propertyName: type
       oneOf:
-      - $ref: '#/components/schemas/Regex-Input'
-      - $ref: '#/components/schemas/Yara-Input'
-      - $ref: '#/components/schemas/ForensicArtifact-Input'
-      - $ref: '#/components/schemas/Sigma-Input'
       - $ref: '#/components/schemas/Query-Input'
+      - $ref: '#/components/schemas/Sigma-Input'
+      - $ref: '#/components/schemas/Regex-Input'
+      - $ref: '#/components/schemas/ForensicArtifact-Input'
       - $ref: '#/components/schemas/Suricata-Input'
+      - $ref: '#/components/schemas/Yara-Input'
       title: Indicator
     ObservableSearchRequest_type:
       anyOf:

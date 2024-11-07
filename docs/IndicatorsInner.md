@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Name** | **string** |  | 
-**Type** | Pointer to **string** |  | [optional] [default to "regex"]
+**Type** | Pointer to **string** |  | [optional] [default to "query"]
 **Description** | Pointer to **string** |  | [optional] [default to ""]
 **Created** | Pointer to **time.Time** |  | [optional] 
 **Modified** | Pointer to **time.Time** |  | [optional] 
@@ -16,14 +16,14 @@ Name | Type | Description | Notes
 **Diamond** | [**DiamondModel**](DiamondModel.md) |  | 
 **KillChainPhases** | Pointer to **[]string** |  | [optional] [default to []]
 **RelevantTags** | Pointer to **[]string** |  | [optional] [default to []]
+**QueryType** | **string** |  | 
+**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
 **Id** | **string** |  | [readonly] 
 **Tags** | [**map[string]TagRelationshipOutput**](TagRelationshipOutput.md) |  | [readonly] 
 **RootType** | **string** |  | [readonly] 
 **Sources** | Pointer to **[]map[string]interface{}** |  | [optional] [default to []]
 **Aliases** | Pointer to **[]string** |  | [optional] [default to []]
 **SupportedOs** | Pointer to **[]string** |  | [optional] [default to []]
-**QueryType** | **string** |  | 
-**TargetSystems** | Pointer to **[]string** |  | [optional] [default to []]
 **Sid** | Pointer to **int32** |  | [optional] [default to 0]
 **Metadata** | Pointer to **[]string** |  | [optional] [default to []]
 **References** | Pointer to **[]string** |  | [optional] [default to []]
@@ -32,7 +32,7 @@ Name | Type | Description | Notes
 
 ### NewIndicatorsInner
 
-`func NewIndicatorsInner(name string, pattern string, diamond DiamondModel, id string, tags map[string]TagRelationshipOutput, rootType string, queryType string, ) *IndicatorsInner`
+`func NewIndicatorsInner(name string, pattern string, diamond DiamondModel, queryType string, id string, tags map[string]TagRelationshipOutput, rootType string, ) *IndicatorsInner`
 
 NewIndicatorsInner instantiates a new IndicatorsInner object
 This constructor will assign default values to properties that have it defined,
@@ -332,6 +332,51 @@ SetRelevantTags sets RelevantTags field to given value.
 
 HasRelevantTags returns a boolean if a field has been set.
 
+### GetQueryType
+
+`func (o *IndicatorsInner) GetQueryType() string`
+
+GetQueryType returns the QueryType field if non-nil, zero value otherwise.
+
+### GetQueryTypeOk
+
+`func (o *IndicatorsInner) GetQueryTypeOk() (*string, bool)`
+
+GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetQueryType
+
+`func (o *IndicatorsInner) SetQueryType(v string)`
+
+SetQueryType sets QueryType field to given value.
+
+
+### GetTargetSystems
+
+`func (o *IndicatorsInner) GetTargetSystems() []string`
+
+GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
+
+### GetTargetSystemsOk
+
+`func (o *IndicatorsInner) GetTargetSystemsOk() (*[]string, bool)`
+
+GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetSystems
+
+`func (o *IndicatorsInner) SetTargetSystems(v []string)`
+
+SetTargetSystems sets TargetSystems field to given value.
+
+### HasTargetSystems
+
+`func (o *IndicatorsInner) HasTargetSystems() bool`
+
+HasTargetSystems returns a boolean if a field has been set.
+
 ### GetId
 
 `func (o *IndicatorsInner) GetId() string`
@@ -466,51 +511,6 @@ SetSupportedOs sets SupportedOs field to given value.
 `func (o *IndicatorsInner) HasSupportedOs() bool`
 
 HasSupportedOs returns a boolean if a field has been set.
-
-### GetQueryType
-
-`func (o *IndicatorsInner) GetQueryType() string`
-
-GetQueryType returns the QueryType field if non-nil, zero value otherwise.
-
-### GetQueryTypeOk
-
-`func (o *IndicatorsInner) GetQueryTypeOk() (*string, bool)`
-
-GetQueryTypeOk returns a tuple with the QueryType field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetQueryType
-
-`func (o *IndicatorsInner) SetQueryType(v string)`
-
-SetQueryType sets QueryType field to given value.
-
-
-### GetTargetSystems
-
-`func (o *IndicatorsInner) GetTargetSystems() []string`
-
-GetTargetSystems returns the TargetSystems field if non-nil, zero value otherwise.
-
-### GetTargetSystemsOk
-
-`func (o *IndicatorsInner) GetTargetSystemsOk() (*[]string, bool)`
-
-GetTargetSystemsOk returns a tuple with the TargetSystems field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetSystems
-
-`func (o *IndicatorsInner) SetTargetSystems(v []string)`
-
-SetTargetSystems sets TargetSystems field to given value.
-
-### HasTargetSystems
-
-`func (o *IndicatorsInner) HasTargetSystems() bool`
-
-HasTargetSystems returns a boolean if a field has been set.
 
 ### GetSid
 

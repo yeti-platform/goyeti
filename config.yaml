@@ -1,0 +1,14 @@
+---
+packageName: goyeti
+packageVersion: 1.0.0
+hideGenerationTimestamp: true
+isGoSubmodule: false
+withGoMod: true
+gitUserId: yeti-platform
+gitRepoId: goyeti
+templateDir: /local/templates
+appDescriptionWithNewLines:
+  [
+    "Go client for the Yeti API generated using OpenAPI Generator.",
+    "```\nmake update_spec YETI_INSTANCE=yeti.yourdomain.com\n```",
+  ]

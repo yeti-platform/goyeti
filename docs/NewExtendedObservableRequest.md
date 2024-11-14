@@ -1,0 +1,77 @@
+# NewExtendedObservableRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Tags** | Pointer to **[]string** |  | [optional] [default to []]
+**Observable** | [**Observable1**](Observable1.md) |  | 
+
+## Methods
+
+### NewNewExtendedObservableRequest
+
+`func NewNewExtendedObservableRequest(observable Observable1, ) *NewExtendedObservableRequest`
+
+NewNewExtendedObservableRequest instantiates a new NewExtendedObservableRequest object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewNewExtendedObservableRequestWithDefaults
+
+`func NewNewExtendedObservableRequestWithDefaults() *NewExtendedObservableRequest`
+
+NewNewExtendedObservableRequestWithDefaults instantiates a new NewExtendedObservableRequest object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetTags
+
+`func (o *NewExtendedObservableRequest) GetTags() []string`
+
+GetTags returns the Tags field if non-nil, zero value otherwise.
+
+### GetTagsOk
+
+`func (o *NewExtendedObservableRequest) GetTagsOk() (*[]string, bool)`
+
+GetTagsOk returns a tuple with the Tags field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTags
+
+`func (o *NewExtendedObservableRequest) SetTags(v []string)`
+
+SetTags sets Tags field to given value.
+
+### HasTags
+
+`func (o *NewExtendedObservableRequest) HasTags() bool`
+
+HasTags returns a boolean if a field has been set.
+
+### GetObservable
+
+`func (o *NewExtendedObservableRequest) GetObservable() Observable1`
+
+GetObservable returns the Observable field if non-nil, zero value otherwise.
+
+### GetObservableOk
+
+`func (o *NewExtendedObservableRequest) GetObservableOk() (*Observable1, bool)`
+
+GetObservableOk returns a tuple with the Observable field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetObservable
+
+`func (o *NewExtendedObservableRequest) SetObservable(v Observable1)`
+
+SetObservable sets Observable field to given value.
+
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

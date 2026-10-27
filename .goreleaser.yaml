@@ -1,0 +1,27 @@
+version: 2
+
+builds:
+  - main: ./cmd/yeti
+    binary: yeti
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X github.com/yeti-platform/goyeti/yeti.Version={{.Version}}
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - LICENSE
+      - README.md
+      - skill/yeti/SKILL.md
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  use: github

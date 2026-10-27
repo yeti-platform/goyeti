@@ -1,0 +1,1 @@
+{"bundle":"private rule emotet_strings { strings: $a = \"emotet\" condition: $a }\n\nrule emotet_loader { condition: emotet_strings and filesize < 2MB }\n\n"}

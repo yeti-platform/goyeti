@@ -66,6 +66,10 @@ tools, `--tier admin` all of them. Each MCP tool carries the matching
 annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`) so MCP hosts
 can apply their own approval rules too.
 
+`yeti mcp` speaks stdio only. A streamable-HTTP server would answer anyone who
+can reach its port with the API key it was started with, so it waits until it
+can authenticate each MCP client.
+
 A tier is a ceiling the client enforces, not a permission: Yeti still checks
 the user's roles on every request.
 
@@ -82,7 +86,9 @@ the user's roles on every request.
 | `yara-bundle` | A compilable YARA bundle for rules given by reference or tag, dependencies included. | `POST /indicators/yara/bundle` |
 | `types` | The object types this server knows, by family. | `GET /system/types` |
 
-`lookup` never adds unknown values, although `/graph/match` can.
+`lookup` never adds unknown values, although `/graph/match` can. It refangs
+defanged values (`evil[.]example[.]com`, `hxxp://`) and reports the value it
+looked up as `normalized`.
 
 ### mutate (milestone 2)
 
@@ -115,8 +121,12 @@ pays for every token.
   type, name or value, tag names, description truncated to a line). Full
   objects come from `get`.
 - **No silent truncation.** Every list has a limit (`--limit`, defaults per
-  operation). When results are cut, `"truncated": {"omitted": N}` says how many
-  were left out and how to ask for them.
+  operation). When results are cut, `"truncated": {"omitted": N, "hint": …}`
+  says how many were left out and how to ask for them. Lists inside a result,
+  like a looked-up value's entities, report what they cut in that result's
+  `"omitted"`.
+- **Warnings.** `"warnings"` lists problems that didn't stop the operation,
+  e.g. semantic search being unavailable on the server.
 - **Deterministic.** The same data gives the same output, in the same order.
 
 ## Authentication and configuration
@@ -151,13 +161,14 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 - **A bounded investigation endpoint.** `neighbors` maps onto `/graph/search`
   today; yeti#1338 (draft) is the server half of a richer version.
 - **Per-value grouping in `/graph/match`.** It returns flat lists, which the
-  client regroups by value.
+  client regroups by value. It also lists each entity once across all values,
+  so an entity linked to two looked-up values shows up under the first only.
 
 ## Milestones
 
-1. **read**: `lookup`, `search`, `get`, `neighbors`, `yara-bundle`, `types`,
-   through the CLI and `yeti mcp`; API key authentication; SKILL.md;
-   static binaries from goreleaser.
+1. **read** (done): `lookup`, `search`, `get`, `neighbors`, `yara-bundle`,
+   `types`, through the CLI and `yeti mcp` (stdio); API key authentication;
+   SKILL.md; static binaries from goreleaser.
 2. **mutate**: `add`, `link`, `tag`, `add-context`, with `--dry-run` and
    attribution.
 3. **admin** and evals.

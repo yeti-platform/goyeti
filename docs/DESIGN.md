@@ -162,7 +162,8 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
   today; yeti#1338 (draft) is the server half of a richer version.
 - **Per-value grouping in `/graph/match`.** It returns flat lists, which the
   client regroups by value. It also lists each entity once across all values,
-  so an entity linked to two looked-up values shows up under the first only.
+  so an entity linked to two looked-up values shows up under the first only
+  (yeti#1463).
 
 ## Milestones
 

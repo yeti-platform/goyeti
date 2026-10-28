@@ -27,3 +27,34 @@ const (
 	typesDescription = "List the object types this Yeti server knows, by family: observables, entities, " +
 		"indicators and DFIQ. Use the names as target types for neighbors."
 )
+
+// The mutate tier's operations.
+const (
+	addObservablesDescription = "Add observables to Yeti: IPs, hostnames, URLs, hashes…, defanged or not. " +
+		"Values Yeti already knows are left as they are, and every value gets the tags. Yeti guesses " +
+		"each value's type unless one is given, and rejects values it doesn't recognize. Each value " +
+		"reports created, exists or failed."
+
+	addEntityDescription = "Add an entity to Yeti — a malware, threat actor, campaign, attack pattern, tool, " +
+		"vulnerability… — unless one of that type and name exists. An existing entity's fields are " +
+		"left as they are; the tags are added either way. \"yeti read types\" lists the entity types."
+
+	addIndicatorDescription = "Add an indicator to Yeti — a YARA rule, Sigma rule, regex, query… — unless one " +
+		"of that type and name exists. It needs a pattern and a diamond model vertex (adversary, " +
+		"capability, infrastructure or victim); regex and query need a location. A YARA rule takes the " +
+		"name of the rule in its pattern."
+
+	linkDescription = "Link two Yeti objects with a relationship, e.g. an IP to the malware it serves as c2 " +
+		"for, or an actor to the malware it uses. Takes the source's reference, the relationship type " +
+		"and the target's reference. Objects already linked that way are left as they are."
+
+	tagDescription = "Add tags to Yeti objects (observables, entities, indicators), given by reference. " +
+		"Tag names are normalized: lowercase, spaces become underscores. Objects that have the tags " +
+		"already are left unchanged."
+
+	untagDescription = "Remove tags from Yeti objects, given by reference. The other tags are kept."
+
+	addContextDescription = "Add context to a Yeti object: facts about it as name/value pairs, e.g. a note, " +
+		"a first-seen date or a report URL. The context's source is \"agent:<name>\", the agent's " +
+		"name, so Yeti's timeline shows which agent added it. Identical context isn't added twice."
+)

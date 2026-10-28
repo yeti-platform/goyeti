@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -89,7 +90,9 @@ func TestExitCodes(t *testing.T) {
 		{[]string{"read", "get", "not-a-reference"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"read", "get"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"read", "bogus"}, env, exitUsage, yeti.CodeUsage},
-		{[]string{"mutate", "add"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"mutate", "add", "bogus"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"admin", "delete"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"mutate", "add-context", "observables/1", "no-equals-sign"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"mcp", "--tier", "admin"}, env, exitUsage, yeti.CodeUsage},
 	} {
 		t.Run(strings.Join(tc.args, " "), func(t *testing.T) {
@@ -123,7 +126,7 @@ func TestMCPServesTheReadTier(t *testing.T) {
 	}
 	ctx := context.Background()
 	clientTransport, serverTransport := mcp.NewInMemoryTransports()
-	if _, err := newMCPServer(client).Connect(ctx, serverTransport, nil); err != nil {
+	if _, err := newMCPServer(client, "read").Connect(ctx, serverTransport, nil); err != nil {
 		t.Fatal(err)
 	}
 	session, err := mcp.NewClient(&mcp.Implementation{Name: "test"}, nil).Connect(ctx, clientTransport, nil)
@@ -163,5 +166,61 @@ func TestMCPServesTheReadTier(t *testing.T) {
 	text := result.Content[0].(*mcp.TextContent).Text
 	if e := decode(t, text); e.Error == nil || e.Error.Code != yeti.CodeUsage || e.Error.Hint == "" {
 		t.Errorf("error result %s", text)
+	}
+}
+
+func TestFailedItemsExitOne(t *testing.T) {
+	env := map[string]string{"YETI_URL": fakeYeti(t), "YETI_API_KEY": "key"}
+	out, code := runYeti(t, env, "", "mutate", "tag", "dfiq/1", "--tag", "x")
+	e := decode(t, out)
+	if code != exitFailed || e.Failed != 1 || e.Data == nil {
+		t.Errorf("exit %d: %s", code, out)
+	}
+}
+
+func TestParseFields(t *testing.T) {
+	fields, err := parseFields([]string{"note=seen in campaign X", "ports=[80,443]", "count=3", "empty=", "url=http://a.example/?q=1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := map[string]any{"note": "seen in campaign X", "ports": []any{float64(80), float64(443)}, "count": float64(3),
+		"empty": "", "url": "http://a.example/?q=1"}
+	if !reflect.DeepEqual(fields, want) {
+		t.Errorf("got %#v", fields)
+	}
+	if _, err := parseFields([]string{"=value"}); err == nil {
+		t.Error("a field without a name should be refused")
+	}
+}
+
+func TestMCPMutateTier(t *testing.T) {
+	client, err := yeti.New(yeti.Config{URL: fakeYeti(t), APIKey: "key"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+	clientTransport, serverTransport := mcp.NewInMemoryTransports()
+	if _, err := newMCPServer(client, "mutate").Connect(ctx, serverTransport, nil); err != nil {
+		t.Fatal(err)
+	}
+	session, err := mcp.NewClient(&mcp.Implementation{Name: "test"}, nil).Connect(ctx, clientTransport, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer session.Close()
+	tools, err := session.ListTools(ctx, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writing := map[string]bool{}
+	for _, tool := range tools.Tools {
+		if !tool.Annotations.ReadOnlyHint {
+			writing[tool.Name] = *tool.Annotations.DestructiveHint
+		}
+	}
+	want := map[string]bool{"add_observables": false, "add_entity": false, "add_indicator": false, "link": false,
+		"tag": false, "untag": true, "add_context": false}
+	if len(tools.Tools) != 13 || !reflect.DeepEqual(writing, want) {
+		t.Errorf("%d tools; writing tools and whether they're destructive: %v", len(tools.Tools), writing)
 	}
 }

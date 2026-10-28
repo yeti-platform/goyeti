@@ -15,21 +15,22 @@ func (a *app) mcpCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mcp",
 		Short: "Serve the operations to an MCP client over stdio",
-		Long: `Serves the operations of a tier as MCP tools over standard input and output,
-for MCP hosts such as Claude Desktop or an ADK agent. The read tier, the only
-one so far, is the default.`,
+		Long: `Serves the operations of a tier, and of the tiers below it, as MCP tools over
+standard input and output, for MCP hosts such as Claude Desktop or an ADK
+agent. --tier read, the default, serves the read operations only; --tier mutate
+adds the operations that add objects, links, tags and context.`,
 		Example: `  claude mcp add yeti -e YETI_URL=https://yeti.example.com -e YETI_API_KEY=... -- yeti mcp`,
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if tier != "read" {
+			if tier != "read" && tier != "mutate" {
 				return a.emit(nil, yeti.Meta{}, &yeti.Error{Code: yeti.CodeUsage,
-					Message: fmt.Sprintf("The %q tier isn't available yet.", tier), Hint: "Use --tier read."})
+					Message: fmt.Sprintf("%q is not an available tier.", tier), Hint: "Use --tier read or --tier mutate."})
 			}
 			client, err := a.client()
 			if err != nil {
 				return a.emit(nil, yeti.Meta{}, err)
 			}
-			return newMCPServer(client).Run(cmd.Context(), &mcp.StdioTransport{})
+			return newMCPServer(client, tier).Run(cmd.Context(), &mcp.StdioTransport{})
 		},
 	}
 	cmd.Flags().StringVar(&tier, "tier", "read", "the most powerful tier of operations to serve")
@@ -67,13 +68,68 @@ type yaraBundleInput struct {
 
 type noInput struct{}
 
+type addObservablesInput struct {
+	Values []string `json:"values" jsonschema:"the values to add: IPs, hostnames, URLs, hashes…, defanged or not"`
+	Type   string   `json:"type,omitempty" jsonschema:"the type of every value; leave it out to let Yeti guess each value's type"`
+	Tags   []string `json:"tags,omitempty" jsonschema:"tags for every value, new or existing"`
+	DryRun bool     `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
+type addEntityInput struct {
+	Type        string         `json:"type" jsonschema:"the entity type, e.g. malware, threat-actor or campaign"`
+	Name        string         `json:"name" jsonschema:"the entity's name"`
+	Description string         `json:"description,omitempty" jsonschema:"the description"`
+	Fields      map[string]any `json:"fields,omitempty" jsonschema:"other fields of the type, e.g. aliases"`
+	Tags        []string       `json:"tags,omitempty" jsonschema:"tags, whether the entity is new or existing"`
+	DryRun      bool           `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
+type addIndicatorInput struct {
+	Type        string         `json:"type" jsonschema:"the indicator type, e.g. yara, sigma, regex or query"`
+	Name        string         `json:"name" jsonschema:"the indicator's name; for YARA, the rule's name"`
+	Pattern     string         `json:"pattern" jsonschema:"the rule, regex or query itself"`
+	Diamond     string         `json:"diamond" jsonschema:"the diamond model vertex: adversary, capability, infrastructure or victim"`
+	Location    string         `json:"location,omitempty" jsonschema:"where the indicator applies, e.g. filesystem or network; needed by regex and query"`
+	Description string         `json:"description,omitempty" jsonschema:"the description"`
+	Fields      map[string]any `json:"fields,omitempty" jsonschema:"other fields of the type"`
+	Tags        []string       `json:"tags,omitempty" jsonschema:"tags, whether the indicator is new or existing"`
+	DryRun      bool           `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
+type linkInput struct {
+	Source      string `json:"source" jsonschema:"the source's reference, e.g. observables/123"`
+	LinkType    string `json:"link_type" jsonschema:"the relationship, e.g. c2, uses or delivers"`
+	Target      string `json:"target" jsonschema:"the target's reference, e.g. entities/45"`
+	Description string `json:"description,omitempty" jsonschema:"what the link means"`
+	DryRun      bool   `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
+type tagInput struct {
+	Refs   []string `json:"refs" jsonschema:"references of the objects, e.g. observables/123"`
+	Tags   []string `json:"tags" jsonschema:"the tags"`
+	DryRun bool     `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
+type addContextInput struct {
+	Ref     string         `json:"ref" jsonschema:"the object's reference, e.g. observables/123"`
+	Context map[string]any `json:"context" jsonschema:"the facts to add, as name/value pairs"`
+	DryRun  bool           `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
 // readOnly annotates tools that never change anything in Yeti.
 func readOnly(title string) *mcp.ToolAnnotations {
 	closed := false
 	return &mcp.ToolAnnotations{Title: title, ReadOnlyHint: true, IdempotentHint: true, OpenWorldHint: &closed}
 }
 
-func newMCPServer(c *yeti.Client) *mcp.Server {
+// writes annotates tools that change Yeti: destructive ones remove
+// something, idempotent ones change nothing more when called again.
+func writes(title string, destructive, idempotent bool) *mcp.ToolAnnotations {
+	closed := false
+	return &mcp.ToolAnnotations{Title: title, DestructiveHint: &destructive, IdempotentHint: idempotent, OpenWorldHint: &closed}
+}
+
+func newMCPServer(c *yeti.Client, tier string) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{Name: "yeti", Version: yeti.Version}, &mcp.ServerOptions{
 		Instructions: "Tools for the Yeti threat intelligence platform. Start with lookup for observable " +
 			"values (IPs, domains, hashes) and search for names and topics; follow references " +
@@ -104,7 +160,58 @@ func newMCPServer(c *yeti.Client) *mcp.Server {
 		func(ctx context.Context, _ *mcp.CallToolRequest, _ noInput) (*mcp.CallToolResult, any, error) {
 			return reply(c.Types(ctx))
 		})
+	if tier == "mutate" {
+		addMutateTools(server, c)
+	}
 	return server
+}
+
+func addMutateTools(server *mcp.Server, c *yeti.Client) {
+	mcp.AddTool(server, &mcp.Tool{Name: "add_observables", Description: addObservablesDescription, Annotations: writes("Add observables", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in addObservablesInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.AddObservables(ctx, in.Values, yeti.AddObservablesOptions{Type: in.Type, Tags: in.Tags, DryRun: in.DryRun}))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "add_entity", Description: addEntityDescription, Annotations: writes("Add an entity", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in addEntityInput) (*mcp.CallToolResult, any, error) {
+			fields := withFields(in.Fields, map[string]string{"description": in.Description})
+			return reply(c.AddEntity(ctx, in.Type, in.Name, yeti.AddObjectOptions{Fields: fields, Tags: in.Tags, DryRun: in.DryRun}))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "add_indicator", Description: addIndicatorDescription, Annotations: writes("Add an indicator", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in addIndicatorInput) (*mcp.CallToolResult, any, error) {
+			fields := withFields(in.Fields, map[string]string{"pattern": in.Pattern, "diamond": in.Diamond,
+				"location": in.Location, "description": in.Description})
+			return reply(c.AddIndicator(ctx, in.Type, in.Name, yeti.AddObjectOptions{Fields: fields, Tags: in.Tags, DryRun: in.DryRun}))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "link", Description: linkDescription, Annotations: writes("Link objects", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in linkInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Link(ctx, in.Source, in.LinkType, in.Target, in.Description, in.DryRun))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "tag", Description: tagDescription, Annotations: writes("Tag objects", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in tagInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Tag(ctx, in.Refs, in.Tags, in.DryRun))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "untag", Description: untagDescription, Annotations: writes("Untag objects", true, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in tagInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Untag(ctx, in.Refs, in.Tags, in.DryRun))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "add_context", Description: addContextDescription, Annotations: writes("Add context", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in addContextInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.AddContext(ctx, in.Ref, in.Context, in.DryRun))
+		})
+}
+
+// withFields merges the set named fields into fields.
+func withFields(fields map[string]any, named map[string]string) map[string]any {
+	merged := map[string]any{}
+	for k, v := range fields {
+		merged[k] = v
+	}
+	for k, v := range named {
+		if v != "" {
+			merged[k] = v
+		}
+	}
+	return merged
 }
 
 // reply returns an operation's outcome as a tool result: the success envelope

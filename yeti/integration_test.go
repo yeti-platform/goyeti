@@ -276,3 +276,131 @@ func TestEndToEnd(t *testing.T) {
 		}
 	})
 }
+
+func TestEndToEndMutate(t *testing.T) {
+	c := liveClient(t)
+	ctx := context.Background()
+	now := time.Now().UnixNano()
+	run := fmt.Sprintf("%d", now%1_000_000_000)
+	ip := fmt.Sprintf("10.%d.%d.%d", now%250+1, now/250%250+1, now/62500%250+1)
+	host := "mutate-" + run + ".example.com"
+	tag := "goyeti-mutate-" + run
+
+	t.Run("add observables", func(t *testing.T) {
+		dry, _, err := c.AddObservables(ctx, []string{ip}, AddObservablesOptions{DryRun: true})
+		if err != nil || !dry.DryRun || dry.Changes[0].Action != ActionCreated {
+			t.Fatalf("dry run: %+v, %v", dry, err)
+		}
+		if looked, _, _ := c.Lookup(ctx, []string{ip}, 0); looked[0].Known {
+			t.Fatal("a dry run added a value")
+		}
+
+		values := []string{ip, strings.ReplaceAll(host, ".", "[.]"), "not an observable " + run}
+		added, meta, err := c.AddObservables(ctx, values, AddObservablesOptions{Tags: []string{tag}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := actions(added); !slices.Equal(got, []string{ActionCreated, ActionCreated, ActionFailed}) || meta.Failed != 1 {
+			t.Fatalf("actions %v, meta %+v", got, meta)
+		}
+		if added.Changes[0].Type != "ipv4" || added.Changes[1].Type != "hostname" {
+			t.Errorf("guessed types: %+v", added.Changes)
+		}
+
+		again, _, err := c.AddObservables(ctx, values[:2], AddObservablesOptions{})
+		if err != nil || !slices.Equal(actions(again), []string{ActionExists, ActionExists}) {
+			t.Errorf("adding again: %+v, %v", again, err)
+		}
+		looked, _, _ := c.Lookup(ctx, []string{ip}, 0)
+		if !slices.Contains(looked[0].Tags, tag) {
+			t.Errorf("tags %v lack %s", looked[0].Tags, tag)
+		}
+	})
+
+	var entityRef string
+	t.Run("add entity", func(t *testing.T) {
+		name := "GoyetiMutate" + run
+		created, _, err := c.AddEntity(ctx, "malware", name, AddObjectOptions{Fields: map[string]any{"description": "original"}})
+		if err != nil || created.Changes[0].Action != ActionCreated {
+			t.Fatalf("create: %+v, %v", created, err)
+		}
+		entityRef = created.Changes[0].Ref
+		// Right away, before Yeti's search views have indexed it: an
+		// existing entity must be found, not created again over itself.
+		again, _, err := c.AddEntity(ctx, "malware", name, AddObjectOptions{Fields: map[string]any{"description": "overwritten"}, Tags: []string{tag}})
+		if err != nil || again.Changes[0].Action != ActionExists || again.Changes[0].Ref != entityRef {
+			t.Fatalf("adding again: %+v, %v", again, err)
+		}
+		obj, _, err := c.Get(ctx, entityRef)
+		if err != nil || obj["description"] != "original" {
+			t.Errorf("the existing entity changed: %v, %v", obj["description"], err)
+		}
+		if !slices.Contains(tagNames(obj["tags"]), tag) {
+			t.Errorf("tags %v lack %s", tagNames(obj["tags"]), tag)
+		}
+	})
+
+	t.Run("add indicator", func(t *testing.T) {
+		name := "goyeti_mutate_" + run
+		fields := map[string]any{"pattern": "goyeti-" + run, "diamond": "infrastructure", "location": "network"}
+		created, _, err := c.AddIndicator(ctx, "regex", name, AddObjectOptions{Fields: fields, Tags: []string{tag}})
+		if err != nil || created.Changes[0].Action != ActionCreated {
+			t.Fatalf("create: %+v, %v", created, err)
+		}
+		again, _, err := c.AddIndicator(ctx, "regex", name, AddObjectOptions{Fields: fields})
+		if err != nil || again.Changes[0].Action != ActionExists {
+			t.Errorf("adding again: %+v, %v", again, err)
+		}
+		_, _, err = c.AddIndicator(ctx, "yara", "broken_"+run, AddObjectOptions{Fields: map[string]any{
+			"pattern": "rule broken_" + run + " { condition: missing_" + run + " }", "diamond": "capability"}})
+		var yetiErr *Error
+		if !errors.As(err, &yetiErr) || yetiErr.Code != CodeInvalidRequest || !strings.Contains(yetiErr.Message, "missing_"+run) {
+			t.Errorf("an invalid rule: %v", err)
+		}
+	})
+
+	t.Run("link", func(t *testing.T) {
+		looked, _, _ := c.Lookup(ctx, []string{ip}, 0)
+		ipRef := looked[0].Ref
+		linked, _, err := c.Link(ctx, ipRef, "c2", entityRef, "", false)
+		if err != nil || linked.Changes[0].Action != ActionLinked {
+			t.Fatalf("link: %+v, %v", linked, err)
+		}
+		again, _, err := c.Link(ctx, ipRef, "c2", entityRef, "", false)
+		if err != nil || again.Changes[0].Action != ActionExists || again.Changes[0].Ref != linked.Changes[0].Ref {
+			t.Errorf("linking again: %+v, %v", again, err)
+		}
+		around, _, _ := c.Neighbors(ctx, entityRef, NeighborsOptions{})
+		if n, ok := find(around.Neighbors, ipRef); !ok || n.Link != "c2" {
+			t.Errorf("neighbors %+v lack %s", around.Neighbors, ipRef)
+		}
+	})
+
+	t.Run("tag and untag", func(t *testing.T) {
+		looked, _, _ := c.Lookup(ctx, []string{ip}, 0)
+		ipRef := looked[0].Ref
+		tagged, _, err := c.Tag(ctx, []string{ipRef}, []string{"Second Tag"}, false)
+		if err != nil || tagged.Changes[0].Action != ActionTagged || !slices.Contains(tagged.Changes[0].Tags, "second_tag") {
+			t.Fatalf("tag: %+v, %v", tagged, err)
+		}
+		untagged, _, err := c.Untag(ctx, []string{ipRef}, []string{"second tag"}, false)
+		if err != nil || untagged.Changes[0].Action != ActionUntagged {
+			t.Fatalf("untag: %+v, %v", untagged, err)
+		}
+		looked, _, _ = c.Lookup(ctx, []string{ip}, 0)
+		if slices.Contains(looked[0].Tags, "second_tag") || !slices.Contains(looked[0].Tags, tag) {
+			t.Errorf("tags after untagging: %v", looked[0].Tags)
+		}
+	})
+
+	t.Run("add context", func(t *testing.T) {
+		added, _, err := c.AddContext(ctx, entityRef, map[string]any{"run": run}, false)
+		if err != nil || added.Changes[0].Action != ActionAdded {
+			t.Fatalf("add context: %+v, %v", added, err)
+		}
+		obj, _, _ := c.Get(ctx, entityRef)
+		if sources := contextSources(obj["context"]); !slices.Contains(sources, "agent:goyeti-e2e") {
+			t.Errorf("context sources %v", sources)
+		}
+	})
+}

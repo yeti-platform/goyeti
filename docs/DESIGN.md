@@ -90,11 +90,41 @@ the user's roles on every request.
 defanged values (`evil[.]example[.]com`, `hxxp://`) and reports the value it
 looked up as `normalized`.
 
-### mutate (milestone 2)
+### mutate
 
-`add`, `link`, `tag`, `add-context`: each creates or updates rather than
-duplicates, reports per-item results for batches, and supports `--dry-run`.
-Writes identify the agent (see Attribution).
+| Operation | What it does | Yeti endpoints |
+|---|---|---|
+| `add observables <value>...` | Creates the values Yeti doesn't know; tags them all. | `POST /graph/match`, `/observables/import/text` or `/observables/bulk`, `/observables/tag` |
+| `add entity <type> <name>` | Creates the entity unless one of that type and name exists; tags it. | `GET /entities/?name=&type=`, `POST /entities/`, `/entities/tag` |
+| `add indicator <type> <name>` | The same for indicators. | `GET /indicators/?name=&type=`, `POST /indicators/`, `/indicators/tag` |
+| `link <source> <type> <target>` | Links two objects unless they're linked that way. | `POST /graph/search`, `/graph/add` |
+| `tag`, `untag <ref>... --tag` | Adds or removes tags. | `GET /{collection}/{id}`, `POST /{collection}/tag` |
+| `add-context <ref> name=value...` | Adds context from `agent:<name>`. | `POST /{collection}/{id}/context` |
+
+Every operation creates what's missing and leaves what exists, so running it
+again changes nothing more; `--dry-run` reports what would change, using the
+same reads. Each item gets an `action` (`created`, `exists`, `linked`,
+`tagged`, `untagged`, `unchanged`, `context_added`, `failed`); failed items
+don't stop the others, `"failed"` counts them and the exit code is 1.
+
+Rules that keep it so:
+
+- **Never create what exists.** `POST /entities/` and `POST /indicators/` on
+  an existing name and type overwrite every field the request leaves out, so
+  `add` looks the object up first, with the name lookups that read the
+  collection itself. The searches (`/get/multiple`, `/search`) read ArangoSearch
+  views, which index new objects about a second late: an `add` right after
+  another would miss the first object and overwrite it. Changing an existing
+  object's fields is a separate operation, not `add`.
+- **Don't count links twice.** `/graph/add` on an existing link increments its
+  count, so `link` checks for the link first.
+- **Let Yeti guess observable types.** Without `--type`, values go through
+  `/observables/import/text`, which guesses each type and rejects values it
+  doesn't recognize. `/observables/bulk` takes a type but doesn't check the
+  values against it.
+- **Untag by replacing.** Yeti has no remove-tag endpoint: `untag` sets the
+  object's tags to the ones it keeps (`strict`), which refreshes their
+  expiry.
 
 ### admin (later)
 
@@ -138,7 +168,7 @@ pays for every token.
 - Later: Google access tokens through `/auth/google-access-token`, for agents
   that hold Google credentials but no Yeti key.
 
-## Attribution (milestone 2)
+## Attribution
 
 Every request sends `User-Agent: goyeti/<version>`, plus the agent's name when
 given (`--agent-name` / `YETI_AGENT_NAME`). Context written by `mutate` uses the
@@ -160,6 +190,14 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 
 ## Server-side changes that would help
 
+- **Validate bulk observables against their type.** `/observables/bulk` stores
+  `{"value": "bogus", "type": "ipv4"}` as an IPv4.
+- **Don't fail on numeric patterns.** Creating a regex indicator whose pattern
+  is only digits returns a 500: the forensic artifact validator parses the
+  pattern as YAML, gets an integer and raises a `TypeError`.
+- **A create-if-absent option** for entities and indicators would make `add`
+  one request instead of a lookup and a create.
+
 - **A version endpoint.** Yeti doesn't report its version (its OpenAPI spec
   says `0.1.0`), so the client can't warn about an incompatible server.
 - **A bounded investigation endpoint.** `neighbors` maps onto `/graph/search`
@@ -173,8 +211,9 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 1. **read** (done): `lookup`, `search`, `get`, `neighbors`, `yara-bundle`,
    `types`, through the CLI and `yeti mcp` (stdio); API key authentication;
    SKILL.md; static binaries from goreleaser.
-2. **mutate**: `add`, `link`, `tag`, `add-context`, with `--dry-run` and
-   attribution.
+2. **mutate** (done): `add observables|entity|indicator`, `link`, `tag`,
+   `untag`, `add-context`, with `--dry-run` and attribution; `yeti mcp --tier
+   mutate`.
 3. **admin** and evals.
 
 ## Decisions

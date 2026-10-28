@@ -16,12 +16,15 @@ import (
 type route struct {
 	status  int
 	fixture string
+	// then are the fixtures for the following calls, the last one repeating.
+	then []string
 }
 
 // fakeYeti serves recorded Yeti responses, and keeps the request bodies.
 type fakeYeti struct {
 	routes map[string]route // "METHOD /path" -> response
 	bodies map[string]map[string]any
+	calls  map[string]int
 }
 
 func (f *fakeYeti) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +43,12 @@ func (f *fakeYeti) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		f.bodies[key] = decoded
 	}
 	rt, ok := f.routes[key]
+	if withQuery, found := f.routes[key+"?"+r.URL.RawQuery]; found && r.URL.RawQuery != "" {
+		rt, ok = withQuery, true
+	}
+	if f.calls[key]++; f.calls[key] > 1 && len(rt.then) > 0 {
+		rt.fixture = rt.then[min(f.calls[key]-2, len(rt.then)-1)]
+	}
 	if !ok {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"detail":"Not Found"}`))
@@ -77,7 +86,7 @@ func newTestClient(t *testing.T, overrides map[string]route) (*Client, *fakeYeti
 	for k, v := range overrides {
 		routes[k] = v
 	}
-	fake := &fakeYeti{routes: routes, bodies: map[string]map[string]any{}}
+	fake := &fakeYeti{routes: routes, bodies: map[string]map[string]any{}, calls: map[string]int{}}
 	server := httptest.NewServer(fake)
 	t.Cleanup(server.Close)
 	client, err := New(Config{URL: server.URL, APIKey: "key"})
@@ -303,7 +312,7 @@ func TestErrors(t *testing.T) {
 		t.Errorf("unreachable should be retryable: %+v", e)
 	}
 
-	server := httptest.NewServer(&fakeYeti{routes: recorded, bodies: map[string]map[string]any{}})
+	server := httptest.NewServer(&fakeYeti{routes: recorded, bodies: map[string]map[string]any{}, calls: map[string]int{}})
 	defer server.Close()
 	badKey, _ := New(Config{URL: server.URL, APIKey: "wrong"})
 	_, _, err = badKey.Types(context.Background())

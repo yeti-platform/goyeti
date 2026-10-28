@@ -1,4 +1,4 @@
-//go:build integration
+//go:build integration || evals
 
 // End-to-end tests against a real Yeti, e.g. the yeti-docker production stack
 // in CI or the dev stack locally:

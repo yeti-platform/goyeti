@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -214,4 +215,89 @@ func nonNil(values []string) []string {
 		return []string{}
 	}
 	return values
+}
+
+// AddResponse is what Yeti added from a list of observables, and the lines it
+// couldn't read as one.
+type AddResponse struct {
+	Added  []Object `json:"added"`
+	Failed []string `json:"failed"`
+}
+
+// ImportText adds the observables in text, one per line, guessing their
+// types. Existing observables are returned as added, unchanged.
+func (c *Client) ImportText(ctx context.Context, text string, tags []string) (*AddResponse, error) {
+	body := map[string]any{"text": text, "tags": nonNil(tags)}
+	var resp AddResponse
+	if err := c.Do(ctx, http.MethodPost, "/observables/import/text", body, &resp); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// BulkAdd adds observables of one type. Yeti doesn't check that the values
+// are of that type.
+func (c *Client) BulkAdd(ctx context.Context, values []string, typ string, tags []string) (*AddResponse, error) {
+	observables := make([]map[string]any, 0, len(values))
+	for _, value := range values {
+		observables = append(observables, map[string]any{"value": value, "type": typ, "tags": nonNil(tags)})
+	}
+	var resp AddResponse
+	if err := c.Do(ctx, http.MethodPost, "/observables/bulk", map[string]any{"observables": observables}, &resp); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// FindByName returns the entity or indicator ("entities" or "indicators") of
+// a type and name, or nil when there is none. It reads the collection itself,
+// so it sees objects as soon as they're saved, unlike searches.
+func (c *Client) FindByName(ctx context.Context, collection, name, typ string) (Object, error) {
+	query := url.Values{"name": {name}, "type": {typ}}
+	var obj Object
+	err := c.Do(ctx, http.MethodGet, "/"+collection+"/?"+query.Encode(), nil, &obj)
+	var status *StatusError
+	if errors.As(err, &status) && status.Status == http.StatusNotFound {
+		return nil, nil
+	}
+	return obj, err
+}
+
+// Create creates an entity or an indicator: body is the request, e.g.
+// {"entity": {...}, "tags": [...]}.
+func (c *Client) Create(ctx context.Context, collection string, body map[string]any) (Object, error) {
+	var obj Object
+	if err := c.Do(ctx, http.MethodPost, "/"+collection+"/", body, &obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// Tag adds tags to objects of one collection or, with strict, replaces their
+// tags.
+func (c *Client) Tag(ctx context.Context, collection string, ids, tags []string, strict bool) error {
+	body := map[string]any{"ids": ids, "tags": nonNil(tags), "strict": strict}
+	return c.Do(ctx, http.MethodPost, "/"+collection+"/tag", body, nil)
+}
+
+// Link links source to target, both "<collection>/<id>". Linking again only
+// counts the link once more.
+func (c *Client) Link(ctx context.Context, source, linkType, target, description string) (*Edge, error) {
+	body := map[string]any{"source": source, "target": target, "link_type": linkType, "description": description}
+	var edge Edge
+	if err := c.Do(ctx, http.MethodPost, "/graph/add", body, &edge); err != nil {
+		return nil, err
+	}
+	return &edge, nil
+}
+
+// AddContext adds context from source to an object. Yeti keeps one copy of
+// identical context from the same source.
+func (c *Client) AddContext(ctx context.Context, collection, id, source string, context map[string]any) (Object, error) {
+	var obj Object
+	body := map[string]any{"source": source, "context": context}
+	if err := c.Do(ctx, http.MethodPost, "/"+collection+"/"+url.PathEscape(id)+"/context", body, &obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
 }

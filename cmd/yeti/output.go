@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 
 	"github.com/yeti-platform/goyeti/yeti"
@@ -22,11 +21,12 @@ type envelope struct {
 	Data      any             `json:"data,omitempty"`
 	Truncated *yeti.Truncated `json:"truncated,omitempty"`
 	Warnings  []string        `json:"warnings,omitempty"`
+	Failed    int             `json:"failed,omitempty"`
 	Error     *yeti.Error     `json:"error,omitempty"`
 }
 
 func success(data any, meta yeti.Meta) envelope {
-	return envelope{Data: data, Truncated: meta.Truncated, Warnings: meta.Warnings}
+	return envelope{Data: data, Truncated: meta.Truncated, Warnings: meta.Warnings, Failed: meta.Failed}
 }
 
 // failure turns any error into an error envelope, and the exit code to use.
@@ -42,11 +42,11 @@ func failure(err error) (envelope, int) {
 }
 
 func write(w io.Writer, e envelope, pretty bool) {
-	var data []byte
+	encoder := json.NewEncoder(w)
+	// Output goes to terminals and agents, not into HTML: keep "->" readable.
+	encoder.SetEscapeHTML(false)
 	if pretty {
-		data, _ = json.MarshalIndent(e, "", "  ")
-	} else {
-		data, _ = json.Marshal(e)
+		encoder.SetIndent("", "  ")
 	}
-	fmt.Fprintln(w, string(data))
+	encoder.Encode(e)
 }

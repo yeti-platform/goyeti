@@ -180,5 +180,17 @@ func detail(body []byte) string {
 		}
 		return strings.Join(parts, "; ")
 	}
+	// Some errors are {"description": ..., "meta": {...}}.
+	var described struct {
+		Description string         `json:"description"`
+		Meta        map[string]any `json:"meta"`
+	}
+	if json.Unmarshal(parsed.Detail, &described) == nil && described.Description != "" {
+		if len(described.Meta) == 0 {
+			return described.Description
+		}
+		meta, _ := json.Marshal(described.Meta)
+		return described.Description + " " + string(meta)
+	}
 	return string(parsed.Detail)
 }

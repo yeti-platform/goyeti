@@ -35,6 +35,8 @@ type Config struct {
 // use.
 type Client struct {
 	api *api.Client
+	// agent names the agent in what it writes, e.g. context sources.
+	agent string
 }
 
 // New checks the configuration and returns a client. It doesn't contact Yeti.
@@ -61,7 +63,11 @@ func New(cfg Config) (*Client, error) {
 		userAgent += " (agent: " + cfg.AgentName + ")"
 	}
 	httpClient := &http.Client{Timeout: timeout}
-	return &Client{api: api.New(cfg.URL, cfg.APIKey, userAgent, httpClient)}, nil
+	agent := cfg.AgentName
+	if agent == "" {
+		agent = "goyeti"
+	}
+	return &Client{api: api.New(cfg.URL, cfg.APIKey, userAgent, httpClient), agent: agent}, nil
 }
 
 // Meta is what an operation's caller should know besides its data.
@@ -70,6 +76,8 @@ type Meta struct {
 	Truncated *Truncated `json:"truncated,omitempty"`
 	// Warnings are problems that didn't stop the operation.
 	Warnings []string `json:"warnings,omitempty"`
+	// Failed counts the items of a batch that failed; each says why.
+	Failed int `json:"failed,omitempty"`
 }
 
 // Truncated says how many results were left out and how to get them.

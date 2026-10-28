@@ -56,7 +56,7 @@ func TestLiveMCP(t *testing.T) {
 	}
 	ctx := context.Background()
 	clientTransport, serverTransport := mcp.NewInMemoryTransports()
-	if _, err := newMCPServer(client).Connect(ctx, serverTransport, nil); err != nil {
+	if _, err := newMCPServer(client, "read").Connect(ctx, serverTransport, nil); err != nil {
 		t.Fatal(err)
 	}
 	session, err := mcp.NewClient(&mcp.Implementation{Name: "e2e"}, nil).Connect(ctx, clientTransport, nil)

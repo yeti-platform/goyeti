@@ -76,6 +76,9 @@ func (a *app) emit(data any, meta yeti.Meta, err error) error {
 		return nil
 	}
 	write(a.stdout, success(data, meta), a.pretty)
+	if meta.Failed > 0 {
+		a.exit = exitFailed
+	}
 	return nil
 }
 
@@ -95,11 +98,14 @@ func (a *app) rootCommand() *cobra.Command {
 		Long: `yeti queries a Yeti server. The first word of every command is its tier:
 
   yeti read ...    never changes anything
+  yeti mutate ...  adds objects, links, tags and context; --dry-run shows what
+                   it would do
   yeti mcp         serves the operations to MCP clients over stdio
 
-Output is JSON: {"data": ...} on success, with "truncated" and "warnings" when
-they apply, or {"error": {"code", "message", "hint", "retryable"}}. Exit codes:
-0 success, 1 failed operation, 2 bad usage.
+Output is JSON: {"data": ...} on success, with "truncated", "warnings" and
+"failed" when they apply, or {"error": {"code", "message", "hint",
+"retryable"}}. Exit codes: 0 success, 1 failed operation or failed items, 2 bad
+usage.
 
 Configure with YETI_URL and YETI_API_KEY, and optionally YETI_AGENT_NAME.`,
 		SilenceUsage:  true,
@@ -124,7 +130,7 @@ Configure with YETI_URL and YETI_API_KEY, and optionally YETI_AGENT_NAME.`,
 	}
 	read.AddCommand(a.lookupCommand(), a.searchCommand(), a.getCommand(), a.neighborsCommand(),
 		a.yaraBundleCommand(), a.typesCommand())
-	root.AddCommand(read, a.mcpCommand())
+	root.AddCommand(read, a.mutateCommand(), a.mcpCommand())
 	return root
 }
 

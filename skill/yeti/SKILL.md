@@ -1,12 +1,12 @@
 ---
 name: yeti
-description: Query the Yeti threat intelligence platform with the yeti command. Use it to check whether IPs, domains, URLs or hashes are known threats, find malware, actors and campaigns by name, pivot through their links, and fetch YARA rules. Needs YETI_URL and YETI_API_KEY.
+description: Query and update the Yeti threat intelligence platform with the yeti command. Use it to check whether IPs, domains, URLs or hashes are known threats, find malware, actors and campaigns by name, pivot through their links, fetch YARA rules, and record findings as observables, entities, links, tags and context. Needs YETI_URL and YETI_API_KEY.
 ---
 
 # Yeti
 
-`yeti` queries a Yeti server. The first word after `yeti` is the tier:
-`yeti read …` never changes anything in Yeti.
+`yeti` queries and updates a Yeti server. The first word after `yeti` is the
+tier: `yeti read …` never changes anything in Yeti; `yeti mutate …` adds to it.
 
 ## Investigate
 
@@ -47,6 +47,34 @@ description: Query the Yeti threat intelligence platform with the yeti command. 
 
 `yeti read types` lists the object types, for `--target-type`.
 
+## Record findings
+
+`yeti mutate` creates what's missing and leaves what exists, so running a
+command twice changes nothing more. Add `--dry-run` to see what would change
+first.
+
+```
+yeti mutate add observables 203.0.113.7 evil[.]example[.]com --tag campaign-x
+yeti mutate add entity malware Qakbot --description "Banking trojan" --tag loader
+yeti mutate add indicator yara qakbot_loader --pattern @qakbot.yar --diamond capability
+yeti mutate link observables/123 c2 entities/45
+yeti mutate tag observables/123 entities/45 --tag campaign-x
+yeti mutate untag observables/123 --tag false-positive
+yeti mutate add-context observables/123 note="beaconing every 60s" first_seen=2026-10-01
+```
+
+- `add observables` guesses each value's type and reports values it doesn't
+  recognize as `failed`; pass `--type` for types it can't guess, like `path`.
+- An existing entity or indicator is never changed by `add`: only the tags
+  are added.
+- Context is recorded under the source `agent:<your name>`
+  (`YETI_AGENT_NAME`).
+
+Each item reports its `action`: `created`, `exists`, `linked`, `tagged`,
+`untagged`, `unchanged`, `context_added` or `failed` with an `error`. When some
+items fail, the others still happen, `"failed"` counts the failures and the
+exit code is 1.
+
 ## Reading the output
 
 Output is one line of JSON. Add `--pretty` to read it yourself.
@@ -60,7 +88,7 @@ Output is one line of JSON. Add `--pretty` to read it yourself.
 - Failure: `{"error": {"code", "message", "hint", "retryable"}}`. Follow the
   `hint`. Retry only when `retryable` is true.
 
-Exit codes: 0 success, 1 failed operation, 2 bad usage.
+Exit codes: 0 success, 1 failed operation or failed items, 2 bad usage.
 
 ## Setup
 

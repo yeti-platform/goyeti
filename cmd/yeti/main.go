@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -16,6 +17,11 @@ import (
 )
 
 func main() {
+	// Release builds set the version at link time; go install records it in
+	// the build information instead.
+	if info, ok := debug.ReadBuildInfo(); ok && yeti.Version == "dev" && strings.HasPrefix(info.Main.Version, "v") {
+		yeti.Version = strings.TrimPrefix(info.Main.Version, "v")
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 	stdinIsTerminal := false

@@ -212,9 +212,15 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
   deployment of both the last Yeti release and Yeti's `main` (the `dev`
   images), on every pull request and weekly. Locally:
   `YETI_URL=... YETI_API_KEY=... go test -tags integration ./...`.
-- **Evals** (later): a short list of analyst questions with the operations we
-  expect an agent to call. Tool names and descriptions are the interface an
-  agent actually reads, so changes to them are measured, not guessed.
+- **Evals**, behind the `evals` build tag: analyst questions put to an agent
+  (Claude Code, `claude -p`) whose only tools are `yeti mcp`'s, over the
+  end-to-end scenario. Each question checks the tools the agent called, that
+  it took no more calls than a good answer needs, what its answer says, and,
+  for writes, what changed in Yeti. Tool names and descriptions are the
+  interface an agent actually reads, so changes to them are measured, not
+  guessed. They cost a few cents a question, so they run on demand, not in
+  CI: `YETI_URL=... YETI_API_KEY=... go test -tags evals -run Evals -v ./yeti/`;
+  `GOYETI_EVAL_MODEL` picks the model.
 
 ## Server-side changes that would help
 
@@ -250,7 +256,8 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
    mutate`.
 3. **admin** (done): `delete`, `unlink`, `run-task`, `enable-task`,
    `disable-task`, and `yeti read tasks`; `yeti mcp --tier admin`.
-4. **Evals.**
+4. **Evals** (done): nine questions across lookup, pivots, YARA, recording
+   findings and tagging, and one checking that a question writes nothing.
 
 ## Decisions
 

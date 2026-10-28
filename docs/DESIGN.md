@@ -32,7 +32,8 @@ be checked against it. Update it when a decision changes.
 ## Shape
 
 ```
-cmd/yeti/      the binary: CLI commands and `yeti mcp`
+cmd/yeti/      the binary entry point
+cli/           CLI commands and `yeti mcp`
 yeti/          the operations, as a Go package: what both front ends call
 internal/api/  HTTP, authentication and the Yeti endpoints the operations use
 skill/         SKILL.md teaching agents to use the CLI

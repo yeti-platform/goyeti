@@ -25,6 +25,9 @@ type Config struct {
 	URL string
 	// APIKey of the Yeti user to act as.
 	APIKey string
+	// HTTPClient sends requests to Yeti. When set without APIKey, its
+	// Transport is responsible for authentication.
+	HTTPClient *http.Client
 	// Timeout for each request to Yeti. Defaults to 30 seconds.
 	Timeout time.Duration
 	// AgentName identifies the agent in the User-Agent header, if set.
@@ -50,7 +53,7 @@ func New(cfg Config) (*Client, error) {
 		return nil, &Error{Code: CodeConfig, Message: fmt.Sprintf("%q is not an http(s) URL.", cfg.URL),
 			Hint: "Set YETI_URL to the server's address, e.g. https://yeti.example.com."}
 	}
-	if cfg.APIKey == "" {
+	if cfg.APIKey == "" && cfg.HTTPClient == nil {
 		return nil, &Error{Code: CodeConfig, Message: "No Yeti API key is configured.",
 			Hint: "Set YETI_API_KEY, or pass --api-key. Create a key in Yeti under your user's API keys."}
 	}
@@ -63,6 +66,13 @@ func New(cfg Config) (*Client, error) {
 		userAgent += " (agent: " + cfg.AgentName + ")"
 	}
 	httpClient := &http.Client{Timeout: timeout}
+	if cfg.HTTPClient != nil {
+		c := *cfg.HTTPClient
+		if c.Timeout == 0 {
+			c.Timeout = timeout
+		}
+		httpClient = &c
+	}
 	agent := cfg.AgentName
 	if agent == "" {
 		agent = "goyeti"

@@ -1,4 +1,4 @@
-package main
+package cli
 
 // What each operation does, worded for an agent deciding which to call. The
 // CLI help and the MCP tool descriptions both use these, so they can't drift.

@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"bytes"
@@ -36,7 +36,7 @@ func fakeYeti(t *testing.T) string {
 			w.Write([]byte(`{"detail":"Observable not found"}`))
 			return
 		}
-		data, err := os.ReadFile("../../internal/api/testdata/" + fixture)
+		data, err := os.ReadFile("../internal/api/testdata/" + fixture)
 		if err != nil {
 			t.Error(err)
 		}
@@ -118,6 +118,22 @@ func TestYaraBundleRaw(t *testing.T) {
 	out, code := runYeti(t, env, "", "read", "yara-bundle", "indicators/22899145", "--raw")
 	if code != exitOK || !strings.HasPrefix(out, "private rule emotet_strings") {
 		t.Errorf("exit %d: %q", code, out)
+	}
+}
+
+func TestNewClientOverride(t *testing.T) {
+	orig := NewClient
+	t.Cleanup(func() { NewClient = orig })
+
+	url := fakeYeti(t)
+	NewClient = func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
+		cfg.URL = url
+		cfg.HTTPClient = &http.Client{}
+		return yeti.New(cfg)
+	}
+	out, code := runYeti(t, map[string]string{}, "", "read", "types")
+	if code != exitOK {
+		t.Fatalf("exit %d: %s", code, out)
 	}
 }
 

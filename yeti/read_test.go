@@ -302,6 +302,9 @@ func TestErrors(t *testing.T) {
 	wantCode(t, err, CodeConfig)
 	_, err = New(Config{URL: "https://yeti.example.com"})
 	wantCode(t, err, CodeConfig)
+	if _, err := New(Config{URL: "https://yeti.example.com", HTTPClient: &http.Client{}}); err != nil {
+		t.Errorf("New with HTTPClient and no APIKey failed: %v", err)
+	}
 
 	wrong, err := New(Config{URL: "http://127.0.0.1:1", APIKey: "key"})
 	if err != nil {

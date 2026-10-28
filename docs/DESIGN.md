@@ -49,7 +49,7 @@ whenever Yeti adds a type, and exposes none of it usefully to an agent.
 ```
 yeti read   <operation> [args]   never changes anything
 yeti mutate <operation> [args]   creates, links, tags, adds context
-yeti admin  <operation> [args]   deletes, runs tasks, manages users
+yeti admin  <operation> [args]   deletes objects and links, runs tasks
 yeti mcp    [--tier read|mutate|admin]
 ```
 
@@ -85,6 +85,7 @@ the user's roles on every request.
 | `neighbors <ref>` | Objects linked to one object, within a bounded number of hops. | `POST /graph/search` |
 | `yara-bundle` | A compilable YARA bundle for rules given by reference or tag, dependencies included. | `POST /indicators/yara/bundle` |
 | `types` | The object types this server knows, by family. | `GET /system/types` |
+| `tasks [name]...` | Feeds, analytics and exports: enabled, status, last run, schedule. | `POST /tasks/search` |
 
 `lookup` never adds unknown values, although `/graph/match` can. It refangs
 defanged values (`evil[.]example[.]com`, `hxxp://`) and reports the value it
@@ -126,9 +127,36 @@ Rules that keep it so:
   object's tags to the ones it keeps (`strict`), which refreshes their
   expiry.
 
-### admin (later)
+### admin
 
-`delete`, `run-task`, user and API key management.
+| Operation | What it does | Yeti endpoints |
+|---|---|---|
+| `delete <ref>...` | Deletes objects and their links. | `GET /{collection}/{id}`, `POST /graph/search`, `DELETE /{collection}/{id}` |
+| `unlink <source> <type> <target>` | Deletes one link, leaving both objects. | `POST /graph/search`, `DELETE /graph/{id}` |
+| `run-task <name>` | Queues a run of an enabled task. | `POST /tasks/search`, `/tasks/{name}/run` |
+| `enable-task`, `disable-task <name>...` | Enables or disables tasks. | `POST /tasks/search`, `/tasks/{name}/toggle` |
+
+Removing is permanent, so `delete` and `unlink` refuse to run without `--yes`
+(`confirm` over MCP) unless they're dry runs. The dry run says what each
+object is and how many links would be deleted with it. Removing what doesn't
+exist reports `absent` rather than failing, so the operations can run again.
+
+The task operations work around a thin API:
+
+- **Exact names.** `/tasks/search` matches any part of a name, ignoring case;
+  `/tasks/{name}/run` accepts any name and does nothing for unknown ones, and
+  `/toggle` returns a 500. So the operations find the task first, by exact
+  name or else by name ignoring case, and suggest close matches when neither
+  fits.
+- **Enable, not toggle.** Yeti only flips a task's state; `enable-task` and
+  `disable-task` read it first and leave tasks already in the wanted state.
+- **Refuse what the worker would drop.** Yeti queues a run of a disabled task,
+  and its worker then marks the task failed. A oneshot analytics without a
+  `value` parameter fails in the worker too. `run-task` refuses both, saying
+  why.
+
+Users and API keys stay in Yeti's UI: an agent has little reason to manage
+them, and a leaked key with that power would do the most harm.
 
 ## Output contract
 
@@ -190,11 +218,17 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 
 ## Server-side changes that would help
 
-- **Validate bulk observables against their type.** `/observables/bulk` stores
-  `{"value": "bogus", "type": "ipv4"}` as an IPv4.
-- **Don't fail on numeric patterns.** Creating a regex indicator whose pattern
-  is only digits returns a 500: the forensic artifact validator parses the
-  pattern as YAML, gets an integer and raises a `TypeError`.
+- **Validate bulk observables against their type** (yeti#1465).
+  `/observables/bulk` stores `{"value": "bogus", "type": "ipv4"}` as an IPv4.
+- **Don't fail on numeric patterns** (yeti#1466). A regex indicator whose
+  pattern is only digits is saved, then every response that includes it is a
+  500: the undiscriminated response union runs the forensic artifact
+  validator, which parses the pattern as YAML, gets an integer and raises a
+  `TypeError`.
+- **Task permissions and exact names.** The task endpoints need only a
+  logged-in user, not a role; `/tasks/{name}/toggle` returns a 500 for an
+  unknown name, and `/run` accepts any name. A way to enable or disable a task,
+  rather than flip it, would make concurrent changes safe.
 - **A create-if-absent option** for entities and indicators would make `add`
   one request instead of a lookup and a create.
 
@@ -214,7 +248,9 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 2. **mutate** (done): `add observables|entity|indicator`, `link`, `tag`,
    `untag`, `add-context`, with `--dry-run` and attribution; `yeti mcp --tier
    mutate`.
-3. **admin** and evals.
+3. **admin** (done): `delete`, `unlink`, `run-task`, `enable-task`,
+   `disable-task`, and `yeti read tasks`; `yeti mcp --tier admin`.
+4. **Evals.**
 
 ## Decisions
 

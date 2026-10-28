@@ -1,12 +1,13 @@
 ---
 name: yeti
-description: Query and update the Yeti threat intelligence platform with the yeti command. Use it to check whether IPs, domains, URLs or hashes are known threats, find malware, actors and campaigns by name, pivot through their links, fetch YARA rules, and record findings as observables, entities, links, tags and context. Needs YETI_URL and YETI_API_KEY.
+description: Query and update the Yeti threat intelligence platform with the yeti command. Use it to check whether IPs, domains, URLs or hashes are known threats, find malware, actors and campaigns by name, pivot through their links, fetch YARA rules, record findings as observables, entities, links, tags and context, delete objects, and run feeds and analytics. Needs YETI_URL and YETI_API_KEY.
 ---
 
 # Yeti
 
 `yeti` queries and updates a Yeti server. The first word after `yeti` is the
-tier: `yeti read …` never changes anything in Yeti; `yeti mutate …` adds to it.
+tier: `yeti read …` never changes anything in Yeti; `yeti mutate …` adds to it;
+`yeti admin …` deletes from it and runs its tasks.
 
 ## Investigate
 
@@ -71,9 +72,45 @@ yeti mutate add-context observables/123 note="beaconing every 60s" first_seen=20
   (`YETI_AGENT_NAME`).
 
 Each item reports its `action`: `created`, `exists`, `linked`, `tagged`,
-`untagged`, `unchanged`, `context_added` or `failed` with an `error`. When some
+`untagged`, `unchanged`, `context_added` or `failed` with an `error`; the
+admin tier adds `deleted`, `unlinked`, `absent`, `queued`, `enabled` and
+`disabled`. When some
 items fail, the others still happen, `"failed"` counts the failures and the
 exit code is 1.
+
+## Clean up and run tasks
+
+`yeti admin` removes things for good, so look before deleting: `--dry-run`
+says what each object is and how many links would go with it. Deleting
+needs `--yes`. Only delete what you created or were asked to remove.
+
+```
+yeti admin delete observables/123 entities/45 --dry-run
+yeti admin delete observables/123 entities/45 --yes
+yeti admin unlink observables/123 c2 entities/45 --yes
+```
+
+Objects and links that don't exist report `absent`, so deleting twice is
+safe.
+
+Tasks are Yeti's feeds, analytics and exports. `yeti read tasks` lists them,
+with their status and last run; `run-task` queues a run, which Yeti does in the
+background.
+
+```
+yeti read tasks abuse
+yeti admin enable-task AbuseIPDB
+yeti admin run-task AbuseIPDB
+yeti admin run-task VTDomainReport --param value=example.com
+yeti admin disable-task AbuseIPDB
+```
+
+- `run-task`, `enable-task` and `disable-task` take a task's exact name; a
+  wrong one suggests close matches.
+- A task must be enabled to run. Oneshot analytics act on one observable:
+  pass its value as `--param value=…`.
+- Follow a run with `yeti read tasks <name>`: `status`, `status_message` and
+  `last_run`.
 
 ## Reading the output
 

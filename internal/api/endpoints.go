@@ -301,3 +301,65 @@ func (c *Client) AddContext(ctx context.Context, collection, id, source string, 
 	}
 	return obj, nil
 }
+
+// Delete deletes an object of collection, and its links.
+func (c *Client) Delete(ctx context.Context, collection, id string) error {
+	return c.Do(ctx, http.MethodDelete, "/"+collection+"/"+url.PathEscape(id), nil, nil)
+}
+
+// DeleteLink deletes a link by its id.
+func (c *Client) DeleteLink(ctx context.Context, id string) error {
+	return c.Do(ctx, http.MethodDelete, "/graph/"+url.PathEscape(id), nil, nil)
+}
+
+// Task is a feed, analytics, export or other task.
+type Task struct {
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	Enabled       bool   `json:"enabled"`
+	Description   string `json:"description"`
+	Status        string `json:"status"`
+	StatusMessage string `json:"status_message"`
+	LastRun       string `json:"last_run"`
+	// Frequency is an ISO 8601 duration, e.g. "PT1H", for scheduled tasks.
+	Frequency string `json:"frequency"`
+}
+
+// Tasks returns the tasks whose name contains name, ignoring case, all of
+// them when name is empty, optionally of one type.
+func (c *Client) Tasks(ctx context.Context, name, typ string) ([]Task, error) {
+	query := map[string]any{}
+	if name != "" {
+		query["name"] = name
+	}
+	body := map[string]any{"query": query, "count": 10000}
+	if typ != "" {
+		body["type"] = typ
+	}
+	var resp struct {
+		Tasks []Task `json:"tasks"`
+	}
+	if err := c.Do(ctx, http.MethodPost, "/tasks/search", body, &resp); err != nil {
+		return nil, err
+	}
+	return resp.Tasks, nil
+}
+
+// RunTask queues a run of a task. Yeti accepts any name, and a worker skips
+// disabled tasks and exclusive tasks that are already running.
+func (c *Client) RunTask(ctx context.Context, name string, params map[string]any) error {
+	if params == nil {
+		params = map[string]any{}
+	}
+	body := map[string]any{"params": params}
+	return c.Do(ctx, http.MethodPost, "/tasks/"+url.PathEscape(name)+"/run", body, nil)
+}
+
+// ToggleTask flips whether a task is enabled, and returns the task.
+func (c *Client) ToggleTask(ctx context.Context, name string) (*Task, error) {
+	var task Task
+	if err := c.Do(ctx, http.MethodPost, "/tasks/"+url.PathEscape(name)+"/toggle", nil, &task); err != nil {
+		return nil, err
+	}
+	return &task, nil
+}

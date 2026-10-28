@@ -100,6 +100,8 @@ func (a *app) rootCommand() *cobra.Command {
   yeti read ...    never changes anything
   yeti mutate ...  adds objects, links, tags and context; --dry-run shows what
                    it would do
+  yeti admin ...   deletes objects and links (with --yes), runs and toggles
+                   tasks
   yeti mcp         serves the operations to MCP clients over stdio
 
 Output is JSON: {"data": ...} on success, with "truncated", "warnings" and
@@ -129,8 +131,8 @@ Configure with YETI_URL and YETI_API_KEY, and optionally YETI_AGENT_NAME.`,
 		RunE: func(cmd *cobra.Command, args []string) error { return cmd.Help() },
 	}
 	read.AddCommand(a.lookupCommand(), a.searchCommand(), a.getCommand(), a.neighborsCommand(),
-		a.yaraBundleCommand(), a.typesCommand())
-	root.AddCommand(read, a.mutateCommand(), a.mcpCommand())
+		a.yaraBundleCommand(), a.typesCommand(), a.tasksCommand())
+	root.AddCommand(read, a.mutateCommand(), a.adminCommand(), a.mcpCommand())
 	return root
 }
 
@@ -270,6 +272,24 @@ func (a *app) typesCommand() *cobra.Command {
 			})
 		},
 	}
+}
+
+func (a *app) tasksCommand() *cobra.Command {
+	var opts yeti.TasksOptions
+	cmd := &cobra.Command{
+		Use:     "tasks [name...]",
+		Short:   "List tasks: feeds, analytics, exports…",
+		Long:    tasksDescription,
+		Example: "  yeti read tasks abuse\n  yeti read tasks --type feed",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			opts.Names = args
+			return a.withClient(func(c *yeti.Client) error {
+				return a.emit(c.Tasks(cmd.Context(), opts))
+			})
+		},
+	}
+	cmd.Flags().StringVar(&opts.Type, "type", "", "keep the tasks of one type: feed, analytics, export, oneshot, event or log")
+	return cmd
 }
 
 func firstSet(values ...string) string {

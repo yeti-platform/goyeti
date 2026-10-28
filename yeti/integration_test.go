@@ -404,3 +404,124 @@ func TestEndToEndMutate(t *testing.T) {
 		}
 	})
 }
+
+func TestEndToEndAdmin(t *testing.T) {
+	c := liveClient(t)
+	ctx := context.Background()
+	run := fmt.Sprintf("%d", time.Now().UnixNano()%1_000_000_000)
+
+	var actor, malware string
+	for name, ref := range map[string]*string{"GoyetiAdminActor" + run: &actor, "GoyetiAdminMalware" + run: &malware} {
+		added, _, err := c.AddEntity(ctx, "malware", name, AddObjectOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		*ref = added.Changes[0].Ref
+	}
+	if _, _, err := c.Link(ctx, actor, "uses", malware, "", false); err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("unlink", func(t *testing.T) {
+		_, _, err := c.Unlink(ctx, actor, "uses", malware, RemoveOptions{})
+		wantCode(t, err, CodeUsage)
+		dry, _, err := c.Unlink(ctx, actor, "uses", malware, RemoveOptions{DryRun: true})
+		if err != nil || dry.Changes[0].Action != ActionUnlinked {
+			t.Fatalf("dry run: %+v, %v", dry, err)
+		}
+		unlinked, _, err := c.Unlink(ctx, actor, "uses", malware, RemoveOptions{Confirm: true})
+		if err != nil || unlinked.Changes[0].Action != ActionUnlinked {
+			t.Fatalf("unlink: %+v, %v", unlinked, err)
+		}
+		again, _, err := c.Unlink(ctx, actor, "uses", malware, RemoveOptions{Confirm: true})
+		if err != nil || again.Changes[0].Action != ActionAbsent {
+			t.Errorf("unlinking again: %+v, %v", again, err)
+		}
+		if _, _, err := c.Link(ctx, actor, "uses", malware, "", false); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("delete", func(t *testing.T) {
+		dry, _, err := c.Delete(ctx, []string{actor}, RemoveOptions{DryRun: true})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if ch := dry.Changes[0]; ch.Action != ActionDeleted || ch.Name != "GoyetiAdminActor"+run || ch.Links != 1 {
+			t.Errorf("dry run: %+v", ch)
+		}
+		if _, _, err := c.Get(ctx, actor); err != nil {
+			t.Fatalf("a dry run deleted %s: %v", actor, err)
+		}
+
+		deleted, meta, err := c.Delete(ctx, []string{actor, malware}, RemoveOptions{Confirm: true})
+		if err != nil || meta.Failed != 0 || !slices.Equal(actions(deleted), []string{ActionDeleted, ActionDeleted}) {
+			t.Fatalf("delete: %+v, %+v, %v", deleted, meta, err)
+		}
+		_, _, err = c.Get(ctx, actor)
+		wantCode(t, err, CodeNotFound)
+		again, _, err := c.Delete(ctx, []string{actor}, RemoveOptions{Confirm: true})
+		if err != nil || again.Changes[0].Action != ActionAbsent {
+			t.Errorf("deleting again: %+v, %v", again, err)
+		}
+	})
+
+	t.Run("tasks", func(t *testing.T) {
+		// Oneshot tasks have no schedule, so enabling one runs nothing.
+		var oneshot Task
+		eventually(func() bool {
+			tasks, _, err := c.Tasks(ctx, TasksOptions{Type: "oneshot"})
+			if err == nil && len(tasks) > 0 {
+				oneshot = tasks[0]
+			}
+			return oneshot.Name != ""
+		})
+		if oneshot.Name == "" {
+			t.Fatal("Yeti lists no oneshot tasks")
+		}
+		listed, _, err := c.Tasks(ctx, TasksOptions{Names: []string{strings.ToLower(oneshot.Name)}})
+		if _, found := findTask(listed, oneshot.Name); err != nil || !found {
+			t.Errorf("listing by lowercase name: %+v, %v", listed, err)
+		}
+		t.Cleanup(func() {
+			if oneshot.Enabled {
+				c.EnableTasks(ctx, []string{oneshot.Name}, false)
+			} else {
+				c.DisableTasks(ctx, []string{oneshot.Name}, false)
+			}
+		})
+		if _, _, err := c.DisableTasks(ctx, []string{oneshot.Name}, false); err != nil {
+			t.Fatal(err)
+		}
+
+		_, _, err = c.RunTask(ctx, oneshot.Name, map[string]any{"value": "example.com"}, true)
+		wantCode(t, err, CodeInvalidRequest)
+
+		enabled, _, err := c.EnableTasks(ctx, []string{oneshot.Name}, false)
+		if err != nil || enabled.Changes[0].Action != ActionEnabled {
+			t.Fatalf("enable: %+v, %v", enabled, err)
+		}
+		again, _, err := c.EnableTasks(ctx, []string{oneshot.Name}, false)
+		if err != nil || again.Changes[0].Action != ActionUnchanged {
+			t.Errorf("enabling again: %+v, %v", again, err)
+		}
+
+		_, _, err = c.RunTask(ctx, oneshot.Name, nil, true)
+		wantCode(t, err, CodeUsage)
+		queued, _, err := c.RunTask(ctx, oneshot.Name, map[string]any{"value": "example.com"}, true)
+		if err != nil || queued.Changes[0].Action != ActionQueued || !queued.DryRun {
+			t.Errorf("run, dry: %+v, %v", queued, err)
+		}
+		_, _, err = c.RunTask(ctx, "NoSuchTask"+run, nil, true)
+		wantCode(t, err, CodeNotFound)
+	})
+}
+
+func findTask(tasks []Task, name string) (Task, bool) {
+	for _, task := range tasks {
+		if task.Name == name {
+			return task, true
+		}
+	}
+	return Task{}, false
+}

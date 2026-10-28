@@ -58,3 +58,29 @@ const (
 		"a first-seen date or a report URL. The context's source is \"agent:<name>\", the agent's " +
 		"name, so Yeti's timeline shows which agent added it. Identical context isn't added twice."
 )
+
+// The admin tier's operations, and the read tier's view of tasks.
+const (
+	tasksDescription = "List Yeti's tasks — feeds, analytics, exports… — with whether each is enabled, " +
+		"its status, last run and schedule. Narrow by name (any part of it, ignoring case) and by type."
+
+	deleteDescription = "Delete Yeti objects, given by reference, with all their links. This is permanent: " +
+		"do a dry run first, which says what each object is and how many links would go, then " +
+		"confirm. Objects that don't exist are reported absent. Deleting a DFIQ object detaches its " +
+		"children rather than deleting them."
+
+	unlinkDescription = "Delete the link of a type from one Yeti object to another, leaving both objects. " +
+		"Takes the source's reference, the relationship type and the target's reference, like link. " +
+		"Needs confirmation; a link that doesn't exist is reported absent."
+
+	runTaskDescription = "Queue a run of a Yeti task, such as a feed or an analytics, by its exact name. " +
+		"The task must be enabled. Yeti runs it in the background: list the task with tasks to follow " +
+		"its status and last run. Oneshot analytics act on one observable Yeti knows: pass its value as " +
+		"the \"value\" parameter."
+
+	enableTaskDescription = "Enable Yeti tasks by name, so that Yeti runs them on schedule and on demand. " +
+		"Tasks that are enabled already are left unchanged."
+
+	disableTaskDescription = "Disable Yeti tasks by name, so that Yeti stops running them. Tasks that are " +
+		"disabled already are left unchanged."
+)

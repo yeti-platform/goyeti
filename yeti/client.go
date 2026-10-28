@@ -173,6 +173,11 @@ func wrap(err error, notFoundHint string) error {
 	return &Error{Code: CodeServerError, Message: err.Error()}
 }
 
+func isNotFound(err error) bool {
+	var status *api.StatusError
+	return errors.As(err, &status) && status.Status == http.StatusNotFound
+}
+
 func isTimeout(err error) bool {
 	var netErr net.Error
 	return errors.As(err, &netErr) && netErr.Timeout()

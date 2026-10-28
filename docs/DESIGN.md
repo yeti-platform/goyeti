@@ -148,8 +148,12 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 
 - **Unit tests** against `net/http/httptest` servers that return recorded Yeti
   responses: decoding, output shape, errors and tiers.
-- **Integration tests** against a real Yeti, the dev stack from yeti-docker,
-  behind a build tag.
+- **End-to-end tests** against a real Yeti, behind the `integration` build
+  tag. They seed a small investigation, with names unique to the run, and check
+  every operation against it. CI runs them against a yeti-docker production
+  deployment of both the last Yeti release and Yeti's `main` (the `dev`
+  images), on every pull request and weekly. Locally:
+  `YETI_URL=... YETI_API_KEY=... go test -tags integration ./...`.
 - **Evals** (later): a short list of analyst questions with the operations we
   expect an agent to call. Tool names and descriptions are the interface an
   agent actually reads, so changes to them are measured, not guessed.

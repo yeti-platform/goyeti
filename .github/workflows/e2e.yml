@@ -1,0 +1,60 @@
+name: End-to-end tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly, to catch a Yeti change that breaks the client before a release.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # latest is the last Yeti release; dev is built from Yeti's main.
+        yeti-image-tag: [latest, dev]
+    name: e2e (Yeti ${{ matrix.yeti-image-tag }})
+    env:
+      YETI_IMAGE_TAG: ${{ matrix.yeti-image-tag }}
+      YETI_URL: http://localhost
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Start a Yeti production deployment
+        run: |
+          git clone --depth 1 https://github.com/yeti-platform/yeti-docker
+          cd yeti-docker/prod
+          ./init.sh
+
+      - name: Wait for the Yeti API
+        run: |
+          for _ in $(seq 1 60); do
+            if curl -sf -o /dev/null "$YETI_URL/api/v2/system/config"; then exit 0; fi
+            sleep 3
+          done
+          echo "The Yeti API didn't come up in 3 minutes" >&2
+          exit 1
+
+      - name: Create a Yeti user and API key
+        working-directory: yeti-docker/prod
+        run: |
+          key="$(docker compose run --rm api create-user goyeti-e2e e2e-password --admin \
+            | sed -n 's/.*API key: [^:]*://p')"
+          if [ -z "$key" ]; then echo "create-user printed no API key" >&2; exit 1; fi
+          echo "::add-mask::$key"
+          echo "YETI_API_KEY=$key" >> "$GITHUB_ENV"
+
+      - name: Run the end-to-end tests
+        run: go test -tags integration -count=1 -v ./...
+
+      - name: Show the Yeti API's logs
+        if: failure()
+        working-directory: yeti-docker/prod
+        run: docker compose logs --tail 200 api

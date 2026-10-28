@@ -91,9 +91,11 @@ func TestExitCodes(t *testing.T) {
 		{[]string{"read", "get"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"read", "bogus"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"mutate", "add", "bogus"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"admin", "delete", "observables/22898861"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"admin", "bogus"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"admin", "delete"}, env, exitUsage, yeti.CodeUsage},
 		{[]string{"mutate", "add-context", "observables/1", "no-equals-sign"}, env, exitUsage, yeti.CodeUsage},
-		{[]string{"mcp", "--tier", "admin"}, env, exitUsage, yeti.CodeUsage},
+		{[]string{"mcp", "--tier", "root"}, env, exitUsage, yeti.CodeUsage},
 	} {
 		t.Run(strings.Join(tc.args, " "), func(t *testing.T) {
 			out, code := runYeti(t, tc.env, "", tc.args...)
@@ -146,7 +148,7 @@ func TestMCPServesTheReadTier(t *testing.T) {
 			t.Errorf("tool %s: read-only %v, description %q", tool.Name, tool.Annotations.ReadOnlyHint, tool.Description)
 		}
 	}
-	if want := "get lookup neighbors search types yara_bundle"; strings.Join(names, " ") != want {
+	if want := "get lookup neighbors search tasks types yara_bundle"; strings.Join(names, " ") != want {
 		t.Errorf("tools %v, want %s", names, want)
 	}
 
@@ -193,22 +195,31 @@ func TestParseFields(t *testing.T) {
 	}
 }
 
-func TestMCPMutateTier(t *testing.T) {
+// mcpSession connects an MCP client to a server of a tier, over a fake Yeti.
+func mcpSession(t *testing.T, tier string) *mcp.ClientSession {
+	t.Helper()
 	client, err := yeti.New(yeti.Config{URL: fakeYeti(t), APIKey: "key"})
 	if err != nil {
 		t.Fatal(err)
 	}
 	ctx := context.Background()
 	clientTransport, serverTransport := mcp.NewInMemoryTransports()
-	if _, err := newMCPServer(client, "mutate").Connect(ctx, serverTransport, nil); err != nil {
+	if _, err := newMCPServer(client, tier).Connect(ctx, serverTransport, nil); err != nil {
 		t.Fatal(err)
 	}
 	session, err := mcp.NewClient(&mcp.Implementation{Name: "test"}, nil).Connect(ctx, clientTransport, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer session.Close()
-	tools, err := session.ListTools(ctx, nil)
+	t.Cleanup(func() { session.Close() })
+	return session
+}
+
+// writingTools maps the tools that aren't read-only to whether they're
+// destructive.
+func writingTools(t *testing.T, session *mcp.ClientSession) (map[string]bool, int) {
+	t.Helper()
+	tools, err := session.ListTools(context.Background(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -218,9 +229,36 @@ func TestMCPMutateTier(t *testing.T) {
 			writing[tool.Name] = *tool.Annotations.DestructiveHint
 		}
 	}
-	want := map[string]bool{"add_observables": false, "add_entity": false, "add_indicator": false, "link": false,
-		"tag": false, "untag": true, "add_context": false}
-	if len(tools.Tools) != 13 || !reflect.DeepEqual(writing, want) {
-		t.Errorf("%d tools; writing tools and whether they're destructive: %v", len(tools.Tools), writing)
+	return writing, len(tools.Tools)
+}
+
+var mutateTools = map[string]bool{"add_observables": false, "add_entity": false, "add_indicator": false, "link": false,
+	"tag": false, "untag": true, "add_context": false}
+
+func TestMCPMutateTier(t *testing.T) {
+	writing, count := writingTools(t, mcpSession(t, "mutate"))
+	if count != 14 || !reflect.DeepEqual(writing, mutateTools) {
+		t.Errorf("%d tools; writing tools and whether they're destructive: %v", count, writing)
+	}
+}
+
+func TestMCPAdminTier(t *testing.T) {
+	session := mcpSession(t, "admin")
+	writing, count := writingTools(t, session)
+	want := map[string]bool{"delete": true, "unlink": true, "run_task": false, "enable_task": false, "disable_task": false}
+	for k, v := range mutateTools {
+		want[k] = v
+	}
+	if count != 19 || !reflect.DeepEqual(writing, want) {
+		t.Errorf("%d tools; writing tools and whether they're destructive: %v", count, writing)
+	}
+
+	result, err := session.CallTool(context.Background(), &mcp.CallToolParams{Name: "delete",
+		Arguments: map[string]any{"refs": []string{"observables/22898861"}}})
+	if err != nil || !result.IsError {
+		t.Fatalf("delete without confirm or dry_run should be a tool error: %v %+v", err, result)
+	}
+	if e := decode(t, result.Content[0].(*mcp.TextContent).Text); e.Error == nil || e.Error.Code != yeti.CodeUsage {
+		t.Errorf("delete without confirm returned %+v", e)
 	}
 }

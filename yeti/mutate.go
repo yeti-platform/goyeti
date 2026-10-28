@@ -22,18 +22,32 @@ const (
 	ActionUnchanged = "unchanged"
 	ActionAdded     = "context_added"
 	ActionFailed    = "failed"
+
+	// The admin tier's.
+	ActionDeleted  = "deleted"
+	ActionUnlinked = "unlinked"
+	// ActionAbsent is an object or link to remove that doesn't exist: there
+	// is nothing left to do, so it isn't a failure.
+	ActionAbsent   = "absent"
+	ActionQueued   = "queued"
+	ActionEnabled  = "enabled"
+	ActionDisabled = "disabled"
 )
 
 // Change is what happened, or would happen, to one item.
 type Change struct {
 	// Item is the value, name or reference the caller passed.
-	Item   string `json:"item"`
-	Ref    string `json:"ref,omitempty"`
-	Type   string `json:"type,omitempty"`
+	Item string `json:"item"`
+	Ref  string `json:"ref,omitempty"`
+	Type string `json:"type,omitempty"`
+	// Name is the deleted object's name or value, or the task's name.
+	Name   string `json:"name,omitempty"`
 	Action string `json:"action"`
 	// Tags are the object's tags after the change, for tag operations.
-	Tags  []string `json:"tags,omitempty"`
-	Error *Error   `json:"error,omitempty"`
+	Tags []string `json:"tags,omitempty"`
+	// Links counts the links deleted with the object, for deletes.
+	Links int    `json:"links,omitempty"`
+	Error *Error `json:"error,omitempty"`
 }
 
 // Changes is a mutate operation's outcome, item by item.
@@ -265,19 +279,14 @@ func (c *Client) Link(ctx context.Context, source, linkType, target, description
 	source, target = strings.TrimSpace(source), strings.TrimSpace(target)
 	item := source + " -" + linkType + "-> " + target
 
-	paths, err := c.api.GraphSearch(ctx, api.GraphSearchRequest{
-		Source: source, Graph: "links", Direction: "outbound", MinHops: 1, MaxHops: 1,
-		LinkTypes: []string{linkType}, TargetTypes: []string{}, Count: 1000,
-	})
+	existing, err := c.findLink(ctx, source, linkType, target)
 	if err != nil {
-		return nil, Meta{}, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", source, refHint))
+		return nil, Meta{}, err
 	}
 	result := &Changes{DryRun: dryRun}
-	for _, path := range paths.Paths {
-		if len(path) == 1 && path[0].Target == target {
-			result.add(Change{Item: item, Ref: "links/" + path[0].ID, Type: linkType, Action: ActionExists})
-			return result, result.meta(), nil
-		}
+	if existing != nil {
+		result.add(Change{Item: item, Ref: "links/" + existing.ID, Type: linkType, Action: ActionExists})
+		return result, result.meta(), nil
 	}
 	if dryRun {
 		if _, _, err := c.Get(ctx, target); err != nil {
@@ -292,6 +301,23 @@ func (c *Client) Link(ctx context.Context, source, linkType, target, description
 	}
 	result.add(Change{Item: item, Ref: "links/" + edge.ID, Type: linkType, Action: ActionLinked})
 	return result, result.meta(), nil
+}
+
+// findLink returns the link of a type from source to target, or nil.
+func (c *Client) findLink(ctx context.Context, source, linkType, target string) (*api.Edge, error) {
+	paths, err := c.api.GraphSearch(ctx, api.GraphSearchRequest{
+		Source: source, Graph: "links", Direction: "outbound", MinHops: 1, MaxHops: 1,
+		LinkTypes: []string{linkType}, TargetTypes: []string{}, Count: 1000,
+	})
+	if err != nil {
+		return nil, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", source, refHint))
+	}
+	for _, path := range paths.Paths {
+		if len(path) == 1 && path[0].Target == target {
+			return &path[0], nil
+		}
+	}
+	return nil, nil
 }
 
 // taggable are the collections whose objects have tags and context.

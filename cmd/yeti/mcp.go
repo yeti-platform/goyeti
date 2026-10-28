@@ -18,13 +18,14 @@ func (a *app) mcpCommand() *cobra.Command {
 		Long: `Serves the operations of a tier, and of the tiers below it, as MCP tools over
 standard input and output, for MCP hosts such as Claude Desktop or an ADK
 agent. --tier read, the default, serves the read operations only; --tier mutate
-adds the operations that add objects, links, tags and context.`,
+adds the operations that add objects, links, tags and context; --tier admin
+adds deleting objects and links, and running and toggling tasks.`,
 		Example: `  claude mcp add yeti -e YETI_URL=https://yeti.example.com -e YETI_API_KEY=... -- yeti mcp`,
 		Args:    cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if tier != "read" && tier != "mutate" {
+			if tier != "read" && tier != "mutate" && tier != "admin" {
 				return a.emit(nil, yeti.Meta{}, &yeti.Error{Code: yeti.CodeUsage,
-					Message: fmt.Sprintf("%q is not an available tier.", tier), Hint: "Use --tier read or --tier mutate."})
+					Message: fmt.Sprintf("%q is not a tier.", tier), Hint: "Use --tier read, mutate or admin."})
 			}
 			client, err := a.client()
 			if err != nil {
@@ -67,6 +68,11 @@ type yaraBundleInput struct {
 }
 
 type noInput struct{}
+
+type tasksInput struct {
+	Names []string `json:"names,omitempty" jsonschema:"keep the tasks whose name contains one of these, ignoring case"`
+	Type  string   `json:"type,omitempty" jsonschema:"keep the tasks of one type: feed, analytics, export, oneshot, event or log"`
+}
 
 type addObservablesInput struct {
 	Values []string `json:"values" jsonschema:"the values to add: IPs, hostnames, URLs, hashes…, defanged or not"`
@@ -116,6 +122,31 @@ type addContextInput struct {
 	DryRun  bool           `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
 }
 
+type deleteInput struct {
+	Refs    []string `json:"refs" jsonschema:"references of the objects, e.g. observables/123"`
+	Confirm bool     `json:"confirm,omitempty" jsonschema:"delete for good; needed unless dry_run is set"`
+	DryRun  bool     `json:"dry_run,omitempty" jsonschema:"say what would be deleted, and delete nothing"`
+}
+
+type unlinkInput struct {
+	Source   string `json:"source" jsonschema:"the source's reference, e.g. observables/123"`
+	LinkType string `json:"link_type" jsonschema:"the relationship, e.g. c2, uses or delivers"`
+	Target   string `json:"target" jsonschema:"the target's reference, e.g. entities/45"`
+	Confirm  bool   `json:"confirm,omitempty" jsonschema:"delete the link; needed unless dry_run is set"`
+	DryRun   bool   `json:"dry_run,omitempty" jsonschema:"say what would be deleted, and delete nothing"`
+}
+
+type runTaskInput struct {
+	Name   string         `json:"name" jsonschema:"the task's exact name, as tasks lists it"`
+	Params map[string]any `json:"params,omitempty" jsonschema:"parameters for the task, e.g. {\"value\": \"example.com\"} for a oneshot analytics"`
+	DryRun bool           `json:"dry_run,omitempty" jsonschema:"say what would run, and run nothing"`
+}
+
+type tasksByNameInput struct {
+	Names  []string `json:"names" jsonschema:"the tasks' exact names"`
+	DryRun bool     `json:"dry_run,omitempty" jsonschema:"say what would change, and change nothing"`
+}
+
 // readOnly annotates tools that never change anything in Yeti.
 func readOnly(title string) *mcp.ToolAnnotations {
 	closed := false
@@ -160,8 +191,15 @@ func newMCPServer(c *yeti.Client, tier string) *mcp.Server {
 		func(ctx context.Context, _ *mcp.CallToolRequest, _ noInput) (*mcp.CallToolResult, any, error) {
 			return reply(c.Types(ctx))
 		})
-	if tier == "mutate" {
+	mcp.AddTool(server, &mcp.Tool{Name: "tasks", Description: tasksDescription, Annotations: readOnly("Tasks")},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in tasksInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Tasks(ctx, yeti.TasksOptions{Names: in.Names, Type: in.Type}))
+		})
+	if tier == "mutate" || tier == "admin" {
 		addMutateTools(server, c)
+	}
+	if tier == "admin" {
+		addAdminTools(server, c)
 	}
 	return server
 }
@@ -197,6 +235,29 @@ func addMutateTools(server *mcp.Server, c *yeti.Client) {
 	mcp.AddTool(server, &mcp.Tool{Name: "add_context", Description: addContextDescription, Annotations: writes("Add context", false, true)},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in addContextInput) (*mcp.CallToolResult, any, error) {
 			return reply(c.AddContext(ctx, in.Ref, in.Context, in.DryRun))
+		})
+}
+
+func addAdminTools(server *mcp.Server, c *yeti.Client) {
+	mcp.AddTool(server, &mcp.Tool{Name: "delete", Description: deleteDescription, Annotations: writes("Delete objects", true, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in deleteInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Delete(ctx, in.Refs, yeti.RemoveOptions{Confirm: in.Confirm, DryRun: in.DryRun}))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "unlink", Description: unlinkDescription, Annotations: writes("Unlink objects", true, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in unlinkInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.Unlink(ctx, in.Source, in.LinkType, in.Target, yeti.RemoveOptions{Confirm: in.Confirm, DryRun: in.DryRun}))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "run_task", Description: runTaskDescription, Annotations: writes("Run a task", false, false)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in runTaskInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.RunTask(ctx, in.Name, in.Params, in.DryRun))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "enable_task", Description: enableTaskDescription, Annotations: writes("Enable tasks", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in tasksByNameInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.EnableTasks(ctx, in.Names, in.DryRun))
+		})
+	mcp.AddTool(server, &mcp.Tool{Name: "disable_task", Description: disableTaskDescription, Annotations: writes("Disable tasks", false, true)},
+		func(ctx context.Context, _ *mcp.CallToolRequest, in tasksByNameInput) (*mcp.CallToolResult, any, error) {
+			return reply(c.DisableTasks(ctx, in.Names, in.DryRun))
 		})
 }
 

@@ -5,6 +5,7 @@ package cli
 import (
 	"bufio"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"os/signal"
@@ -18,7 +19,8 @@ import (
 
 // NewClient constructs the Yeti client used by CLI commands and the MCP server.
 // Wrapper binaries can replace it before calling Execute to supply custom
-// configuration or transport authentication.
+// configuration or transport authentication; a *yeti.Error returned by
+// NewClient is passed through untouched.
 var NewClient = func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
 	return yeti.New(cfg)
 }
@@ -74,12 +76,20 @@ func (a *app) client() (*yeti.Client, error) {
 	if newClient == nil {
 		newClient = NewClient
 	}
-	return newClient(a.ctx, yeti.Config{
+	client, err := newClient(a.ctx, yeti.Config{
 		URL:       firstSet(a.url, a.getenv("YETI_URL")),
 		APIKey:    firstSet(a.apiKey, a.getenv("YETI_API_KEY")),
 		Timeout:   a.timeout,
 		AgentName: firstSet(a.agentName, a.getenv("YETI_AGENT_NAME")),
 	})
+	if err != nil {
+		var yetiErr *yeti.Error
+		if !errors.As(err, &yetiErr) {
+			return nil, &yeti.Error{Code: yeti.CodeConfig, Message: err.Error()}
+		}
+		return nil, err
+	}
+	return client, nil
 }
 
 // emit writes an operation's outcome, and sets the exit code.
@@ -134,7 +144,7 @@ Configure with YETI_URL and YETI_API_KEY, and optionally YETI_AGENT_NAME.`,
 	flags.StringVar(&a.url, "url", "", "Yeti server URL (default $YETI_URL)")
 	flags.StringVar(&a.apiKey, "api-key", "", "Yeti API key (default $YETI_API_KEY; prefer the variable, which other users can't see)")
 	flags.StringVar(&a.agentName, "agent-name", "", "name of the agent, sent to Yeti (default $YETI_AGENT_NAME)")
-	flags.DurationVar(&a.timeout, "timeout", 30*time.Second, "timeout for each request to Yeti")
+	flags.DurationVar(&a.timeout, "timeout", 0, "timeout for each request to Yeti (default 30s)")
 	flags.BoolVar(&a.pretty, "pretty", false, "indent the JSON output")
 
 	read := &cobra.Command{

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -129,6 +130,9 @@ func TestNewClientOverride(t *testing.T) {
 		stdout: &out,
 		getenv: func(string) string { return "" },
 		newClient: func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
+			if cfg.Timeout != 0 {
+				t.Errorf("cfg.Timeout = %v when --timeout is omitted, want 0", cfg.Timeout)
+			}
 			cfg.URL = url
 			cfg.HTTPClient = &http.Client{}
 			return yeti.New(cfg)
@@ -136,6 +140,15 @@ func TestNewClientOverride(t *testing.T) {
 	}
 	if code := a.run(context.Background(), []string{"read", "types"}); code != exitOK {
 		t.Fatalf("exit %d: %s", code, out.String())
+	}
+
+	out.Reset()
+	a.newClient = func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
+		return nil, errors.New("sso credentials expired")
+	}
+	code := a.run(context.Background(), []string{"read", "types"})
+	if e := decode(t, out.String()); code != exitFailed || e.Error == nil || e.Error.Code != yeti.CodeConfig {
+		t.Errorf("plain error from NewClient: exit %d, envelope %+v", code, e)
 	}
 }
 

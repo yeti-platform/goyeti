@@ -74,9 +74,9 @@ func (c *Changes) meta() Meta {
 	return meta
 }
 
-func failed(item string, err error) Change {
+func (c *Client) failed(item string, err error) Change {
 	var yetiErr *Error
-	errors.As(wrap(err, ""), &yetiErr)
+	errors.As(c.wrap(err, ""), &yetiErr)
 	return Change{Item: item, Action: ActionFailed, Error: yetiErr}
 }
 
@@ -139,7 +139,7 @@ func (c *Client) AddObservables(ctx context.Context, values []string, opts AddOb
 			_, err = c.api.BulkAdd(ctx, unknown, opts.Type, opts.Tags)
 		}
 		if err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 	}
 	// Existing values get the tags too.
@@ -150,7 +150,7 @@ func (c *Client) AddObservables(ctx context.Context, values []string, opts AddOb
 		}
 		slices.Sort(ids)
 		if err := c.api.Tag(ctx, "observables", ids, opts.Tags, false); err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 	}
 	// Ask Yeti again what it knows: the add responses don't tell new values
@@ -179,7 +179,7 @@ func (c *Client) AddObservables(ctx context.Context, values []string, opts AddOb
 func (c *Client) knownObservables(ctx context.Context, values []string) (map[string]api.Object, error) {
 	resp, err := c.api.Match(ctx, values)
 	if err != nil {
-		return nil, wrap(err, "")
+		return nil, c.wrap(err, "")
 	}
 	known := make(map[string]api.Object, len(resp.Known))
 	for _, obj := range resp.Known {
@@ -221,13 +221,13 @@ func (c *Client) addObject(ctx context.Context, collection, family, typ, name st
 	// first.
 	existing, err := c.api.FindByName(ctx, collection, name, typ)
 	if err != nil {
-		return nil, Meta{}, wrap(err, "")
+		return nil, Meta{}, c.wrap(err, "")
 	}
 	result := &Changes{DryRun: opts.DryRun}
 	if existing != nil {
 		if !opts.DryRun && len(opts.Tags) > 0 {
 			if err := c.api.Tag(ctx, collection, []string{str(existing["id"])}, opts.Tags, false); err != nil {
-				return nil, Meta{}, wrap(err, "")
+				return nil, Meta{}, c.wrap(err, "")
 			}
 		}
 		result.add(Change{Item: name, Ref: ref(existing), Type: typ, Action: ActionExists})
@@ -249,11 +249,11 @@ func (c *Client) addObject(ctx context.Context, collection, family, typ, name st
 	}
 	obj, err := c.api.Create(ctx, collection, body)
 	if err != nil {
-		return nil, Meta{}, wrap(err, "")
+		return nil, Meta{}, c.wrap(err, "")
 	}
 	if family == "indicator" && len(opts.Tags) > 0 {
 		if err := c.api.Tag(ctx, collection, []string{str(obj["id"])}, opts.Tags, false); err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 	}
 	result.add(Change{Item: name, Ref: ref(obj), Type: typ, Action: ActionCreated})
@@ -297,7 +297,7 @@ func (c *Client) Link(ctx context.Context, source, linkType, target, description
 	}
 	edge, err := c.api.Link(ctx, source, linkType, target, description)
 	if err != nil {
-		return nil, Meta{}, wrap(err, refHint)
+		return nil, Meta{}, c.wrap(err, refHint)
 	}
 	result.add(Change{Item: item, Ref: "links/" + edge.ID, Type: linkType, Action: ActionLinked})
 	return result, result.meta(), nil
@@ -310,7 +310,7 @@ func (c *Client) findLink(ctx context.Context, source, linkType, target string) 
 		LinkTypes: []string{linkType}, TargetTypes: []string{}, Count: 1000,
 	})
 	if err != nil {
-		return nil, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", source, refHint))
+		return nil, c.wrap(err, fmt.Sprintf("Nothing exists at %s. %s", source, refHint))
 	}
 	for _, path := range paths.Paths {
 		if len(path) == 1 && path[0].Target == target {
@@ -368,7 +368,7 @@ func (c *Client) retag(ctx context.Context, refs, tags []string, dryRun, remove 
 		}
 		obj, _, err := c.Get(ctx, r)
 		if err != nil {
-			result.add(failed(r, err))
+			result.add(c.failed(r, err))
 			continue
 		}
 		current := tagNames(obj["tags"])
@@ -399,7 +399,7 @@ func (c *Client) retag(ctx context.Context, refs, tags []string, dryRun, remove 
 				tagsToSend, strict = after, true
 			}
 			if err := c.api.Tag(ctx, collection, []string{id}, tagsToSend, strict); err != nil {
-				result.add(failed(r, err))
+				result.add(c.failed(r, err))
 				continue
 			}
 		}
@@ -435,7 +435,7 @@ func (c *Client) AddContext(ctx context.Context, reference string, context map[s
 	}
 	obj, err := c.api.AddContext(ctx, collection, id, source, context)
 	if err != nil {
-		return nil, Meta{}, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
+		return nil, Meta{}, c.wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
 	}
 	result.add(Change{Item: reference, Ref: reference, Type: str(obj["type"]), Action: ActionAdded})
 	return result, result.meta(), nil

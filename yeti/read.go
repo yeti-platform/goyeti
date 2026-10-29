@@ -75,7 +75,7 @@ func (c *Client) Lookup(ctx context.Context, values []string, limit int) ([]Look
 
 	resp, err := c.api.Match(ctx, query)
 	if err != nil {
-		return nil, Meta{}, wrap(err, "")
+		return nil, Meta{}, c.wrap(err, "")
 	}
 
 	byRef := map[string]int{} // reference of a known observable -> index in results
@@ -174,13 +174,13 @@ func (c *Client) Search(ctx context.Context, query string, limit int) (*SearchRe
 	keyword, keywordErr := c.api.Search(ctx, query, limit)
 	semantic, semanticErr := c.api.SemanticSearch(ctx, query, limit)
 	if keywordErr != nil && semanticErr != nil {
-		return nil, Meta{}, wrap(keywordErr, "")
+		return nil, Meta{}, c.wrap(keywordErr, "")
 	}
 	if keywordErr != nil {
-		meta.Warnings = append(meta.Warnings, "Keyword search failed, so only semantic matches are shown: "+wrap(keywordErr, "").Error())
+		meta.Warnings = append(meta.Warnings, "Keyword search failed, so only semantic matches are shown: "+c.wrap(keywordErr, "").Error())
 	}
 	if semanticErr != nil {
-		meta.Warnings = append(meta.Warnings, "Semantic search is unavailable on this server, so only keyword matches are shown: "+wrap(semanticErr, "").Error())
+		meta.Warnings = append(meta.Warnings, "Semantic search is unavailable on this server, so only keyword matches are shown: "+c.wrap(semanticErr, "").Error())
 	}
 
 	hits := []SearchHit{}
@@ -236,7 +236,7 @@ func (c *Client) Get(ctx context.Context, reference string) (map[string]any, Met
 	}
 	obj, err := c.api.Get(ctx, collection, id)
 	if err != nil {
-		return nil, Meta{}, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
+		return nil, Meta{}, c.wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
 	}
 	delete(obj, "acls")
 	obj["ref"] = ref(obj)
@@ -302,7 +302,7 @@ func (c *Client) Neighbors(ctx context.Context, reference string, opts Neighbors
 		Count: limit,
 	})
 	if err != nil {
-		return nil, Meta{}, wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
+		return nil, Meta{}, c.wrap(err, fmt.Sprintf("Nothing exists at %s. %s", reference, refHint))
 	}
 
 	result := &NeighborsResult{Source: source, Neighbors: []Neighbor{}}
@@ -382,7 +382,7 @@ func (c *Client) YaraBundle(ctx context.Context, refs, tags, excludeTags []strin
 	}
 	bundle, err := c.api.YaraBundle(ctx, ids, tags, excludeTags)
 	if err != nil {
-		return nil, Meta{}, wrap(err, "A rule doesn't exist, or isn't a YARA rule. Find YARA rules with \"yeti read search\".")
+		return nil, Meta{}, c.wrap(err, "A rule doesn't exist, or isn't a YARA rule. Find YARA rules with \"yeti read search\".")
 	}
 	result := &YaraBundle{Rules: len(yaraRule.FindAllStringIndex(bundle, -1)), Bundle: bundle}
 	var meta Meta
@@ -397,7 +397,7 @@ func (c *Client) YaraBundle(ctx context.Context, refs, tags, excludeTags []strin
 func (c *Client) Types(ctx context.Context) (map[string][]string, Meta, error) {
 	types, err := c.api.Types(ctx)
 	if err != nil {
-		return nil, Meta{}, wrap(err, "")
+		return nil, Meta{}, c.wrap(err, "")
 	}
 	for _, names := range types {
 		sort.Strings(names)

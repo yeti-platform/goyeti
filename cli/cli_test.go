@@ -122,18 +122,20 @@ func TestYaraBundleRaw(t *testing.T) {
 }
 
 func TestNewClientOverride(t *testing.T) {
-	orig := NewClient
-	t.Cleanup(func() { NewClient = orig })
-
 	url := fakeYeti(t)
-	NewClient = func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
-		cfg.URL = url
-		cfg.HTTPClient = &http.Client{}
-		return yeti.New(cfg)
+	var out bytes.Buffer
+	a := &app{
+		stdin:  strings.NewReader(""),
+		stdout: &out,
+		getenv: func(string) string { return "" },
+		newClient: func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
+			cfg.URL = url
+			cfg.HTTPClient = &http.Client{}
+			return yeti.New(cfg)
+		},
 	}
-	out, code := runYeti(t, map[string]string{}, "", "read", "types")
-	if code != exitOK {
-		t.Fatalf("exit %d: %s", code, out)
+	if code := a.run(context.Background(), []string{"read", "types"}); code != exitOK {
+		t.Fatalf("exit %d: %s", code, out.String())
 	}
 }
 

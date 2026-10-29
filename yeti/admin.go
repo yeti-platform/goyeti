@@ -47,7 +47,7 @@ func (c *Client) Delete(ctx context.Context, refs []string, opts RemoveOptions) 
 			continue
 		}
 		if err != nil {
-			result.add(failed(r, err))
+			result.add(c.failed(r, err))
 			continue
 		}
 		links, err := c.api.GraphSearch(ctx, api.GraphSearchRequest{
@@ -55,12 +55,12 @@ func (c *Client) Delete(ctx context.Context, refs []string, opts RemoveOptions) 
 			LinkTypes: []string{}, TargetTypes: []string{}, Count: 1,
 		})
 		if err != nil {
-			result.add(failed(r, err))
+			result.add(c.failed(r, err))
 			continue
 		}
 		if !opts.DryRun {
 			if err := c.api.Delete(ctx, collection, id); err != nil {
-				result.add(failed(r, err))
+				result.add(c.failed(r, err))
 				continue
 			}
 		}
@@ -99,7 +99,7 @@ func (c *Client) Unlink(ctx context.Context, source, linkType, target string, op
 	}
 	if !opts.DryRun {
 		if err := c.api.DeleteLink(ctx, existing.ID); err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 	}
 	result.add(Change{Item: item, Ref: "links/" + existing.ID, Type: linkType, Action: ActionUnlinked})

@@ -17,6 +17,8 @@ import (
 )
 
 // NewClient constructs the Yeti client used by CLI commands and the MCP server.
+// Wrapper binaries can replace it before calling Execute to supply custom
+// configuration or transport authentication.
 var NewClient = func(ctx context.Context, cfg yeti.Config) (*yeti.Client, error) {
 	return yeti.New(cfg)
 }
@@ -44,6 +46,7 @@ type app struct {
 	stdinIsTerminal bool
 	stdout          io.Writer
 	getenv          func(string) string
+	newClient       func(context.Context, yeti.Config) (*yeti.Client, error)
 
 	url, apiKey, agentName string
 	timeout                time.Duration
@@ -67,7 +70,11 @@ func (a *app) run(ctx context.Context, args []string) int {
 }
 
 func (a *app) client() (*yeti.Client, error) {
-	return NewClient(a.ctx, yeti.Config{
+	newClient := a.newClient
+	if newClient == nil {
+		newClient = NewClient
+	}
+	return newClient(a.ctx, yeti.Config{
 		URL:       firstSet(a.url, a.getenv("YETI_URL")),
 		APIKey:    firstSet(a.apiKey, a.getenv("YETI_API_KEY")),
 		Timeout:   a.timeout,

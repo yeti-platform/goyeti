@@ -32,12 +32,17 @@ be checked against it. Update it when a decision changes.
 ## Shape
 
 ```
-cmd/yeti/      the binary: CLI commands and `yeti mcp`
+cmd/yeti/      the binary entry point
+cli/           CLI commands and `yeti mcp` (public for wrapper binaries)
 yeti/          the operations, as a Go package: what both front ends call
 internal/api/  HTTP, authentication and the Yeti endpoints the operations use
 skill/         SKILL.md teaching agents to use the CLI
 docs/          this document
 ```
+
+`cli` is a public package: `cli.Execute` and `cli.NewClient` are part of the
+module's public API so wrapper binaries can inject custom configuration or
+authentication while sharing the same CLI and MCP commands.
 
 `internal/api` is hand-written and decodes Yeti's responses loosely, keeping
 the fields the operations need. Generating a client from Yeti's OpenAPI spec
@@ -193,6 +198,13 @@ pays for every token.
 - The API key is exchanged at `/auth/api-token` for a short-lived session
   token, cached for the process and exchanged again on a 401. The agent never
   sees a token.
+- Callers of `yeti.New` (and wrapper binaries overriding `cli.NewClient`) can
+  supply a custom `Config.HTTPClient` without an `APIKey` when an `http.RoundTripper`
+  handles authentication (e.g. OIDC or SSO proxies). A `*yeti.Error` returned by
+  `RoundTrip` is passed through untouched, and `Config.AuthHint` customizes the
+  recovery hint on 401 and 403 responses from Yeti.
+- `Config.Timeout` (set by `--timeout` on the CLI) overrides `HTTPClient.Timeout`
+  when non-zero, falling back to `HTTPClient.Timeout` and then 30 seconds.
 - Later: Google access tokens through `/auth/google-access-token`, for agents
   that hold Google credentials but no Yeti key.
 
@@ -269,3 +281,5 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 | No generated client | The operations' output is the contract; Yeti's schemas stay internal. |
 | `<collection>/<id>` references | Yeti's own graph form; works with `get` and `neighbors` as is. |
 | JSON by default, compact | Agents parse it reliably and it costs fewer tokens. |
+| Custom `HTTPClient` transport authentication | Deployments behind SSO or OIDC proxies can authenticate via an `http.RoundTripper` and supply their own `AuthHint` or `*yeti.Error` without adding deployment-specific auth flows to `goyeti`. |
+| Public `cli` package (`Execute`, `NewClient`) | Lets wrapper binaries reuse the full CLI and MCP server with a custom client constructor; renaming them breaks wrappers. |

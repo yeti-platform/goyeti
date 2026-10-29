@@ -10,7 +10,12 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
 )
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
 
 // route is a recorded response for one request.
 type route struct {
@@ -302,6 +307,9 @@ func TestErrors(t *testing.T) {
 	wantCode(t, err, CodeConfig)
 	_, err = New(Config{URL: "https://yeti.example.com"})
 	wantCode(t, err, CodeConfig)
+	if _, err := New(Config{URL: "https://yeti.example.com", HTTPClient: &http.Client{}}); err != nil {
+		t.Errorf("New with HTTPClient and no APIKey failed: %v", err)
+	}
 
 	wrong, err := New(Config{URL: "http://127.0.0.1:1", APIKey: "key"})
 	if err != nil {
@@ -322,5 +330,96 @@ func TestErrors(t *testing.T) {
 	_, _, err = failing.Types(context.Background())
 	if e := wantCode(t, err, CodeServerError); !e.Retryable {
 		t.Errorf("5xx should be retryable: %+v", e)
+	}
+
+	transportErr := &Error{Code: CodeUnauthorized, Message: "SSO ticket expired.", Hint: "Run gcert."}
+	customErrClient, err := New(Config{
+		URL:        server.URL,
+		HTTPClient: &http.Client{Transport: roundTripFunc(func(*http.Request) (*http.Response, error) { return nil, transportErr })},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, _, err = customErrClient.Types(context.Background())
+	if got := wantCode(t, err, CodeUnauthorized); got != transportErr || err.Error() != transportErr.Error() {
+		t.Errorf("got %#v (%q), want %#v passed through untouched", got, err.Error(), transportErr)
+	}
+
+	statusServer := func(status int) *httptest.Server {
+		s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(status)
+			w.Write([]byte(`{"detail":"denied"}`))
+		}))
+		t.Cleanup(s.Close)
+		return s
+	}
+	unauthServer := statusServer(http.StatusUnauthorized)
+	noKey401, _ := New(Config{URL: unauthServer.URL, HTTPClient: unauthServer.Client()})
+	_, _, err = noKey401.Types(context.Background())
+	if e := wantCode(t, err, CodeUnauthorized); e.Message != "Yeti refused the request's credentials." || e.Hint != "" {
+		t.Errorf("401 without APIKey or AuthHint: %+v", e)
+	}
+	hinted401, _ := New(Config{URL: unauthServer.URL, HTTPClient: unauthServer.Client(), AuthHint: "Run gcert."})
+	_, _, err = hinted401.Types(context.Background())
+	if e := wantCode(t, err, CodeUnauthorized); e.Hint != "Run gcert." {
+		t.Errorf("401 with AuthHint: %+v", e)
+	}
+
+	forbidServer := statusServer(http.StatusForbidden)
+	noKey403, _ := New(Config{URL: forbidServer.URL, HTTPClient: forbidServer.Client()})
+	_, _, err = noKey403.Types(context.Background())
+	if e := wantCode(t, err, CodeForbidden); e.Hint != "The authenticated Yeti user lacks the permission; ask a Yeti admin." {
+		t.Errorf("403 without APIKey or AuthHint: %+v", e)
+	}
+	hinted403, _ := New(Config{URL: forbidServer.URL, HTTPClient: forbidServer.Client(), AuthHint: "Ask an admin to grant access."})
+	_, _, err = hinted403.Types(context.Background())
+	if e := wantCode(t, err, CodeForbidden); e.Hint != "Ask an admin to grant access." {
+		t.Errorf("403 with AuthHint: %+v", e)
+	}
+}
+
+func TestTimeoutPrecedence(t *testing.T) {
+	var seenDeadline bool
+	var remaining time.Duration
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{"observables":[]}`))
+	}))
+	defer server.Close()
+
+	base := &http.Client{
+		Timeout: 10 * time.Second,
+		Transport: roundTripFunc(func(r *http.Request) (*http.Response, error) {
+			deadline, ok := r.Context().Deadline()
+			seenDeadline = ok
+			remaining = time.Until(deadline)
+			return http.DefaultTransport.RoundTrip(r)
+		}),
+	}
+
+	// Config.Timeout == 0 preserves HTTPClient.Timeout.
+	c1, err := New(Config{URL: server.URL, HTTPClient: base})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := c1.Types(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	if !seenDeadline || remaining < 5*time.Second || remaining > 11*time.Second {
+		t.Errorf("expected ~10s deadline from HTTPClient.Timeout, got ok=%v remaining=%v", seenDeadline, remaining)
+	}
+
+	// Config.Timeout overrides HTTPClient.Timeout without mutating the caller's HTTPClient.
+	c2, err := New(Config{URL: server.URL, HTTPClient: base, Timeout: 2 * time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := c2.Types(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	if !seenDeadline || remaining <= 0 || remaining > 3*time.Second {
+		t.Errorf("expected ~2s deadline from Config.Timeout, got ok=%v remaining=%v", seenDeadline, remaining)
+	}
+	if base.Timeout != 10*time.Second {
+		t.Errorf("caller HTTPClient.Timeout was mutated to %v", base.Timeout)
 	}
 }

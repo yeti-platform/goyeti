@@ -85,6 +85,28 @@ func TestRejectedKey(t *testing.T) {
 	}
 }
 
+func TestCustomHTTPClientWithoutAPIKey(t *testing.T) {
+	data, err := os.ReadFile("testdata/types.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/api/v2/auth/api-token" {
+			t.Errorf("unexpected call to %s", r.URL.Path)
+		}
+		if got := r.Header.Get("Authorization"); got != "" {
+			t.Errorf("Authorization = %q, want empty", got)
+		}
+		w.Write(data)
+	}))
+	defer server.Close()
+
+	client := New(server.URL, "", "goyeti-test", server.Client())
+	if _, err := client.Types(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestStatusErrorCarriesDetail(t *testing.T) {
 	fake := &fakeYeti{handler: func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnprocessableEntity)

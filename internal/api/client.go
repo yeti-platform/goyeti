@@ -59,13 +59,16 @@ var ErrUnauthorized = errors.New("Yeti refused the API key")
 // Do sends a request to path (relative to /api/v2) and decodes the JSON
 // response into out, unless out is nil. body, unless nil, is sent as JSON.
 func (c *Client) Do(ctx context.Context, method, path string, body, out any) error {
-	token, err := c.sessionToken(ctx, "")
-	if err != nil {
-		return err
+	var token string
+	if c.apiKey != "" {
+		var err error
+		if token, err = c.sessionToken(ctx, ""); err != nil {
+			return err
+		}
 	}
-	err = c.send(ctx, method, path, body, out, token)
+	err := c.send(ctx, method, path, body, out, token)
 	var status *StatusError
-	if errors.As(err, &status) && status.Status == http.StatusUnauthorized {
+	if c.apiKey != "" && errors.As(err, &status) && status.Status == http.StatusUnauthorized {
 		// The session token expired: exchange the key again, once.
 		if token, err = c.sessionToken(ctx, token); err != nil {
 			return err
@@ -121,7 +124,9 @@ func (c *Client) send(ctx context.Context, method, path string, body, out any, t
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
+	if token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
 	return c.roundTrip(req, out)
 }
 

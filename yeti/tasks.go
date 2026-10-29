@@ -47,7 +47,7 @@ func (c *Client) Tasks(ctx context.Context, opts TasksOptions) ([]Task, Meta, er
 	for _, name := range names {
 		found, err := c.api.Tasks(ctx, strings.TrimSpace(name), opts.Type)
 		if err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 		for _, t := range found {
 			if !seen[t.Name] {
@@ -68,7 +68,7 @@ func (c *Client) findTask(ctx context.Context, name string) (*api.Task, error) {
 	}
 	found, err := c.api.Tasks(ctx, name, "")
 	if err != nil {
-		return nil, wrap(err, "")
+		return nil, c.wrap(err, "")
 	}
 	var folded []api.Task
 	for _, t := range found {
@@ -119,7 +119,7 @@ func (c *Client) RunTask(ctx context.Context, name string, params map[string]any
 	}
 	if !dryRun {
 		if err := c.api.RunTask(ctx, task.Name, params); err != nil {
-			return nil, Meta{}, wrap(err, "")
+			return nil, Meta{}, c.wrap(err, "")
 		}
 	}
 	result := &Changes{DryRun: dryRun, Changes: []Change{{Item: name, Name: task.Name, Type: task.Type, Action: ActionQueued}}}
@@ -148,7 +148,7 @@ func (c *Client) setTasksEnabled(ctx context.Context, names []string, enabled, d
 	for _, name := range names {
 		task, err := c.findTask(ctx, name)
 		if err != nil {
-			result.add(failed(name, err))
+			result.add(c.failed(name, err))
 			continue
 		}
 		change := Change{Item: name, Name: task.Name, Type: task.Type, Action: action}
@@ -158,7 +158,7 @@ func (c *Client) setTasksEnabled(ctx context.Context, names []string, enabled, d
 			// Yeti only toggles, so a concurrent toggle could undo this one.
 			toggled, err := c.api.ToggleTask(ctx, task.Name)
 			if err != nil {
-				result.add(failed(name, err))
+				result.add(c.failed(name, err))
 				continue
 			}
 			if toggled.Enabled != enabled {

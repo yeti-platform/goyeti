@@ -126,8 +126,9 @@ Rules that keep it so:
   count, so `link` checks for the link first.
 - **Let Yeti guess observable types.** Without `--type`, values go through
   `/observables/import/text`, which guesses each type and rejects values it
-  doesn't recognize. `/observables/bulk` takes a type but doesn't check the
-  values against it.
+  doesn't recognize. `/observables/bulk` takes an explicit type and checks
+  values against it once yeti#1468 is deployed (Yeti 2.12.0 and earlier
+  didn't).
 - **Untag by replacing.** Yeti has no remove-tag endpoint: `untag` sets the
   object's tags to the ones it keeps (`strict`), which refreshes their
   expiry.
@@ -236,27 +237,18 @@ source `agent:<name>`, so Yeti's timeline shows what an agent changed.
 
 ## Server-side changes that would help
 
-- **Validate bulk observables against their type** (yeti#1465).
-  `/observables/bulk` stores `{"value": "bogus", "type": "ipv4"}` as an IPv4.
-- **Don't fail on numeric patterns** (yeti#1466). A regex indicator whose
-  pattern is only digits is saved, then every response that includes it is a
-  500: the undiscriminated response union runs the forensic artifact
-  validator, which parses the pattern as YAML, gets an integer and raises a
-  `TypeError`.
 - **Task permissions and exact names.** The task endpoints need only a
   logged-in user, not a role; `/tasks/{name}/toggle` returns a 500 for an
   unknown name, and `/run` accepts any name. A way to enable or disable a task,
   rather than flip it, would make concurrent changes safe.
 - **A create-if-absent option** for entities and indicators would make `add`
   one request instead of a lookup and a create.
-
 - **A version endpoint.** Yeti doesn't report its version (its OpenAPI spec
   says `0.1.0`), so the client can't warn about an incompatible server.
 - **A bounded investigation endpoint.** `neighbors` maps onto `/graph/search`
   today; yeti#1338 (draft) is the server half of a richer version.
 - **Per-value grouping in `/graph/match`.** It returns flat lists, which the
-  client regroups by value. It also lists each entity once across all values,
-  so an entity linked to two looked-up values shows up under the first only.
+  client regroups by value.
 
 ## Milestones
 
